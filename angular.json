@@ -45,13 +45,13 @@
                 }
               ],
               "outputHashing": "all",
-              "baseHref": "astrutz.github.io/amazing/"
+              "baseHref": "amazing"
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
-              "baseHref": "astrutz.github.io/amazing/"
+              "baseHref": "amazing"
             }
           },
           "defaultConfiguration": "production"
