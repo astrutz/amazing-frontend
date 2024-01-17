@@ -36,7 +36,7 @@ export class HomeComponent {
     return this._markerService.markers.map((markerElement) => {
       const mapMarker = marker([markerElement.lat, markerElement.lng], {
         title: markerElement.name,
-        icon: icon({iconUrl: '/assets/marker-icon.png', iconSize: [80, 80]})
+        icon: icon({iconUrl: '/assets/marker-icon.png', iconSize: [80, 64]})
       });
       mapMarker.bindPopup(`<h3>${markerElement.name}</h3><h4>${markerElement.description}</h4>`);
       return mapMarker;
