@@ -44,14 +44,12 @@
                   "maximumError": "4kb"
                 }
               ],
-              "outputHashing": "all",
-              "baseHref": "amazing"
+              "outputHashing": "all"
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true,
-              "baseHref": "amazing"
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
