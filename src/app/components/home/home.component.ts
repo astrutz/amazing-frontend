@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {LeafletModule} from "@asymmetrik/ngx-leaflet";
-import {latLng, MapOptions, marker, tileLayer} from "leaflet";
+import {icon, latLng, MapOptions, marker, tileLayer} from "leaflet";
 import {CardModule} from 'primeng/card';
 import {MarkerService} from "../../services/marker.service";
 
@@ -34,7 +34,10 @@ export class HomeComponent {
 
   get layers() {
     return this._markerService.markers.map((markerElement) => {
-      const mapMarker = marker([markerElement.lat, markerElement.lng], {title: markerElement.name});
+      const mapMarker = marker([markerElement.lat, markerElement.lng], {
+        title: markerElement.name,
+        icon: icon({iconUrl: '/assets/marker-icon.png', iconSize: [80, 80]})
+      });
       mapMarker.bindPopup(`<h3>${markerElement.name}</h3><h4>${markerElement.description}</h4>`);
       return mapMarker;
     });
