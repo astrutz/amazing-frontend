@@ -4,10 +4,7 @@
 
 .card {
   position: fixed;
-  top: 2rem;
-  right: 2rem;
+  top: 4rem;
+  left: 4rem;
   z-index: 99999;
-  background-color: white;
-  padding: 2rem;
-  border-radius: 4px;
 }
