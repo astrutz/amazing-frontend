@@ -1,0 +1,13 @@
+.map {
+  height: 100vh;
+}
+
+.card {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 99999;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 4px;
+}
