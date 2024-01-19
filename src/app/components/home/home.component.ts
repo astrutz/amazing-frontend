@@ -20,11 +20,11 @@ export class HomeComponent {
 
   private _options: MapOptions = {
     layers: [
-      tileLayer('https://tile.openstreetmap.de/{z}/{x}/{y}.png', {
-        maxZoom: 20,
+      tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
       })
     ],
-    zoom: 20,
+    zoom: 19,
     center: latLng(51.219570, 6.814330)
   };
 
