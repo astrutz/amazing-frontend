@@ -55,6 +55,13 @@ export class MarkerService {
       description: 'Am Eingang und an der Rolltreppe',
       lat: 51.220847,
       lng: 6.809221
+    },
+    {
+      id: 'uksdj345hgj',
+      name: 'Ingolstadt Hauptbahnhof',
+      description: 'Unter einer Bank bei den Bussen',
+      lat: 48.7445760,
+      lng: 11.4362583
     }
   ]
 
