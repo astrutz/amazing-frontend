@@ -62,6 +62,13 @@ export class MarkerService {
       description: 'Unter einer Bank bei den Bussen',
       lat: 48.7445760,
       lng: 11.4362583
+    },
+    {
+      id: 'asdasdasd',
+      name: 'KiTa Bayerseich Egelsbach',
+      description: 'Laterne bei den Fahrradständern',
+      lat: 49.955935,
+      lng: 8.669356
     }
   ]
 
