@@ -69,6 +69,20 @@ export class MarkerService {
       description: 'Laterne bei den Fahrradständern',
       lat: 49.955935,
       lng: 8.669356
+    },
+    {
+      id: 'sdfsdfsdf',
+      name: 'Erkrather Straße',
+      description: 'Auf einem Stromkasten',
+      lat: 51.219767,
+      lng: 6.811831
+    },
+    {
+      id: 'sdf',
+      name: 'Schwanenhöfe',
+      description: 'Gegenüber von Hase & Igel',
+      lat: 51.2197206,
+      lng: 6.8157599
     }
   ]
 
