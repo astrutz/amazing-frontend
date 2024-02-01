@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 export type Marker = {
   id: string,
@@ -12,6 +12,9 @@ export type Marker = {
   providedIn: 'root'
 })
 export class MarkerService {
+
+  constructor() {
+  }
 
   private _markers: Marker[] = [
     {
@@ -83,11 +86,36 @@ export class MarkerService {
       description: 'Gegenüber von Hase & Igel',
       lat: 51.2197206,
       lng: 6.8157599
+    },
+    {
+      id: 's5334df',
+      name: 'Oberwiehl',
+      description: 'Am Dorfplatz im Pavillon',
+      lat: 50.94694762218973,
+      lng: 7.585239794815468
+    },
+    {
+      id: 's5334df',
+      name: 'Angfurten',
+      description: 'Auf der Scheune vom Bauer',
+      lat: 50.94275567790995,
+      lng: 7.596719702855772
+    },
+    {
+      id: 's53sdf34df',
+      name: 'Dietrich-Bonhoeffer-Gymnasium',
+      description: 'An der Aula (innen und außen)',
+      lat: 50.94914500994642,
+      lng:  7.557135940729041
+    },
+    {
+      id: 's5334df',
+      name: 'TH Gummersbach',
+      description: 'In der Mensa und der Bibliothek',
+      lat: 51.022355817248574,
+      lng: 7.562460376401844
     }
   ]
-
-  constructor() { }
-
   get markers(): Marker[] {
     return this._markers;
   }
