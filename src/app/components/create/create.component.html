@@ -1,11 +1,42 @@
-<main>
+<main class="h-full relative">
   <p-card header="Neuer Sticker" subheader="Was ist ein Sticker wert, wenn er nicht auf der Karte auftaucht?">
-    <form>
-      <div class="flex flex-column gap-2">
-        <label for="username">Titel</label>
-        <input pInputText id="username" aria-describedby="username-help" formControlName="title" />
-        <small id="username-help">Enter your username to reset your password.</small>
+    <form class="flex flex-col gap-12">
+      <div class="flex flex-col gap-2">
+        <label for="title">Titel</label>
+        <input pInputText id="title" aria-describedby="title-help" formControlName="title" />
+        <small id="title-help">Ort, an dem der Sticker klebt, z.B. "Düsseldorf Hauptbahnhof"</small>
       </div>
+      <div class="flex flex-col gap-2">
+        <label for="description">Beschreibung</label>
+        <input pInputText id="description" aria-describedby="description-help" formControlName="description" />
+        <small id="description-help">Nähere Beschreibung des Ortes, z.B. "Auf der Rolltreppe zu Gleis 6"</small>
+      </div>
+      <p-tabView>
+        <p-tabPanel header="Adresse" [disabled]="true">
+          <p>
+            a
+          </p>
+        </p-tabPanel>
+        <p-tabPanel header="Standort" [disabled]="true">
+          <p>
+            b
+          </p>
+        </p-tabPanel>
+        <p-tabPanel header="Längengrade" [selected]="true">
+          <div class="flex flex-col gap-6 items-center">
+          <div class="flex flex-col gap-2">
+            <label for="latitude">Längengrad</label>
+            <p-inputNumber id="latitude" [useGrouping]="false" [min]="0" [max]="90" [minFractionDigits]="4" [maxFractionDigits]="6" formControlName="latitude" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label for="longitude">Breitengrad</label>
+            <p-inputNumber id="longitude" [useGrouping]="false" [min]="0" [max]="180" [minFractionDigits]="4" [maxFractionDigits]="6" formControlName="longitude" />
+          </div>
+          </div>
+        </p-tabPanel>
+      </p-tabView>
+      <p-button class="flex justify-center text-green-500" label="Speichern"></p-button>
     </form>
+    <i class="absolute top-4 right-4 cursor-pointer pi pi-times" (click)="navigateBack()"></i>
   </p-card>
 </main>
