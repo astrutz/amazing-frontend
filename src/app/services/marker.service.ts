@@ -114,6 +114,55 @@ export class MarkerService {
       description: 'In der Mensa und der Bibliothek',
       lat: 51.022355817248574,
       lng: 7.562460376401844
+    },
+    {
+      id: 'asdasd',
+      name: 'Aachen Hauptbahnhof',
+      description: 'Auf der Telefonzelle bei den Bussen',
+      lat: 50.7686224,
+      lng: 6.0906221
+    },
+    {
+      id: 'asdasd',
+      name: 'Köln Messe/Deutz',
+      description: 'Am Aufenthaltsraum auf Gleis 5/6',
+      lat: 50.940869,
+      lng: 6.974926
+    },
+    {
+      id: 'asdasd',
+      name: 'Walheim, Albert-Einstein-Straße 34',
+      description: 'Innenseite der Wärmepumpe',
+      lat: 50.7078160905014,
+      lng: 6.175918119043731
+    },
+    {
+      id: 'asdasd',
+      name: 'Friterie New-Quinta',
+      description: 'Unter dem ersten Tisch rechts',
+      lat: 50.7010755,
+      lng: 6.0858870
+    },
+    {
+      id: 'asdasd',
+      name: 'Vennbahntrasse',
+      description: 'Auf dem Ortsschild "Hahn"',
+      lat: 50.7124910,
+      lng: 6.1951132
+    },
+    {
+      id: 'asdasd',
+      name: 'Friterie New-Quinta',
+      description: 'Auf dem Aufsteller draußen',
+      lat: 50.7011058,
+      lng: 6.0857653
+    },
+    {
+      id: 'asdasd',
+      name: 'Mipri Grenzmarkt',
+      description: 'Auf dem Einkaufswagenunterstand',
+      lat: 50.7156092,
+      lng: 6.1214910
     }
   ]
   get markers(): Marker[] {
