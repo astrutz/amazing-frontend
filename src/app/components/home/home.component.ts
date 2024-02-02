@@ -39,7 +39,7 @@ export class HomeComponent {
         title: markerElement.name,
         icon: icon({ iconUrl: '/assets/marker-icon.svg', iconSize: [80, 64] })
       });
-      mapMarker.bindPopup(`<h3>${markerElement.name}</h3><h4>${markerElement.description}</h4>`);
+      mapMarker.bindPopup(`<h3 class="text-xl mb-2">${markerElement.name}</h3><h4 class="text-m">${markerElement.description}</h4>`);
       return mapMarker;
     });
   }
