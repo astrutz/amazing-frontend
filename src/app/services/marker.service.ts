@@ -219,6 +219,13 @@ export class MarkerService {
       description: 'In der Schiedsrichterkabine',
       lat: 51.3307794,
       lng: 6.9023749
+    },
+    {
+      id: 'asdasd',
+      name: 'Hautarztpraxis J. Franke',
+      description: 'Auf dem Desinfektionsmittelspender',
+      lat: 51.1420827,
+      lng: 6.8947953
     }
   ]
   get markers(): Marker[] {
