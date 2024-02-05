@@ -163,6 +163,62 @@ export class MarkerService {
       description: 'Auf dem Einkaufswagenunterstand',
       lat: 50.7156092,
       lng: 6.1214910
+    },
+    {
+      id: 'asdasd',
+      name: 'Walheim',
+      description: 'Auf der Fußgängerampel',
+      lat: 50.7074178,
+      lng: 6.1825169
+    },
+    {
+      id: 'asdasd',
+      name: 'Aachen Johanniterstraße',
+      description: 'An der Laterne',
+      lat: 50.7740433,
+      lng: 6.0765542
+    },
+    {
+      id: 'asdasd',
+      name: 'Walheim Hochrausring',
+      description: 'Stromkasten an der Bushaltestellen',
+      lat: 50.7095968,
+      lng: 6.1776755
+    },
+    {
+      id: 'asdasd',
+      name: 'Walheim Hochrausring',
+      description: 'Auf dem Stoppschild (Rückseite)',
+      lat: 50.7097024,
+      lng: 6.1773349
+    },
+    {
+      id: 'asdasd',
+      name: 'Mönchengladbach Hauptbahnhof',
+      description: 'Anzeigetafel an Gleis 2',
+      lat: 51.1967583,
+      lng: 6.4467276
+    },
+    {
+      id: 'asdasd',
+      name: 'Woyaya',
+      description: 'Weg zur Toilette an der Wand',
+      lat: 51.1853899,
+      lng: 6.8205263
+    },
+    {
+      id: 'asdasd',
+      name: 'Dartclub Lobberich',
+      description: 'Tür auf der Herrentoilette',
+      lat: 51.2569062,
+      lng: 6.1706116
+    },
+    {
+      id: 'asdasd',
+      name: 'SV Hösel',
+      description: 'In der Schiedsrichterkabine',
+      lat: 51.3307794,
+      lng: 6.9023749
     }
   ]
   get markers(): Marker[] {
