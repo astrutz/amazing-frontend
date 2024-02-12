@@ -226,6 +226,13 @@ export class MarkerService {
       description: 'Auf dem Desinfektionsmittelspender',
       lat: 51.1420827,
       lng: 6.8947953
+    },
+    {
+      id: 'asdasd',
+      name: 'Essen, Ruhrallee 6',
+      description: 'Auf dem Kinderbett (Kopfseite)',
+      lat: 51.44683126575422,
+      lng: 7.024614748052559
     }
   ]
   get markers(): Marker[] {
