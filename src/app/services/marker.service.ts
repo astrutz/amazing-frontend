@@ -131,7 +131,7 @@ export class MarkerService {
     },
     {
       id: 'asdasd',
-      name: 'Walheim, Albert-Einstein-Straße 34',
+      name: 'Walheim, Albert-Einstein-Straße',
       description: 'Innenseite der Wärmepumpe',
       lat: 50.7078160905014,
       lng: 6.175918119043731
@@ -233,6 +233,118 @@ export class MarkerService {
       description: 'Auf dem Kinderbett (Kopfseite)',
       lat: 51.44683126575422,
       lng: 7.024614748052559
+    },
+    {
+      id: 'asdasd',
+      name: 'Glowing Rooms',
+      description: 'Auf dem Poller vorm Eingang',
+      lat: 51.22140000194226,
+      lng: 6.809223924860989
+    },
+    {
+      id: 'asdasd',
+      name: 'Ecke Ruhrtalstraße/Erkrather Str.',
+      description: 'Auf dem Poller an der Kreuzung',
+      lat: 51.2203752518005,
+      lng: 6.810218581503558
+    },
+    {
+      id: 'asdasd',
+      name: 'De Pier',
+      description: 'Auf dem Bungeeturm',
+      lat: 52.11769114660937,
+      lng: 4.280026958122205
+    },
+    {
+      id: 'asdasd',
+      name: 'Internationaler Gerichtshof',
+      description: 'Auf der Bank vor der Flamme des Friedens',
+      lat: 52.0868974602265,
+      lng: 4.296087268559951
+    },
+    {
+      id: 'asdasd',
+      name: 'Reiterstatue von Wilhelm I',
+      description: 'Auf dem Sockel',
+      lat: 52.081204362391865,
+      lng: 4.307136050075477
+    },
+    {
+      id: 'asdasd',
+      name: 'Binnenhof',
+      description: 'Auf der dritten Parkbank',
+      lat: 52.08009344636251,
+      lng: 4.314317275314299
+    },
+    {
+      id: 'asdasd',
+      name: 'Haagse Markt',
+      description: 'Seitlich auf dem Kibbelingstand',
+      lat: 52.06403825689157,
+      lng: 4.299655828932263
+    },
+    {
+      id: 'asdasd',
+      name: 'Den Haag Centraal',
+      description: 'Tramhaltestelle',
+      lat: 52.08108488810978,
+      lng: 4.322597464284643
+    },
+    {
+      id: 'asdasd',
+      name: 'Utrecht Centraal',
+      description: 'Treppe zu Gleis 4',
+      lat: 52.08948368985249,
+      lng: 5.109546080657984
+    },
+    {
+      id: 'asdasd',
+      name: 'Düsseldorf Stresemannstraße',
+      description: 'Poller an der Ecke',
+      lat: 51.2198383,
+      lng: 6.7866547
+    },
+    {
+      id: 'asdasd',
+      name: 'Restaurant Drei Chinesen',
+      description: 'Das weiß nur Mona',
+      lat: 51.2193849,
+      lng: 6.7853531
+    },
+    {
+      id: 'asdasd',
+      name: 'Legden Königstraße',
+      description: 'Das weiß nur Mona',
+      lat: 52.0317433,
+      lng: 7.1060719
+    },
+    {
+      id: 'asdasd',
+      name: 'PSD Bank Dome',
+      description: 'Auf dem Fahnenmast',
+      lat: 51.27272314112719,
+      lng: 6.811698406515972
+    },
+    {
+      id: 'asdasd',
+      name: 'Merkur Spiel-Arena',
+      description: 'Eingang zu Block 139',
+      lat: 51.2627072228073,
+      lng: 6.733270510772401
+    },
+    {
+      id: 'asdasd',
+      name: 'Checkpoint Darttreff Borken',
+      description: 'Auf dem Zaun an der Straße',
+      lat: 51.849537375834686,
+      lng: 6.878952533846294
+    },
+    {
+      id: 'asdasd',
+      name: '1. DC Werne',
+      description: 'In dem Parkhaus',
+      lat: 51.663760133444754,
+      lng: 7.637067271481248
     }
   ]
   get markers(): Marker[] {
