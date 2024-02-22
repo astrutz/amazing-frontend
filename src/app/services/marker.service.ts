@@ -345,6 +345,13 @@ export class MarkerService {
       description: 'In dem Parkhaus',
       lat: 51.663760133444754,
       lng: 7.637067271481248
+    },
+    {
+      id: 'asdasd',
+      name: 'Heidelberg Hauptbahnhof',
+      description: 'An den Fahrradständern',
+      lat: 49.404543661682595,
+      lng: 8.67512632845155
     }
   ]
   get markers(): Marker[] {
