@@ -352,6 +352,27 @@ export class MarkerService {
       description: 'An den Fahrradständern',
       lat: 49.404543661682595,
       lng: 8.67512632845155
+    },
+    {
+      id: 'asdasd',
+      name: 'Duisburg Regattabahn',
+      description: 'Auf der Laterne an der Tribüne',
+      lat: 51.40574351491139,
+      lng: 6.788900762502939
+    },
+    {
+      id: 'asdasd',
+      name: 'SC Unterbach',
+      description: 'In der Schiedsrichterkabine',
+      lat: 51.19922357162843,
+      lng: 6.9114393524448205
+    },
+    {
+      id: 'asdasd',
+      name: 'Restaurant Cubana',
+      description: 'Am Eingang zur Küche',
+      lat: 50.928966625880875,
+      lng: 6.94107957903879
     }
   ]
   get markers(): Marker[] {
