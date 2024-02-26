@@ -373,6 +373,13 @@ export class MarkerService {
       description: 'Am Eingang zur Küche',
       lat: 50.928966625880875,
       lng: 6.94107957903879
+    },
+	{
+      id: 'asdasd',
+      name: 'Köln Clarenbachkanal',
+      description: 'Rückseite der Bank',
+      lat: 50.935336422632936, 
+      lng: 6.917535737641161
     }
   ]
   get markers(): Marker[] {
