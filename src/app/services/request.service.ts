@@ -7,6 +7,6 @@ import { Marker } from '../types/marker.type';
 })
 export class RequestService {
   async createMarker(markerData: Marker): Promise<void> {
-    await axios.post('todourl', markerData);
+    await axios.post('2.58.113.80:3000/markers', markerData);
   }
 }
