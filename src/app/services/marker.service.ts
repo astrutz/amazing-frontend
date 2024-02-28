@@ -374,7 +374,64 @@ export class MarkerService {
       lat: 50.935336422632936,
       lng: 6.917535737641161,
     },
+    {
+      id: 'asdasd',
+      name: 'Heimweg von Monas BFF zu Mona 1',
+      description: 'Auf dem Pfahl eines Schildes',
+      lat: 51.2125854,
+      lng: 6.7828768,
+    },
+    {
+      id: 'asdasd',
+      name: 'Heimweg von Monas BFF zu Mona 2',
+      description: 'An einer Ampel',
+      lat: 51.2138296,
+      lng: 6.7829328,
+    },
+    {
+      id: 'asdasd',
+      name: 'Heimweg von Monas BFF zu Mona 3',
+      description: 'Am Mülleimer an der Ampel',
+      lat: 51.2154055,
+      lng: 6.7829767,
+    },
+    {
+      id: 'asdasd',
+      name: 'Heimweg von Monas BFF zu Mona 4',
+      description: 'An den Papiermülltonnen',
+      lat: 51.21575967132702,
+      lng: 6.783027300400621,
+    },
+    {
+      id: 'asdasd',
+      name: 'Heimweg von Monas BFF zu Mona 5',
+      description: 'Vor dem Polizeipräsidium LOL (das war das illegalste, was ich je gemacht habe)',
+      lat: 51.2173604,
+      lng: 6.7830569,
+    },
+    {
+      id: 'asdasd',
+      name: 'Heimweg von Monas BFF zu Mona 6',
+      description: 'Vor Cindy Nails',
+      lat: 51.2180716,
+      lng: 6.7833773,
+    },
+    {
+      id: 'asdasd',
+      name: 'Heimweg von Monas BFF zu Mona 7',
+      description: 'Auf dem Mülleimer vor Bang Me',
+      lat: 51.2186420,
+      lng: 6.7837508,
+    },
+    {
+      id: 'asdasd',
+      name: 'Mona\'s WG',
+      description: 'Und auch auf ihrem Auto',
+      lat: 51.219536701523054,
+      lng: 6.785412291840453,
+    },
   ];
+
   get markers(): AmazingMarker[] {
     return this._markers;
   }
