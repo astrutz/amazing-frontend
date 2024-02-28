@@ -40,11 +40,18 @@ export class CreateComponent {
     this._router.navigate(['']);
   }
 
-  protected onSubmit() {
+  protected async onSubmit() {
     if(this.markerForm.valid) {
-      this._requestService.createMarker(); // todo
+      try {
+        await this._requestService.createMarker(this.markerForm.getRawValue());
+        // todo: show success message via UI or redirect to home page
+      } catch (err) {
+        console.error('An error occured', err);
+        // todo: show error message via UI
+      }
     } else {
-      console.warn('Invalid Form!')
+      console.log(this.markerForm.getRawValue());
+      console.warn('Invalid Form!');
       // todo: show warning
     }
   }
