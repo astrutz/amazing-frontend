@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal, WritableSignal } from '@angular/core';
 import { LeafletModule } from "@asymmetrik/ngx-leaflet";
 import { icon, latLng, MapOptions, marker, tileLayer } from "leaflet";
 import { CardModule } from 'primeng/card';
-import { MarkerService } from "../../services/marker.service";
 import { Router } from '@angular/router';
+import { Marker } from '../../types/marker.type';
+import { RequestService } from '../../services/request.service';
 
 @Component({
   selector: 'app-home',
@@ -15,9 +16,17 @@ import { Router } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
-  constructor(private _markerService: MarkerService, private _router: Router) {
+export class HomeComponent implements OnInit {
+  constructor(private _requestService: RequestService, private _router: Router) {
   }
+
+  ngOnInit() {
+    this._requestService.getMarkers().then((data) => {
+      this.markers$.set(data);
+    })
+  }
+
+  protected markers$: WritableSignal<Marker[]> = signal([]);
 
   private _options: MapOptions = {
     layers: [
@@ -34,7 +43,7 @@ export class HomeComponent {
   }
 
   get layers() {
-    return this._markerService.markers.map((markerElement) => {
+    return this.markers$().map((markerElement) => {
       const mapMarker = marker([markerElement.lat, markerElement.lng], {
         title: markerElement.name,
         icon: icon({ iconUrl: '/assets/marker-icon.svg', iconSize: [80, 64] })

@@ -6,7 +6,11 @@ import { Marker } from '../types/marker.type';
   providedIn: 'root'
 })
 export class RequestService {
+  async getMarkers(): Promise<Marker[]> {
+    return (await axios.get<Marker[]>('/api/markers')).data;
+  }
+
   async createMarker(markerData: Marker): Promise<void> {
-    await axios.post('2.58.113.80:3000/markers', markerData);
+    await axios.post('/api/markers', markerData);
   }
 }
