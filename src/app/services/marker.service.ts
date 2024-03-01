@@ -430,6 +430,20 @@ export class MarkerService {
       lat: 51.219536701523054,
       lng: 6.785412291840453,
     },
+    {
+      id: 'asdasd',
+      name: 'Oststraße Ausgang',
+      description: 'Auf der linken Seite am Schild',
+      lat: 51.22273470100844,
+      lng: 6.786382111242809,
+    },
+    {
+      id: 'asdasd',
+      name: 'Keine Ahnung mehr, weil Mona besoffen war',
+      description: '',
+      lat: 51.22223112513329,
+      lng: 6.785876510673571,
+    },
   ];
 
   get markers(): AmazingMarker[] {
