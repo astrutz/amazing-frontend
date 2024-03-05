@@ -444,6 +444,69 @@ export class MarkerService {
       lat: 51.22223112513329,
       lng: 6.785876510673571,
     },
+    {
+      id: 'asdasd',
+      name: 'Flughafen Frankfurt-Hahn',
+      description: 'Wartehalle',
+      lat: 49.9398181,
+      lng: 7.2663322,
+    },
+    {
+      id: 'asdasd',
+      name: 'Pizzeria Regina',
+      description: 'Auf dem Schaufenster',
+      lat: 51.185592,
+      lng: 6.820272,
+    },
+    {
+      id: 'asdasd',
+      name: 'SC Düsseldorf West',
+      description: 'In der Schiedsrichterkabine',
+      lat: 51.236731,
+      lng: 6.749969,
+    },
+    {
+      id: 'asdasd',
+      name: 'SV Alemannia Kamp',
+      description: 'An der Laterne am Eingang',
+      lat: 51.501123,
+      lng: 6.514050,
+    },
+    {
+      id: 'asdasd',
+      name: 'Düren Bahnhof',
+      description: 'Treppe zu Gleis 4',
+      lat: 50.809627,
+      lng: 6.482491,
+    },
+    {
+      id: 'asdasd',
+      name: 'Düren Bahnhof',
+      description: 'Treppe zu Gleis 4',
+      lat: 50.809627,
+      lng: 6.482491,
+    },
+    {
+      id: 'asdasd',
+      name: 'Kreuzau-Eifelstraße Bahnhof',
+      description: 'Mülleimer am Bahnübergang',
+      lat: 50.7427070,
+      lng: 6.4920442,
+    },
+    {
+      id: 'asdasd',
+      name: 'Düsseldorf Südpark',
+      description: 'Bank am See',
+      lat: 51.19474274300728,
+      lng: 6.807437178272812,
+    },
+    {
+      id: 'asdasd',
+      name: 'Düsseldorf Heidelberger Straße',
+      description: 'An der Ampel',
+      lat: 51.19700480882391,
+      lng: 6.848030225075872,
+    }
   ];
 
   get markers(): AmazingMarker[] {
