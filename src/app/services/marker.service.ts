@@ -506,6 +506,13 @@ export class MarkerService {
       description: 'An der Ampel',
       lat: 51.19700480882391,
       lng: 6.848030225075872,
+    },
+    {
+      id: 'asdasd',
+      name: 'Capaci Via Lipari',
+      description: 'An der Kreuzung vor der Ferienwohnung',
+      lat: 38.1728673,
+      lng: 13.2313277,
     }
   ];
 
