@@ -513,9 +513,15 @@ export class MarkerService {
       description: 'An der Kreuzung vor der Ferienwohnung',
       lat: 38.1728673,
       lng: 13.2313277,
+    },
+    {
+      id: 'asdasd',
+      name: 'Parcheggio Auto Etna',
+      description: 'Laterne am Parkplatz',
+      lat: 37.6986734,
+      lng: 15.0049840,
     }
   ];
-
   get markers(): AmazingMarker[] {
     return this._markers;
   }
