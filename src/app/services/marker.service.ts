@@ -520,6 +520,20 @@ export class MarkerService {
       description: 'Laterne am Parkplatz',
       lat: 37.6986734,
       lng: 15.0049840,
+    },
+    {
+      id: 'asdasd',
+      name: 'Belvedere Scala dei Turchi',
+      description: 'Auf dem Holzzaun',
+      lat: 37.2896520,
+      lng: 13.5828355,
+    },
+    {
+      id: 'asdasd',
+      name: 'Aeroporto di Catania-Fontanarossa',
+      description: 'Auf einer Laterne vorm Eingang',
+      lat: 37.4705283,
+      lng: 15.0683817,
     }
   ];
   get markers(): AmazingMarker[] {
