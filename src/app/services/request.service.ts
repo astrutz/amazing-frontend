@@ -6,7 +6,7 @@ import { Marker } from '../types/marker.type';
   providedIn: 'root'
 })
 export class RequestService {
-  private _url = isDevMode() ? '/api/markers' : 'https://concerned-fish-gabardine.cyclic.app/';
+  private _url = isDevMode() ? '/api/markers' : 'https://concerned-fish-gabardine.cyclic.app/markers';
 
   async getMarkers(): Promise<Marker[]> {
     return (await axios.get<Marker[]>(this._url)).data;
