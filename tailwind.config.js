@@ -6,10 +6,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "surface-50": "var(--surface-50)",
+        'amazing-bordeaux': '#5F2234'
       },
     },
   },
   plugins: [],
 }
-
