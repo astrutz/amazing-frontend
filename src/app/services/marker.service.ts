@@ -523,10 +523,24 @@ export class MarkerService {
     },
     {
       id: 'asdasd',
-      name: 'Belvedere Scala dei Turchi',
-      description: 'Auf dem Holzzaun',
+      name: 'Arco romano',
+      description: 'An einer Laterne',
+      lat: 37.8592511,
+      lng: 15.2778518,
+    },
+    {
+      id: 'asdasd',
+      name: 'Giardino della Kolymbethra\n',
+      description: 'An einer Laterne',
       lat: 37.2896520,
       lng: 13.5828355,
+    },
+    {
+      id: 'asdasd',
+      name: 'Belvedere Scala dei Turchi',
+      description: 'Auf dem Holzzaun',
+      lat: 37.29342186413656,
+      lng: 13.470109671163943,
     },
     {
       id: 'asdasd',
