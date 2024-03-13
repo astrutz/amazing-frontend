@@ -27,7 +27,7 @@ import { RequestService } from '../../services/request.service';
 })
 export class CreateComponent {
   markerForm: FormGroup = new FormGroup({
-    title: new FormControl(null, [Validators.required]),
+    name: new FormControl(null, [Validators.required]),
     description: new FormControl(null, [Validators.required]),
     lat: new FormControl(null, [Validators.required]),
     lng: new FormControl(null, [Validators.required]),
@@ -44,6 +44,7 @@ export class CreateComponent {
     if(this.markerForm.valid) {
       try {
         await this._requestService.createMarker(this.markerForm.getRawValue());
+        console.log('Marker was updated');
         // todo: show success message via UI or redirect to home page
       } catch (err) {
         console.error('An error occured', err);

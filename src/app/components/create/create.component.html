@@ -3,7 +3,7 @@
     <form [formGroup]="markerForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-12">
       <div class="flex flex-col gap-2">
         <label for="title">Titel</label>
-        <input pInputText id="title" aria-describedby="title-help" formControlName="title" />
+        <input pInputText id="title" aria-describedby="title-help" formControlName="name" />
         <small id="title-help">Ort, an dem der Sticker klebt, z.B. "Düsseldorf Hauptbahnhof"</small>
       </div>
       <div class="flex flex-col gap-2">
@@ -26,11 +26,11 @@
           <div class="flex flex-col gap-6 items-center">
           <div class="flex flex-col gap-2">
             <label for="latitude">Längengrad</label>
-            <p-inputNumber id="latitude" [useGrouping]="false" [min]="0" [max]="90" [minFractionDigits]="4" [maxFractionDigits]="6" formControlName="lat" />
+            <p-inputNumber id="latitude" [useGrouping]="false" [min]="0" [max]="90" [minFractionDigits]="4" [maxFractionDigits]="6" locale="en-US" formControlName="lat" />
           </div>
           <div class="flex flex-col gap-2">
             <label for="longitude">Breitengrad</label>
-            <p-inputNumber id="longitude" [useGrouping]="false" [min]="0" [max]="180" [minFractionDigits]="4" [maxFractionDigits]="6" formControlName="lng" />
+            <p-inputNumber id="longitude" [useGrouping]="false" [min]="0" [max]="180" [minFractionDigits]="4" [maxFractionDigits]="6" locale="en-US" styleClass formControlName="lng" />
           </div>
           </div>
         </p-tabPanel>
