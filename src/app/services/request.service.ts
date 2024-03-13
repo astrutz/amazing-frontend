@@ -6,7 +6,7 @@ import { Marker } from '../types/marker.type';
   providedIn: 'root'
 })
 export class RequestService {
-  private _url = isDevMode() ? '/api/markers' : 'http://2.58.113.80:3000/markers';
+  private _url = isDevMode() ? '/api/markers' : '2.58.113.80:3000/markers';
 
   async getMarkers(): Promise<Marker[]> {
     return (await axios.get<Marker[]>(this._url)).data;
