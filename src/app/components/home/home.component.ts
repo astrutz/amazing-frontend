@@ -1,10 +1,11 @@
 import * as L from 'leaflet';
 import { divIcon, icon, latLng, MapOptions, marker, tileLayer } from 'leaflet';
-import { Component } from '@angular/core';
+import { Component, OnInit, signal, WritableSignal } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { CardModule } from 'primeng/card';
-import { Marker, MarkerService } from '../../services/marker.service';
 import { Router } from '@angular/router';
+import { Marker } from '../../types/marker.type';
+import { RequestService } from '../../services/request.service';
 import 'leaflet.markercluster';
 import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
 
@@ -19,9 +20,17 @@ import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluste
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
-  constructor(private _markerService: MarkerService, private _router: Router) {
+export class HomeComponent implements OnInit {
+  constructor(private _requestService: RequestService, private _router: Router) {
   }
+
+  ngOnInit() {
+    this._requestService.getMarkers().then((data) => {
+      this.markers$.set(data);
+    })
+  }
+
+  protected markers$: WritableSignal<Marker[]> = signal([]);
 
   markerClusterData: Marker[] = [];
   markerClusterOptions: L.MarkerClusterGroupOptions = {
@@ -52,8 +61,8 @@ export class HomeComponent {
   }
 
   get layers() {
-    this.markerClusterData = this._markerService.markers;
-    return this._markerService.markers.map((markerElement) => {
+    this.markerClusterData = this.markers$();
+    return this.markers$().map((markerElement) => {
       const mapMarker = marker([markerElement.lat, markerElement.lng], {
         title: markerElement.name,
         icon: icon({ iconUrl: '/assets/marker-icon.svg', iconSize: [80, 64] })

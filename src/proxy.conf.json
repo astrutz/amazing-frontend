@@ -1,0 +1,9 @@
+{
+  "/api": {
+    "target": "https://concerned-fish-gabardine.cyclic.app",
+    "secure": false,
+    "pathRewrite": {
+      "^/api": ""
+    }
+  }
+}

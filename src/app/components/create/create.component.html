@@ -1,6 +1,6 @@
 <main class="h-full relative">
   <p-card header="Neuer Sticker" subheader="Was ist ein Sticker wert, wenn er nicht auf der Karte auftaucht?">
-    <form class="flex flex-col gap-12">
+    <form [formGroup]="markerForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-12">
       <div class="flex flex-col gap-2">
         <label for="title">Titel</label>
         <input pInputText id="title" aria-describedby="title-help" formControlName="title" />
@@ -26,16 +26,16 @@
           <div class="flex flex-col gap-6 items-center">
           <div class="flex flex-col gap-2">
             <label for="latitude">Längengrad</label>
-            <p-inputNumber id="latitude" [useGrouping]="false" [min]="0" [max]="90" [minFractionDigits]="4" [maxFractionDigits]="6" formControlName="latitude" />
+            <p-inputNumber id="latitude" [useGrouping]="false" [min]="0" [max]="90" [minFractionDigits]="4" [maxFractionDigits]="6" formControlName="lat" />
           </div>
           <div class="flex flex-col gap-2">
             <label for="longitude">Breitengrad</label>
-            <p-inputNumber id="longitude" [useGrouping]="false" [min]="0" [max]="180" [minFractionDigits]="4" [maxFractionDigits]="6" formControlName="longitude" />
+            <p-inputNumber id="longitude" [useGrouping]="false" [min]="0" [max]="180" [minFractionDigits]="4" [maxFractionDigits]="6" formControlName="lng" />
           </div>
           </div>
         </p-tabPanel>
       </p-tabView>
-      <p-button class="flex justify-center text-green-500" label="Speichern"></p-button>
+      <p-button type="submit" class="flex justify-center text-green-500" label="Speichern"></p-button>
     </form>
     <i class="absolute top-4 right-4 cursor-pointer pi pi-times" (click)="navigateBack()"></i>
   </p-card>
