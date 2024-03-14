@@ -9,6 +9,10 @@ import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RequestService } from '../../services/request.service';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { CommonModule } from '@angular/common';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-create',
@@ -22,10 +26,16 @@ import { RequestService } from '../../services/request.service';
     InputNumberModule,
     ButtonModule,
     ReactiveFormsModule,
+    FileUploadModule,
+    ProgressSpinnerModule,
+    CommonModule,
+    TagModule,
   ],
   templateUrl: './create.component.html',
 })
 export class CreateComponent {
+  uploadState : 'waiting' | 'uploading' | 'failed' | 'succeded' = 'waiting';
+
   markerForm: FormGroup = new FormGroup({
     name: new FormControl(null, [Validators.required]),
     description: new FormControl(null, [Validators.required]),
@@ -41,7 +51,7 @@ export class CreateComponent {
   }
 
   protected async onSubmit() {
-    if(this.markerForm.valid) {
+    if (this.markerForm.valid && this.uploadState !== ('uploading' || 'failed')) {
       try {
         await this._requestService.createMarker(this.markerForm.getRawValue());
         console.log('Marker was updated');
@@ -54,6 +64,19 @@ export class CreateComponent {
       console.log(this.markerForm.getRawValue());
       console.warn('Invalid Form!');
       // todo: show warning
+    }
+  }
+
+  protected async handleFileInput(event: Event) {
+    const file = (event.target as HTMLInputElement)?.files?.item(0);
+    if (file) {
+      this.uploadState = 'uploading';
+      try {
+        await this._requestService.uploadPicture(file);
+        this.uploadState = 'succeded';
+      } catch (err) {
+        this.uploadState = 'failed';
+      }
     }
   }
 }
