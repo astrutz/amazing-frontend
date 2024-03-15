@@ -1,5 +1,5 @@
 import * as L from 'leaflet';
-import { divIcon, icon, latLng, MapOptions, marker, tileLayer } from 'leaflet';
+import { divIcon, icon, MapOptions, marker, tileLayer } from 'leaflet';
 import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { CardModule } from 'primeng/card';
@@ -56,7 +56,7 @@ export class HomeComponent implements OnInit {
       })
     ],
     zoom: 19,
-    center: latLng(51.219570, 6.814330)
+    center: this.mapCenter
   };
 
   protected isUpdatingPosition = false
@@ -96,5 +96,12 @@ export class HomeComponent implements OnInit {
       .finally(() => {
         this.isUpdatingPosition = false;
       })
+  }
+
+  protected changeCurrentPosition(mapCenter: L.LatLng) {
+    this._currentLocation.setCurrentLocation({
+      latitude: mapCenter.lat,
+      longitude: mapCenter.lng
+    })
   }
 }

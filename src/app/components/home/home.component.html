@@ -4,6 +4,7 @@
     leaflet
     [leafletOptions]="options"
     [leafletCenter]="mapCenter"
+    (leafletCenterChange)="changeCurrentPosition($event)"
     [leafletMarkerCluster]="layers"
     [leafletMarkerClusterOptions]="markerClusterOptions"></div>
 
