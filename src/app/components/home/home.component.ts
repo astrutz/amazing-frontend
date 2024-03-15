@@ -1,42 +1,26 @@
-import * as L from 'leaflet';
-import { divIcon, icon, latLng, MapOptions, marker, tileLayer } from 'leaflet';
-import { Component } from '@angular/core';
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { Component, inject } from '@angular/core';
+import { LeafletModule } from "@asymmetrik/ngx-leaflet";
+import { icon, LatLng, MapOptions, marker, tileLayer } from "leaflet";
 import { CardModule } from 'primeng/card';
-import { Marker, MarkerService } from '../../services/marker.service';
 import { Router } from '@angular/router';
-import 'leaflet.markercluster';
-import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
+
+import { CurrentLocationService } from '../../services/location.service';
+import { MarkerService } from "../../services/marker.service";
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     LeafletModule,
-    LeafletMarkerClusterModule,
     CardModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  constructor(private _markerService: MarkerService, private _router: Router) {
-  }
-
-  markerClusterData: Marker[] = [];
-  markerClusterOptions: L.MarkerClusterGroupOptions = {
-    showCoverageOnHover: false,
-    iconCreateFunction: function(cluster) {
-      const count = cluster.getChildCount();
-      return divIcon({
-        iconUrl: '/assets/marker-icon.svg',
-        iconSize: [96, 90],
-        html: `<img src="/assets/marker-icon.svg"/> <span class="text-xl absolute bottom-1 right-2">${count}</span>`,
-        className: 'bg-red-600 p-4 rounded-2xl relative'
-      });
-    }
-  };
-
+  private _currentLocation = inject(CurrentLocationService);
+  private _markerService = inject(MarkerService);
+  private _router = inject(Router);
   private _options: MapOptions = {
     layers: [
       tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -44,15 +28,23 @@ export class HomeComponent {
       })
     ],
     zoom: 19,
-    center: latLng(51.219570, 6.814330)
+    center: this.mapCenter
   };
+  protected isUpdatingPosition = false
+
+  /** Provides the currentPosition to be used as centre of the map. */
+  protected get mapCenter(): LatLng {
+    return new LatLng(
+      this._currentLocation.lastPosition.coords.latitude,
+      this._currentLocation.lastPosition.coords.longitude
+    )
+  }
 
   get options(): MapOptions {
     return this._options;
   }
 
   get layers() {
-    this.markerClusterData = this._markerService.markers;
     return this._markerService.markers.map((markerElement) => {
       const mapMarker = marker([markerElement.lat, markerElement.lng], {
         title: markerElement.name,
@@ -65,5 +57,14 @@ export class HomeComponent {
 
   protected navigateToCreate() {
     this._router.navigate(['create']);
+  }
+
+  protected updatePosition() {
+    this.isUpdatingPosition = true
+    this._currentLocation
+      .update()
+      .finally(() => {
+        this.isUpdatingPosition = false;
+      })
   }
 }
