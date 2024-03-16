@@ -1,13 +1,15 @@
 import * as L from 'leaflet';
-import { divIcon, icon, latLng, MapOptions, marker, tileLayer } from 'leaflet';
-import { Component, OnInit, signal, WritableSignal } from '@angular/core';
+import { divIcon, icon, MapOptions, marker, tileLayer } from 'leaflet';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { CardModule } from 'primeng/card';
 import { Router } from '@angular/router';
 import { Marker } from '../../types/marker.type';
-import { RequestService } from '../../services/request.service';
 import 'leaflet.markercluster';
 import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
+
+import { CurrentLocationService } from '../../services/location.service';
+import { RequestService } from '../../services/request.service';
 
 @Component({
   selector: 'app-home',
@@ -18,11 +20,12 @@ import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluste
     CardModule
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
 })
 export class HomeComponent implements OnInit {
-  constructor(private _requestService: RequestService, private _router: Router) {
-  }
+  private _currentLocation = inject(CurrentLocationService);
+  private _requestService = inject(RequestService);
+  private _router = inject(Router);
 
   ngOnInit() {
     this._requestService.getMarkers().then((data) => {
@@ -35,7 +38,7 @@ export class HomeComponent implements OnInit {
   markerClusterData: Marker[] = [];
   markerClusterOptions: L.MarkerClusterGroupOptions = {
     showCoverageOnHover: false,
-    iconCreateFunction: function(cluster) {
+    iconCreateFunction: function (cluster) {
       const count = cluster.getChildCount();
       return divIcon({
         iconUrl: '/assets/marker-icon.svg',
@@ -53,8 +56,18 @@ export class HomeComponent implements OnInit {
       })
     ],
     zoom: 19,
-    center: latLng(51.219570, 6.814330)
+    center: this.mapCenter
   };
+
+  protected isUpdatingPosition = false
+
+  /** Provides the currentPosition to be used as centre of the map. */
+  protected get mapCenter(): L.LatLng {
+    return new L.LatLng(
+      this._currentLocation.lastPosition.coords.latitude,
+      this._currentLocation.lastPosition.coords.longitude
+    )
+  }
 
   get options(): MapOptions {
     return this._options;
@@ -74,5 +87,21 @@ export class HomeComponent implements OnInit {
 
   protected navigateToCreate() {
     this._router.navigate(['create']);
+  }
+
+  protected updatePosition() {
+    this.isUpdatingPosition = true
+    this._currentLocation
+      .update()
+      .finally(() => {
+        this.isUpdatingPosition = false;
+      })
+  }
+
+  protected changeCurrentPosition(mapCenter: L.LatLng) {
+    this._currentLocation.setCurrentLocation({
+      latitude: mapCenter.lat,
+      longitude: mapCenter.lng
+    })
   }
 }
