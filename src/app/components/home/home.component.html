@@ -1,19 +1,26 @@
 <main class="main">
-  <div class="map"
-       leaflet
-       [leafletOptions]="options"
-       [leafletMarkerCluster]="layers"
-       [leafletMarkerClusterOptions]="markerClusterOptions">
-  </div>
+  <div
+    class="map"
+    leaflet
+    [leafletOptions]="options"
+    [leafletCenter]="mapCenter"
+    (leafletCenterChange)="changeCurrentPosition($event)"
+    [leafletMarkerCluster]="layers"
+    [leafletMarkerClusterOptions]="markerClusterOptions"></div>
 
   <div class="fixed z-[999] bg-amazing-bordeaux rounded-2xl py-6 px-8 mr-16 top-4 left-16 max-md:bottom-4 max-md:top-auto">
     <h2 class="text-3xl font-bold pb-1">Wo ist mein Amazing Artur?</h2>
     <p class="opacity-60 pb-5 italic">Silence be the last you hear</p>
-    <p>
-      Finde Amazing Artur Sticker!
-    </p>
+    <p>Finde Amazing Artur Sticker!</p>
   </div>
   <div class="fixed z-[999] p-2 rounded max-sm:max-10 top-4 end-4 bg-amazing-bordeaux">
     <i class="pi pi-plus cursor-pointer" (click)="navigateToCreate()"></i>
   </div>
+
+  <button
+    type="button"
+    class="fixed z-[999] p-2 rounded max-sm:max-10 bottom-4 end-4 bg-surface-50"
+    (click)="updatePosition()">
+    {{ isUpdatingPosition ? 'Finding …' : 'Where am I?' }}
+  </button>
 </main>
