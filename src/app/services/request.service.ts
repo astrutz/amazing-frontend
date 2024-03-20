@@ -16,9 +16,10 @@ export class RequestService {
     await axios.post(`${this._baseUrl}/markers`, markerData);
   }
 
-  async uploadPicture(picture: File): Promise<void> {
+  async uploadPicture(picture: File): Promise<string> {
     const formData: FormData = new FormData();
     formData.append('file', picture, picture.name);
-    await axios.post(`${this._baseUrl}/picture`, formData);
+    const imageID = await axios.post(`${this._baseUrl}/picture`, formData);
+    return imageID.data.toString();
   }
 }

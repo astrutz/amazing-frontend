@@ -41,6 +41,7 @@ export class CreateComponent {
     description: new FormControl(null, [Validators.required]),
     lat: new FormControl(null, [Validators.required]),
     lng: new FormControl(null, [Validators.required]),
+    pictureUrl: new FormControl(null, []),
   });
 
   constructor(private _router: Router, private _requestService: RequestService) {
@@ -72,9 +73,11 @@ export class CreateComponent {
     if (file) {
       this.uploadState = 'uploading';
       try {
-        await this._requestService.uploadPicture(file);
+        const imageID = await this._requestService.uploadPicture(file);
+        this.markerForm.patchValue({ pictureUrl: `https://amazing-artur-images.s3.eu-central-1.amazonaws.com/${imageID}` });
         this.uploadState = 'succeded';
       } catch (err) {
+        console.log(err);
         this.uploadState = 'failed';
       }
     }
