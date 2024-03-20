@@ -1,10 +1,10 @@
 import * as L from 'leaflet';
-import { divIcon, icon, MapOptions, marker, tileLayer } from 'leaflet';
+import { divIcon, icon, MapOptions, Marker, marker, tileLayer } from 'leaflet';
 import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { CardModule } from 'primeng/card';
 import { Router } from '@angular/router';
-import { Marker } from '../../types/marker.type';
+import { Marker as MarkerType } from '../../types/marker.type';
 import 'leaflet.markercluster';
 import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
 
@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  protected markers$: WritableSignal<Marker[]> = signal([]);
+  protected markers$: WritableSignal<MarkerType[]> = signal([]);
 
   markerClusterData: Marker[] = [];
   markerClusterOptions: L.MarkerClusterGroupOptions = {
@@ -73,8 +73,8 @@ export class HomeComponent implements OnInit {
     return this._options;
   }
 
-  get layers() {
-    this.markerClusterData = this.markers$();
+  get layers(): Marker[] {
+    // this.markerClusterData = this.markers$();
     return this.markers$().map((markerElement) => {
       const mapMarker = marker([markerElement.lat, markerElement.lng], {
         title: markerElement.name,
