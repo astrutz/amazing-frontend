@@ -1,4 +1,4 @@
-import { Injectable, isDevMode } from '@angular/core';
+import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { Marker } from '../types/marker.type';
 
@@ -6,7 +6,7 @@ import { Marker } from '../types/marker.type';
   providedIn: 'root'
 })
 export class RequestService {
-  private _baseUrl = isDevMode() ? '/api' : 'https://concerned-fish-gabardine.cyclic.app';
+  private _baseUrl = 'https://concerned-fish-gabardine.cyclic.app';
 
   async getMarkers(): Promise<Marker[]> {
     return (await axios.get<Marker[]>(`${this._baseUrl}/markers`)).data;
