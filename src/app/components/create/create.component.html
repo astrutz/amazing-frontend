@@ -11,6 +11,17 @@
         <input pInputText id="description" aria-describedby="description-help" formControlName="description" />
         <small id="description-help">Nähere Beschreibung des Ortes, z.B. "Auf der Rolltreppe zu Gleis 6"</small>
       </div>
+      <div class="flex flex-col gap-2">
+        <label for="picture">Bild</label>
+        <input type="file"
+               id="picture"
+               (change)="handleFileInput($event)">
+        <small id="picture-help">Erlaubte Formate: .jpg, .png, .jpeg</small>
+        <p-progressSpinner *ngIf="uploadState === 'uploading'" styleClass="w-12 h-12"></p-progressSpinner>
+        <p-tag *ngIf="uploadState === 'succeded'" severity="success" value="Upload erfolgreich"></p-tag>
+        <p-tag *ngIf="uploadState === 'uploading'" severity="warning" value="Upload läuft..."></p-tag>
+        <p-tag *ngIf="uploadState === 'failed'" severity="danger" value="Upload fehlgeschlagen"></p-tag>
+      </div>
       <p-tabView>
         <p-tabPanel header="Adresse" [disabled]="true">
           <p>
@@ -24,18 +35,21 @@
         </p-tabPanel>
         <p-tabPanel header="Längengrade" [selected]="true">
           <div class="flex flex-col gap-6 items-center">
-          <div class="flex flex-col gap-2">
-            <label for="latitude">Längengrad</label>
-            <p-inputNumber id="latitude" [useGrouping]="false" [min]="0" [max]="90" [minFractionDigits]="4" [maxFractionDigits]="6" locale="en-US" formControlName="lat" />
-          </div>
-          <div class="flex flex-col gap-2">
-            <label for="longitude">Breitengrad</label>
-            <p-inputNumber id="longitude" [useGrouping]="false" [min]="0" [max]="180" [minFractionDigits]="4" [maxFractionDigits]="6" locale="en-US" styleClass formControlName="lng" />
-          </div>
+            <div class="flex flex-col gap-2">
+              <label for="latitude">Längengrad</label>
+              <p-inputNumber id="latitude" [useGrouping]="false" [min]="0" [max]="90" [minFractionDigits]="4"
+                             [maxFractionDigits]="6" locale="en-US" formControlName="lat" />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label for="longitude">Breitengrad</label>
+              <p-inputNumber id="longitude" [useGrouping]="false" [min]="0" [max]="180" [minFractionDigits]="4"
+                             [maxFractionDigits]="6" locale="en-US" styleClass formControlName="lng" />
+            </div>
           </div>
         </p-tabPanel>
       </p-tabView>
-      <p-button type="submit" class="flex justify-center text-green-500" label="Speichern"></p-button>
+      <p-button [disabled]="!(markerForm.valid && uploadState !== ('uploading' || 'failed'))" type="submit"
+                class="flex justify-center text-green-500" label="Speichern"></p-button>
     </form>
     <i class="absolute top-4 right-4 cursor-pointer pi pi-times" (click)="navigateBack()"></i>
   </p-card>
