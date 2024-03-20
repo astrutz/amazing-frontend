@@ -5,7 +5,8 @@
     [leafletOptions]="options"
     [leafletCenter]="mapCenter"
     (leafletCenterChange)="changeCurrentPosition($event)"
-    [leafletLayers]="layers"></div>
+    [leafletMarkerCluster]="layers"
+    [leafletMarkerClusterOptions]="markerClusterOptions"></div>
 
   <p-card
     header="Wo ist mein Amazing Artur?"
