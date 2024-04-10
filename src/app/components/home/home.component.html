@@ -14,7 +14,7 @@
   </div>
   <button
     type="button"
-    class="fixed z-[999] py-1 px-2.5 rounded-xl max-sm:max-10 top-4 end-4 bg-amazing-bordeaux cursor-pointer text-3xl"
+    class="fixed z-[999] py-1 px-3 border-0 max-sm:max-10 top-4 end-4 bg-amazing-bordeaux text-3xl"
     (click)="navigateToCreate()"
   >
     +
@@ -22,7 +22,7 @@
 
   <button
     type="button"
-    class="fixed z-[999] p-2 rounded max-sm:max-10 bottom-4 end-4 bg-surface-50"
+    class="fixed z-[999] px-3 py-2 border-0 max-sm:max-10 bottom-4 end-4 bg-amazing-bordeaux"
     (click)="updatePosition()">
     {{ isUpdatingPosition ? 'Finding …' : 'Where am I?' }}
   </button>
