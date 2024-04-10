@@ -4,5 +4,6 @@ export type Marker = {
   name: string,
   description: string,
   lat: number,
-  lng: number
+  lng: number,
+  pictureUrl: string,
 }
