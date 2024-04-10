@@ -1,9 +1,0 @@
-@import "primeng/resources/themes/lara-dark-green/theme.css";
-@import "primeng/resources/primeng.css";
-@import "primeicons/primeicons.css";
-@import "leaflet.markercluster/dist/MarkerCluster.Default.css";
-@import "leaflet.markercluster/dist/MarkerCluster.css";
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
