@@ -34,7 +34,7 @@ import { TagModule } from 'primeng/tag';
   templateUrl: './create.component.html',
 })
 export class CreateComponent {
-  uploadState : 'waiting' | 'uploading' | 'failed' | 'succeded' = 'waiting';
+  uploadState : 'waiting' | 'uploading' | 'failed' | 'succeeded' = 'waiting';
 
   markerForm: FormGroup = new FormGroup({
     name: new FormControl(null, [Validators.required]),
@@ -43,6 +43,18 @@ export class CreateComponent {
     lng: new FormControl(null, [Validators.required]),
     pictureUrl: new FormControl(null, []),
   });
+
+  tabsList: { name: string, disabled?: boolean }[] = [{
+    name: 'Adresse',
+    disabled: true,
+  },{
+    name: 'Standort',
+    disabled: true,
+  },{
+    name: 'Längengrade',
+  }];
+
+  currentTab: number | null = 3;
 
   constructor(private _router: Router, private _requestService: RequestService) {
   }
@@ -75,11 +87,15 @@ export class CreateComponent {
       try {
         const imageID = await this._requestService.uploadPicture(file);
         this.markerForm.patchValue({ pictureUrl: `https://amazing-artur-images.s3.eu-central-1.amazonaws.com/${imageID}` });
-        this.uploadState = 'succeded';
+        this.uploadState = 'succeeded';
       } catch (err) {
         console.log(err);
         this.uploadState = 'failed';
       }
     }
+  }
+
+  protected selectTab(index: number) {
+    this.currentTab = index;
   }
 }
