@@ -4,6 +4,12 @@ module.exports = {
     "./src/**/*.{html,ts}",
   ],
   theme: {
+    fontFamily: {
+      sans: [
+        'Inter var',
+        'sans-serif'
+      ]
+    },
     extend: {
       colors: {
         'amazing-bordeaux': '#5F2234'
