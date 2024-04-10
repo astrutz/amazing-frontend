@@ -1,0 +1,22 @@
+@import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+@import "leaflet.markercluster/dist/MarkerCluster.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply text-white;
+}
+
+input {
+  @apply rounded-xl p-1 text-black;
+}
+
+input:focus {
+  @apply shadow-inputs transition-all duration-200;
+}
+
+input:focus-visible {
+  @apply outline-none;
+}
