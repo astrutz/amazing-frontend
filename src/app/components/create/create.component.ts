@@ -7,12 +7,21 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { RequestService } from '../../services/request.service';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CommonModule } from '@angular/common';
 import { TagModule } from 'primeng/tag';
+import {
+  ProgressSpinnerComponent
+} from '../shared/progress-spinner/progress-spinner.component';
+import {UploadStates} from "./create.type";
 
 @Component({
   selector: 'app-create',
@@ -30,11 +39,13 @@ import { TagModule } from 'primeng/tag';
     ProgressSpinnerModule,
     CommonModule,
     TagModule,
+    ProgressSpinnerComponent,
   ],
   templateUrl: './create.component.html',
 })
 export class CreateComponent {
-  uploadState : 'waiting' | 'uploading' | 'failed' | 'succeeded' = 'waiting';
+  uploadState : UploadStates = 'waiting';
+  imageUploadState: UploadStates = 'waiting';
 
   markerForm: FormGroup = new FormGroup({
     name: new FormControl(null, [Validators.required]),
@@ -56,6 +67,8 @@ export class CreateComponent {
 
   currentTab: number | null = 3;
 
+  fileName: string = '';
+
   constructor(private _router: Router, private _requestService: RequestService) {
   }
 
@@ -65,32 +78,44 @@ export class CreateComponent {
 
   protected async onSubmit() {
     if (this.markerForm.valid && this.uploadState !== ('uploading' || 'failed')) {
+      this.uploadState = 'uploading';
+
       try {
         await this._requestService.createMarker(this.markerForm.getRawValue());
         console.log('Marker was updated');
-        // todo: show success message via UI or redirect to home page
+        this.uploadState = 'succeeded';
       } catch (err) {
-        console.error('An error occured', err);
-        // todo: show error message via UI
+        console.error('An error occurred', err);
+        this.uploadState = 'failed';
+        // TODO Show error message
+        // {
+        //     "message": [
+        //         "lat must be a latitude string or number",
+        //         "lat must be a number conforming to the specified constraints",
+        //         "lng must be a number conforming to the specified constraints"
+        //     ],
+        //     "error": "Bad Request",
+        //     "statusCode": 400
+        // }
       }
     } else {
       console.log(this.markerForm.getRawValue());
       console.warn('Invalid Form!');
-      // todo: show warning
     }
   }
 
   protected async handleFileInput(event: Event) {
     const file = (event.target as HTMLInputElement)?.files?.item(0);
     if (file) {
-      this.uploadState = 'uploading';
+      this.imageUploadState = 'uploading';
       try {
         const imageID = await this._requestService.uploadPicture(file);
         this.markerForm.patchValue({ pictureUrl: `https://amazing-artur-images.s3.eu-central-1.amazonaws.com/${imageID}` });
-        this.uploadState = 'succeeded';
+        this.fileName = file.name;
+        this.imageUploadState = 'succeeded';
       } catch (err) {
         console.log(err);
-        this.uploadState = 'failed';
+        this.imageUploadState = 'failed';
       }
     }
   }
