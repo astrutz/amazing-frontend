@@ -12,8 +12,12 @@ module.exports = {
     },
     extend: {
       colors: {
-        'amazing-bordeaux': '#5F2234'
+        'amazing-bordeaux': '#5F2234',
+        'amazing-bordeaux-light': '#aa6b7e'
       },
+      boxShadow: {
+        inputs: '0 0 0 .2rem #aa6b7e'
+      }
     },
   },
   plugins: [],
