@@ -62,7 +62,7 @@ export class CreateComponent {
     name: 'Standort',
     disabled: true,
   },{
-    name: 'Längengrade',
+    name: 'Koordinaten (manuell)',
   }];
 
   currentTab: number | null = 3;
