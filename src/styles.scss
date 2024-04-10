@@ -20,3 +20,15 @@ input:focus {
 input:focus-visible {
   @apply outline-none;
 }
+
+button {
+  @apply border rounded-2xl py-1.5 px-2;
+}
+
+button:disabled {
+  @apply border-gray-500 text-gray-500;
+}
+
+label {
+  @apply text-xl;
+}
