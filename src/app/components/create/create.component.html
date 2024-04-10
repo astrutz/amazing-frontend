@@ -18,20 +18,29 @@
         <small id="title-help">Ort, an dem der Sticker klebt, z.B. "Düsseldorf Hauptbahnhof"</small>
       </div>
       <div class="flex flex-col gap-2 mb-12">
-        <label for="description">Beschreibung</label>
+        <label for="description">Beschreibung (ptional)</label>
         <input id="description" aria-describedby="description-help" formControlName="description" />
         <small id="description-help">Nähere Beschreibung des Ortes, z.B. "Auf der Rolltreppe zu Gleis 6"</small>
       </div>
       <div class="flex flex-col gap-2 mb-12">
-        <label for="picture">Bild</label>
-        <input type="file"
-               id="picture"
-               (change)="handleFileInput($event)">
-        <small id="picture-help">Erlaubte Formate: .jpg, .png, .jpeg</small>
-        <p-progressSpinner *ngIf="uploadState === 'uploading'" styleClass="w-12 h-12"></p-progressSpinner>
-        <p-tag *ngIf="uploadState === 'succeeded'" severity="success" value="Upload erfolgreich"></p-tag>
-        <p-tag *ngIf="uploadState === 'uploading'" severity="warning" value="Upload läuft..."></p-tag>
-        <p-tag *ngIf="uploadState === 'failed'" severity="danger" value="Upload fehlgeschlagen"></p-tag>
+        <!-- We need to fake the label because we cannot change the text "Choose file from the input" -->
+        <label>Bild (optional)</label>
+        <label class="border rounded-2xl py-1.5 px-2 text-base text-center" for="upload">Datei hochladen</label>
+        <input
+          type="file"
+          id="upload"
+          class="hidden"
+          (change)="handleFileInput($event)"
+        />
+        <small class="mb-4">Erlaubte Formate: .jpg, .png, .jpeg</small>
+        <div class="m-auto">
+          <p class="pb-3">
+            @if (imageUploadState === 'succeeded') { Upload erfolgreich }
+            @if (imageUploadState === 'uploading') { Upload läuft... }
+            @if (imageUploadState === 'failed') { Upload fehlgeschlagen }
+          </p>
+          <progress-spinner [show]="imageUploadState === 'uploading'" />
+        </div>
       </div>
       <div class="flex flex-wrap gap-x-6 gap-y-2 mb-8">
         @for (tab of tabsList; track $index) {
