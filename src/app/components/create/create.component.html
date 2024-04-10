@@ -10,18 +10,18 @@
   </div>
   <h1 class="font-bold text-3xl mb-1">Neuer Sticker </h1>
   <p class="mb-8">Was ist ein Sticker wert, wenn er nicht auf der Karte auftaucht?</p>
-  <form [formGroup]="markerForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-12">
-    <div class="flex flex-col gap-2">
+  <form [formGroup]="markerForm" (ngSubmit)="onSubmit()" class="flex flex-col">
+    <div class="flex flex-col gap-2 mb-12">
       <label for="title">Titel</label>
       <input id="title" aria-describedby="title-help" formControlName="name" />
       <small id="title-help">Ort, an dem der Sticker klebt, z.B. "Düsseldorf Hauptbahnhof"</small>
     </div>
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 mb-12">
       <label for="description">Beschreibung</label>
       <input id="description" aria-describedby="description-help" formControlName="description" />
       <small id="description-help">Nähere Beschreibung des Ortes, z.B. "Auf der Rolltreppe zu Gleis 6"</small>
     </div>
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 mb-12">
       <label for="picture">Bild</label>
       <input type="file"
              id="picture"
@@ -32,7 +32,7 @@
       <p-tag *ngIf="uploadState === 'uploading'" severity="warning" value="Upload läuft..."></p-tag>
       <p-tag *ngIf="uploadState === 'failed'" severity="danger" value="Upload fehlgeschlagen"></p-tag>
     </div>
-    <div class="flex gap-x-6">
+    <div class="flex flex-wrap gap-x-6 gap-y-2 mb-8">
       @for (tab of tabsList; track $index) {
         <button
           type="button"
@@ -67,7 +67,7 @@
         </div>
       </div>
     }
-    <p class="text-center text-xl -mb-8">
+    <p class="text-center text-xl mt-8">
       @if (uploadState === 'uploading') {
         Sticker wird hinzugefügt... ⏰
       } @else if (uploadState === 'succeeded') {
@@ -76,7 +76,7 @@
         Es ist ein Fehler aufgetreten 😞
       }
     </p>
-    <div class="m-auto">
+    <div class="m-auto mt-2">
       <button
         type="submit"
         class="text-green-400 border-green-600"
