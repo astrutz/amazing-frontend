@@ -10,7 +10,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'geoStringToNumber'
 })
 class GeoStringToNumberPipe implements PipeTransform {
-  private _matcher = /^([NESW]\s*)?(?:([\d.]+)°\s*)(?:([\d.]+)′\s*)?(?:([\d.]+)″\s*)?([NESW])?$/;
+  private _matcher = /^(?:([NESW])\s*)?(?:([\d.]+)°\s*)(?:([\d.]+)['′]\s*)?(?:([\d.]+)["″]\s*)?([NESW])?$/;
 
   /**
  * lat/lon numbers are negative when they are headed to the
@@ -20,6 +20,10 @@ class GeoStringToNumberPipe implements PipeTransform {
  */
   private _getCardinalPointSign(indicator: string = ""): 1 | -1 {
     return ["S", "W"].includes(indicator) ? -1 : 1;
+  }
+
+  private _returnNumberOrUndefined(num: unknown): number | undefined {
+    return Number.isFinite(num) ? num as number : undefined
   }
 
   public transform(string: string): number | undefined {
@@ -35,7 +39,7 @@ class GeoStringToNumberPipe implements PipeTransform {
       result = direction * (degrees + minutes + seconds);
     }
 
-    return result
+    return this._returnNumberOrUndefined(result)
   }
 }
 
