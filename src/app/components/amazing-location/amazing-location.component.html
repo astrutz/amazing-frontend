@@ -1,0 +1,52 @@
+<div class="sidebar-l sidebar-l-end sidebar-l_space-0 sidebar-l_side-w-min">
+  <div class="amazing-stack">
+    <button
+      type="button"
+      class="bg-slate-200 p-2 rounded text-black uppercase text-sm outline-none whitespace-nowrap focus:font-bold active:text-white focus:tracking-wide is-full"
+      (click)="findMe()"
+      autofocus>
+      {{ findMeLabel }}
+    </button>
+    <button
+      *ngIf="!isManualInput"
+      type="button"
+      (click)="changeManualInput()"
+      class="border-none bg-none italic focus:outline-none focus:underline">
+      I know where I am! Let me show off and enter it manually …
+    </button>
+    <div *ngIf="isManualInput" class="amazing-stack">
+      <label for="multiValue"
+        >Ok then, <em class="">{{ yourLocation }}</em></label
+      >
+      <div class="border rounded switcher-l switcher-l_threshold-xs switcher-l_space-0">
+        <div class="relative focus-within:flex-grow-[2]">
+          <input
+            (input)="checkGeoStringVsMultiValue($event)"
+            [value]="multiValue"
+            id="multiValue"
+            type="text"
+            class="focus:shimmering bg-transparent border-none outline-none is-full plb-2 pli-6" />
+          <span
+            *ngIf="isGeoString"
+            class="uppercase text-xs absolute inset-inline-0 block-start-1 inline-block text-center opacity-75 select-none"
+            style="writing-mode: sideways-lr"
+            >Lat</span
+          >
+        </div>
+        <div
+          *ngIf="isGeoString"
+          class="relative border-bs border-slate-200/50 mbs-[-1px] focus-within:flex-grow-[2]">
+          <input
+            [value]="lonValue"
+            type="text"
+            class="focus:shimmering bg-transparent border-none outline-none is-full plb-2 pli-6" />
+          <span
+            class="uppercase text-xs absolute inset-inline-0 block-start-0 inline-block text-center opacity-75 border-bs pbs-1 select-none mbs-[-1px]"
+            style="writing-mode: sideways-lr"
+            >Lon</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
