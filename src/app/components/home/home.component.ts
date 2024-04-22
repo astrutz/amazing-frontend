@@ -96,7 +96,7 @@ export class HomeComponent {
 
   protected navigateToCreate() {
     this._router.navigate(['/create'], {
-      replaceUrl: false,
+      replaceUrl: true,
     });
   }
 

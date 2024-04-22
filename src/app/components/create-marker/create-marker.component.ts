@@ -67,7 +67,7 @@ export class CreateMarkerComponent {
 
   protected navigateBack() {
     this._router.navigate([''], {
-      replaceUrl: false
+      replaceUrl: true
     });
   }
 
