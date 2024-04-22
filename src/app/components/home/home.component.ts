@@ -1,39 +1,44 @@
+import { NgIf } from '@angular/common';
+import { Router } from '@angular/router';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+
 import * as L from 'leaflet';
 import { divIcon, icon, MapOptions, Marker, marker, tileLayer } from 'leaflet';
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { CardModule } from 'primeng/card';
-import { Router } from '@angular/router';
-import { Marker as MarkerType } from '../../types/marker.type';
-import 'leaflet.markercluster';
 import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
+import 'leaflet.markercluster';
 
-import { CurrentLocationService } from '../../services/location.service';
+import { CardModule } from 'primeng/card';
+
+import { Marker as MarkerType } from '../../types/marker.type';
 import { RequestService } from '../../services/request.service';
+import { CurrentLocationService } from '../../services/location.service';
+import { CreateMarkerComponent } from '../create-marker/create-marker.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
+    CardModule,
+    CreateMarkerComponent,
     LeafletModule,
     LeafletMarkerClusterModule,
-    CardModule
+    NgIf
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   private _currentLocation = inject(CurrentLocationService);
   private _requestService = inject(RequestService);
   private _router = inject(Router);
-
-  ngOnInit() {
-    this._requestService.getMarkers().then((data) => {
-      this.markers$.set(data);
-    })
-  }
-
   protected markers$: WritableSignal<MarkerType[]> = signal([]);
+
+  // ngOnInit() {
+  //   this._requestService.getMarkers().then((data) => {
+  //     this.markers$.set(data);
+  //   })
+  // }
 
   markerClusterData: Marker[] = [];
   markerClusterOptions: L.MarkerClusterGroupOptions = {
@@ -48,6 +53,10 @@ export class HomeComponent implements OnInit {
       });
     }
   };
+
+  protected isCreate() {
+    return /^\/create/.test(this._router.url)
+  }
 
   private _options: MapOptions = {
     layers: [
@@ -86,7 +95,9 @@ export class HomeComponent implements OnInit {
   }
 
   protected navigateToCreate() {
-    this._router.navigate(['create']);
+    this._router.navigate(['/create'], {
+      replaceUrl: false,
+    });
   }
 
   protected updatePosition() {
