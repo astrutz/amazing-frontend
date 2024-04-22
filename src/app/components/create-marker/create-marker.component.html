@@ -1,0 +1,77 @@
+<section
+  header="Add a new sticker"
+  subheader="What good is a sticker if it doesn't appear on the map?">
+  <form [formGroup]="markerForm" (ngSubmit)="onSubmit()" class="pli-6 plb-6">
+    <fieldset class="amazing-stack" [ngClass]="{ '!hidden': currentFieldset != 0 }">
+      <legend class="font-bold text-lg">Where are you?</legend>
+      <amazing-location />
+    </fieldset>
+    <fieldset
+      class="amazing-stack amazing-stack_space-8"
+      [ngClass]="{ '!hidden': currentFieldset != 1 }">
+      <legend class="font-bold text-lg">And where is the sticker?</legend>
+      <div class="amazing-stack amazing-stack_space-2">
+        <label for="title">Titel</label>
+        <input
+          pInputText
+          id="title"
+          aria-describedby="title-help"
+          formControlName="name"
+          class="plb-2 pli-4 border focus:shimmering focus:shadow-none focus:outline-none" />
+        <small id="title-help">Ort, an dem der Sticker klebt, z.B. "Düsseldorf Hauptbahnhof"</small>
+      </div>
+      <div class="amazing-stack amazing-stack_space-2">
+        <label for="description">Beschreibung</label>
+        <input
+          pInputText
+          id="description"
+          aria-describedby="description-help"
+          formControlName="description"
+          class="plb-2 pli-4 border focus:shimmering focus:shadow-none focus:outline-none" />
+        <small id="description-help"
+          >Nähere Beschreibung des Ortes, z.B. "Auf der Rolltreppe zu Gleis 6"</small
+        >
+      </div>
+    </fieldset>
+    <fieldset
+      class="amazing-stack amazing-stack_space-8"
+      [ngClass]="{ '!hidden': currentFieldset != 2 }">
+      <legend class="font-bold text-lg">Sure thing … but can you prove it‽</legend>
+      <picture-upload [isActive]="currentFieldset == 2" />
+    </fieldset>
+    <fieldset class="amazing-stack" [ngClass]="{ '!hidden': currentFieldset != 3 }">
+      <legend class="font-bold text-lg">Now, honestly, …</legend>
+      <label for="intoxination">are you tired and emotional?</label>
+      <input
+        type="range"
+        id="intoxination"
+        name="intoxination"
+        min="0"
+        max="10"
+        value="2"
+        step="2" />
+    </fieldset>
+    <nav class="amazing-cluster">
+      <button
+        (click)="prevFieldset($event)"
+        type="button"
+        class="text-slate-200 block mbs-14 mli-auto pli-4 outline-none focus:bg-green-400 focus:text-black"
+        [ngClass]="{ '!hidden': currentFieldset < 1 }">
+        Prev
+      </button>
+      <button
+        (click)="nextFieldset($event)"
+        type="button"
+        class="text-green-500 block mbs-14 mli-auto pli-4 border border-green-500 rounded outline-none focus:bg-green-400 focus:text-black"
+        [ngClass]="{ '!hidden': currentFieldset > 2 }">
+        Next
+      </button>
+    </nav>
+    <button
+      class="text-green-500 block mbs-14 mli-auto pli-4 border border-green-500 rounded outline-none focus:bg-green-400 focus:text-black"
+      [ngClass]="{ '!hidden': currentFieldset < 3 }">
+      Save
+    </button>
+  </form>
+  <i class="absolute top-4 right-4 cursor-pointer pi pi-times" (click)="navigateBack()"></i>
+</section>
