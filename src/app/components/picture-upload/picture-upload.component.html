@@ -1,0 +1,23 @@
+<div class="amazing-stack">
+  <div class="relative overflow-hidden flex flex-col bs-full">
+    <video
+      #player
+      class="pointer-events-none rounded"
+      poster="/assets/loader.gif"
+      disablepictureinpicture
+      playsinline></video>
+    <canvas #canvas class="absolute inset-0" *ngIf="hasPicture"></canvas>
+    <button
+      class="block absolute is-full inset-0 bg-slate-500/60"
+      *ngIf="canTakePicture"
+      (click)="takePicture($event)">
+      <span class="font-bold">Take picture</span>
+    </button>
+  </div>
+  <span role="separator" class="display-inline mli-auto text-slate-400 text-sm">— OR —</span>
+  <div class="amazing-stack amazing-stack_space-4">
+    <label for="picture">Upload a picture</label>
+    <input type="file" id="picture" (change)="handleFileInput($event)" />
+    <small id="picture-help">Erlaubte Formate: .jpg, .png, .jpeg</small>
+  </div>
+</div>
