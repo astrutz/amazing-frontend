@@ -37,12 +37,12 @@
           <div class="flex flex-col gap-6 items-center">
             <div class="flex flex-col gap-2">
               <label for="latitude">Längengrad</label>
-              <p-inputNumber id="latitude" [useGrouping]="false" [min]="0" [max]="90" [minFractionDigits]="4"
+              <p-inputNumber id="latitude" [useGrouping]="false" [min]="-90" [max]="90" [minFractionDigits]="4"
                              [maxFractionDigits]="6" locale="en-US" formControlName="lat" />
             </div>
             <div class="flex flex-col gap-2">
               <label for="longitude">Breitengrad</label>
-              <p-inputNumber id="longitude" [useGrouping]="false" [min]="0" [max]="180" [minFractionDigits]="4"
+              <p-inputNumber id="longitude" [useGrouping]="false" [min]="-180" [max]="180" [minFractionDigits]="4"
                              [maxFractionDigits]="6" locale="en-US" styleClass formControlName="lng" />
             </div>
           </div>
