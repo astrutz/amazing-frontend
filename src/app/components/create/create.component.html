@@ -12,6 +12,11 @@
         <small id="description-help">Nähere Beschreibung des Ortes, z.B. "Auf der Rolltreppe zu Gleis 6"</small>
       </div>
       <div class="flex flex-col gap-2">
+        <label for="uploader">Name (optional)</label>
+        <input pInputText id="uploader" aria-describedby="uploader-help" formControlName="uploader" />
+        <small id="uploader-help">Person, die den Sticker aufgehangen hat</small>
+      </div>
+      <div class="flex flex-col gap-2">
         <label for="picture">Bild</label>
         <input type="file"
                id="picture"
