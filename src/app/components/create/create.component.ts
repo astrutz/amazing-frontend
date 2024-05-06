@@ -39,6 +39,7 @@ export class CreateComponent {
   markerForm: FormGroup = new FormGroup({
     name: new FormControl(null, [Validators.required]),
     description: new FormControl(null, [Validators.required]),
+    uploader: new FormControl(null, []),
     lat: new FormControl(null, [Validators.required]),
     lng: new FormControl(null, [Validators.required]),
     pictureUrl: new FormControl(null, []),
