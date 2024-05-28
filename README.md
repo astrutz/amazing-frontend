@@ -1,3 +1,6 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/620920dc-6a06-4b1d-8cbe-cd873efd8e9c/deploy-status)](https://app.netlify.com/sites/is-the-amazing-near-me/deploys)
+
+
 # amazing
 is-the-amazing-near-me.info
 
