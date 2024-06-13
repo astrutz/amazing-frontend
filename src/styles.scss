@@ -10,7 +10,7 @@ body {
 }
 
 input {
-  @apply rounded-xl p-1 text-black;
+  @apply rounded-lg p-1 text-black;
 }
 
 input:focus {
@@ -34,7 +34,7 @@ input[type=number] {
 }
 
 button {
-  @apply border rounded-2xl py-1.5 px-2;
+  @apply border rounded-lg py-1.5 px-2;
 }
 
 button:disabled {
