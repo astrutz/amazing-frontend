@@ -13,6 +13,7 @@ module.exports = {
     extend: {
       colors: {
         'amazing-bordeaux': '#5F2234',
+        'amazing-bordeaux-dark': '#210d11',
         'amazing-bordeaux-light': '#aa6b7e'
       },
       boxShadow: {
