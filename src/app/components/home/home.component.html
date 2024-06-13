@@ -7,21 +7,25 @@
     (leafletCenterChange)="changeCurrentPosition($event)"
     [leafletLayers]="layers"></div>
 
-  <p-card
-    header="Wo ist mein Amazing Artur?"
-    subheader="Silence be the last you hear"
-    class="fixed z-[999] max-sm:max-10 bottom-4 start-4 md:top-4 md:start-16">
+  <div class="fixed z-[999] bg-amazing-bordeaux rounded-lg py-6 px-8 mr-16 top-4 left-16 max-md:bottom-4 max-md:top-auto">
+    <h2 class="text-3xl font-bold pb-1">Wo ist mein Amazing Artur?</h2>
+    <p class="opacity-60 pb-5 italic">Silence be the last you hear</p>
     <p>Finde Amazing Artur Sticker!</p>
-  </p-card>
-
-  <div class="fixed z-[999] p-2 rounded max-sm:max-10 top-4 end-4 bg-surface-50">
-    <i class="pi pi-plus cursor-pointer" (click)="navigateToCreate()"></i>
   </div>
-
-  <button
-    type="button"
-    class="fixed z-[999] p-2 rounded max-sm:max-10 bottom-4 end-4 bg-surface-50"
-    (click)="updatePosition()">
-    {{ isUpdatingPosition ? 'Finding …' : 'Where am I?' }}
-  </button>
+  <div class="flex gap-x-3 fixed z-[999] px-3 py-2 border-0 max-sm:max-10 top-4 end-4">
+    <button
+      type="button"
+      class="bg-amazing-bordeaux border-transparent flex items-center"
+      (click)="updatePosition()"
+    >
+      <ng-icon size="32" [name]="isUpdatingPosition ? 'lucideLoader2' : 'lucideMapPin'"></ng-icon>
+    </button>
+    <button
+      type="button"
+      class="bg-amazing-bordeaux border-transparent flex items-center"
+      (click)="navigateToCreate()"
+    >
+      <ng-icon size="32" name="lucidePlus"></ng-icon>
+    </button>
+  </div>
 </main>

@@ -1,61 +1,113 @@
-<main class="h-full relative">
-  <p-card header="Neuer Sticker" subheader="Was ist ein Sticker wert, wenn er nicht auf der Karte auftaucht?">
-    <form [formGroup]="markerForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-12">
-      <div class="flex flex-col gap-2">
+<main class="min-h-screen relative bg-amazing-bordeaux-dark">
+  <div class="text-end pt-4 px-6">
+    <button
+      type="button"
+      class="text-3xl cursor-pointer border-0"
+      (click)="navigateBack()"
+    >
+      X
+    </button>
+  </div>
+  <div class="m-auto pb-6 px-28 max-sm:px-6 md:max-w-[80vw] lg:max-w-[40vw]">
+    <h1 class="font-bold text-3xl mb-1">Neuer Sticker </h1>
+    <p class="mb-8">Was ist ein Sticker wert, wenn er nicht auf der Karte auftaucht?</p>
+    <form [formGroup]="markerForm" (ngSubmit)="onSubmit()" class="flex flex-col">
+      <div class="flex flex-col gap-2 mb-12">
         <label for="title">Titel</label>
-        <input pInputText id="title" aria-describedby="title-help" formControlName="name" />
+        <input id="title" aria-describedby="title-help" formControlName="name" />
         <small id="title-help">Ort, an dem der Sticker klebt, z.B. "Düsseldorf Hauptbahnhof"</small>
       </div>
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-2 mb-12">
         <label for="description">Beschreibung</label>
-        <input pInputText id="description" aria-describedby="description-help" formControlName="description" />
+        <input id="description" aria-describedby="description-help" formControlName="description" />
         <small id="description-help">Nähere Beschreibung des Ortes, z.B. "Auf der Rolltreppe zu Gleis 6"</small>
       </div>
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-2 mb-12">
         <label for="uploader">Name (optional)</label>
-        <input pInputText id="uploader" aria-describedby="uploader-help" formControlName="uploader" />
+        <input id="uploader" aria-describedby="uploader-help" formControlName="uploader" />
         <small id="uploader-help">Person, die den Sticker aufgehangen hat</small>
       </div>
-      <div class="flex flex-col gap-2">
-        <label for="picture">Bild</label>
-        <input type="file"
-               id="picture"
-               (change)="handleFileInput($event)">
-        <small id="picture-help">Erlaubte Formate: .jpg, .png, .jpeg</small>
-        <p-progressSpinner *ngIf="uploadState === 'uploading'" styleClass="w-12 h-12"></p-progressSpinner>
-        <p-tag *ngIf="uploadState === 'succeded'" severity="success" value="Upload erfolgreich"></p-tag>
-        <p-tag *ngIf="uploadState === 'uploading'" severity="warning" value="Upload läuft..."></p-tag>
-        <p-tag *ngIf="uploadState === 'failed'" severity="danger" value="Upload fehlgeschlagen"></p-tag>
+      <div class="flex flex-col gap-2 mb-12">
+        <!-- We need to fake the label because we cannot change the text "Choose file from the input" -->
+        <label>Bild (optional)</label>
+        <label class="border rounded-lg py-1.5 px-2 text-base text-center" for="upload">
+          Datei hochladen
+        </label>
+        <input
+          type="file"
+          id="upload"
+          class="hidden"
+          (change)="handleFileInput($event)"
+        />
+        <small class="mb-4">Erlaubte Formate: .jpg, .png, .jpeg</small>
+        <div class="m-auto">
+          <p class="pb-3">
+            @if (imageUploadState === 'succeeded') { Upload von "<span class="font-bold italic">{{ fileName }}</span>" erfolgreich }
+            @if (imageUploadState === 'uploading') { Upload läuft... }
+            @if (imageUploadState === 'failed') { Upload fehlgeschlagen }
+          </p>
+          <progress-spinner [show]="imageUploadState === 'uploading'" />
+        </div>
       </div>
-      <p-tabView>
-        <p-tabPanel header="Adresse" [disabled]="true">
-          <p>
-            a
-          </p>
-        </p-tabPanel>
-        <p-tabPanel header="Standort" [disabled]="true">
-          <p>
-            b
-          </p>
-        </p-tabPanel>
-        <p-tabPanel header="Längengrade" [selected]="true">
-          <div class="flex flex-col gap-6 items-center">
-            <div class="flex flex-col gap-2">
-              <label for="latitude">Längengrad</label>
-              <p-inputNumber id="latitude" [useGrouping]="false" [min]="-90" [max]="90" [minFractionDigits]="4"
-                             [maxFractionDigits]="6" locale="en-US" formControlName="lat" />
-            </div>
-            <div class="flex flex-col gap-2">
-              <label for="longitude">Breitengrad</label>
-              <p-inputNumber id="longitude" [useGrouping]="false" [min]="-180" [max]="180" [minFractionDigits]="4"
-                             [maxFractionDigits]="6" locale="en-US" styleClass formControlName="lng" />
-            </div>
+      <div class="flex flex-wrap gap-x-6 gap-y-2 mb-8">
+        @for (tab of tabsList; track $index) {
+          <button
+            type="button"
+            [disabled]="tab.disabled"
+            (click)="selectTab($index)"
+          >
+            {{ tab.name }}
+          </button>
+        }
+      </div>
+      @if (currentTab === 3) {
+        <div class="flex flex-col gap-6 w-1/2 m-auto">
+          <div class="flex flex-col gap-2">
+            <label for="latitude">Längengrad</label>
+            <input
+              id="latitude"
+              type="number"
+              aria-describedby="latitude"
+              formControlName="lat"
+              min="-90"
+              max="90"
+              required
+            />
+            <small>Dezimalwert zwischen 0-90</small>
           </div>
-        </p-tabPanel>
-      </p-tabView>
-      <p-button [disabled]="!(markerForm.valid && uploadState !== ('uploading' || 'failed'))" type="submit"
-                class="flex justify-center text-green-500" label="Speichern"></p-button>
+          <div class="flex flex-col gap-2">
+            <label for="longitude">Breitengrad</label>
+            <input
+              id="longitude"
+              type="number"
+              aria-describedby="longitude"
+              formControlName="lng"
+              min="-180"
+              max="180"
+              required
+            />
+            <small>Dezimalwert zwischen 0-180</small>
+          </div>
+        </div>
+      }
+      <p class="text-center text-xl mt-8">
+        @if (uploadState === 'uploading') {
+          Sticker wird hinzugefügt... ⏰
+        } @else if (uploadState === 'succeeded') {
+          Sticker wurde erfolgreich hochgeladen! Yay 🎉
+        } @else if (uploadState === 'failed') {
+          Es ist ein Fehler aufgetreten 😞
+        }
+      </p>
+      <div class="m-auto mt-2">
+        <button
+          type="submit"
+          class="text-green-400 border-green-600"
+          [disabled]="!(markerForm.valid && uploadState !== ('uploading' || 'failed'))"
+        >
+          Speichern
+        </button>
+      </div>
     </form>
-    <i class="absolute top-4 right-4 cursor-pointer pi pi-times" (click)="navigateBack()"></i>
-  </p-card>
+  </div>
 </main>

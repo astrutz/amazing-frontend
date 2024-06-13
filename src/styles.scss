@@ -1,0 +1,46 @@
+@import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+@import "leaflet.markercluster/dist/MarkerCluster.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply text-white;
+}
+
+input {
+  @apply rounded-lg p-1 text-black;
+}
+
+input:focus {
+  @apply shadow-inputs transition-all duration-200;
+}
+
+input:focus-visible {
+  @apply outline-none;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+button {
+  @apply border rounded-lg py-1.5 px-2;
+}
+
+button:disabled {
+  @apply border-gray-500 text-gray-500;
+}
+
+label {
+  @apply text-xl;
+}
