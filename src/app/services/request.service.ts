@@ -6,7 +6,7 @@ import { Marker } from '../types/marker.type';
   providedIn: 'root'
 })
 export class RequestService {
-  private _baseUrl = 'https://concerned-fish-gabardine.cyclic.app';
+  private _baseUrl = 'https://amazing-backend.vercel.app';
 
   async getMarkers(): Promise<Marker[]> {
     return (await axios.get<Marker[]>(`${this._baseUrl}/markers`)).data;

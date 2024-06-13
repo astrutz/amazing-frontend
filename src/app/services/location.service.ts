@@ -1,14 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-
-type SetLocationValue = {
-  latitude: number,
-  longitude: number,
-  accuracy?: number,
-  altitude?: number,
-  altitudeAccuracy?: number,
-  heading?: number,
-  speed?: number
-}
+import type { SetLocationValue } from '../types/location.type';
 
 /**
  * This service is intended to provide the whole app with a somewhat useful and reliable current location.
@@ -46,7 +37,7 @@ class CurrentLocationService {
 
   public get lastPosition(): GeolocationPosition {
     /** Returns the signal in a read-only way. */
-    return this._lastPosition()
+    return this._lastPosition();
   }
 
   private set lastPosition(coords: GeolocationCoordinates) {
@@ -58,7 +49,7 @@ class CurrentLocationService {
 
   constructor() {
     if (navigator && "geolocation" in navigator) {
-      this._geolocation = navigator.geolocation
+      this._geolocation = navigator.geolocation;
     }
   }
 
@@ -73,7 +64,7 @@ class CurrentLocationService {
         this._geolocation.getCurrentPosition(
           (position) => {
             this._lastPosition.set(position);
-            resolve()
+            resolve();
           },
           reject,
           this._positioningOpts
@@ -82,7 +73,7 @@ class CurrentLocationService {
   }
 
   public setCurrentLocation(coords: SetLocationValue) {
-    this.lastPosition = Object.assign(this._homeBase, coords)
+    this.lastPosition = Object.assign(this._homeBase, coords);
   }
 }
 
