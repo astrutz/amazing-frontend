@@ -12,18 +12,20 @@
     <p class="opacity-60 pb-5 italic">Silence be the last you hear</p>
     <p>Finde Amazing Artur Sticker!</p>
   </div>
-  <button
-    type="button"
-    class="fixed z-[999] py-1 px-3 border-0 max-sm:max-10 top-4 end-4 bg-amazing-bordeaux text-3xl"
-    (click)="navigateToCreate()"
-  >
-    +
-  </button>
-
-  <button
-    type="button"
-    class="fixed z-[999] px-3 py-2 border-0 max-sm:max-10 bottom-4 end-4 bg-amazing-bordeaux"
-    (click)="updatePosition()">
-    {{ isUpdatingPosition ? 'Finding …' : 'Where am I?' }}
-  </button>
+  <div class="flex gap-x-3 fixed z-[999] px-3 py-2 border-0 max-sm:max-10 top-4 end-4">
+    <button
+      type="button"
+      class="bg-amazing-bordeaux border-transparent flex items-center"
+      (click)="updatePosition()"
+    >
+      <ng-icon size="32" [name]="isUpdatingPosition ? 'lucideLoader2' : 'lucideMapPin'"></ng-icon>
+    </button>
+    <button
+      type="button"
+      class="bg-amazing-bordeaux border-transparent flex items-center"
+      (click)="navigateToCreate()"
+    >
+      <ng-icon size="32" name="lucidePlus"></ng-icon>
+    </button>
+  </div>
 </main>

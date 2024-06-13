@@ -9,16 +9,20 @@ import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluste
 
 import { CurrentLocationService } from '../../services/location.service';
 import { RequestService } from '../../services/request.service';
+import { NgIconComponent, provideIcons } from "@ng-icons/core";
+import {lucideLoader2, lucideMapPin, lucidePlus} from "@ng-icons/lucide";
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     LeafletModule,
-    LeafletMarkerClusterModule
+    LeafletMarkerClusterModule,
+    NgIconComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
+  viewProviders: [provideIcons({ lucidePlus, lucideMapPin, lucideLoader2 })]
 })
 export class HomeComponent implements OnInit {
   private _currentLocation = inject(CurrentLocationService);
