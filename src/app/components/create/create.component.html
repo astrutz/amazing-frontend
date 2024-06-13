@@ -1,4 +1,4 @@
-<main class="min-h-screen relative bg-amazing-bordeaux">
+<main class="min-h-screen relative bg-amazing-bordeaux-dark">
   <div class="text-end pt-4 px-6">
     <button
       type="button"
@@ -18,14 +18,14 @@
         <small id="title-help">Ort, an dem der Sticker klebt, z.B. "Düsseldorf Hauptbahnhof"</small>
       </div>
       <div class="flex flex-col gap-2 mb-12">
-        <label for="description">Beschreibung (ptional)</label>
+        <label for="description">Beschreibung</label>
         <input id="description" aria-describedby="description-help" formControlName="description" />
         <small id="description-help">Nähere Beschreibung des Ortes, z.B. "Auf der Rolltreppe zu Gleis 6"</small>
       </div>
       <div class="flex flex-col gap-2 mb-12">
         <!-- We need to fake the label because we cannot change the text "Choose file from the input" -->
         <label>Bild (optional)</label>
-        <label class="border rounded-2xl py-1.5 px-2 text-base text-center" for="upload">
+        <label class="border rounded-lg py-1.5 px-2 text-base text-center" for="upload">
           Datei hochladen
         </label>
         <input
@@ -64,10 +64,11 @@
               type="number"
               aria-describedby="latitude"
               formControlName="lat"
-              [min]="0"
-              [max]="90"
+              min="0"
+              max="90"
+              required
             />
-            <small>0-90</small>
+            <small>Dezimalwert zwischen 0-90</small>
           </div>
           <div class="flex flex-col gap-2">
             <label for="longitude">Breitengrad</label>
@@ -76,10 +77,11 @@
               type="number"
               aria-describedby="longitude"
               formControlName="lng"
-              [min]="0"
-              [max]="180"
+              min="0"
+              max="180"
+              required
             />
-            <small>0-180</small>
+            <small>Dezimalwert zwischen 0-180</small>
           </div>
         </div>
       }

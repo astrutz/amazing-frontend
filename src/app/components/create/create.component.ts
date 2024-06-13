@@ -1,11 +1,4 @@
 import { Component } from '@angular/core';
-import { CardModule } from 'primeng/card';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { TabViewModule } from 'primeng/tabview';
-import { TabMenuModule } from 'primeng/tabmenu';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
 import {
   FormControl,
@@ -14,10 +7,7 @@ import {
   Validators
 } from '@angular/forms';
 import { RequestService } from '../../services/request.service';
-import { FileUploadModule } from 'primeng/fileupload';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CommonModule } from '@angular/common';
-import { TagModule } from 'primeng/tag';
 import {
   ProgressSpinnerComponent
 } from '../shared/progress-spinner/progress-spinner.component';
@@ -27,42 +17,40 @@ import {UploadStates} from "./create.type";
   selector: 'app-create',
   standalone: true,
   imports: [
-    CardModule,
-    InputTextModule,
-    InputGroupModule,
-    TabViewModule,
-    TabMenuModule,
-    InputNumberModule,
-    ButtonModule,
     ReactiveFormsModule,
-    FileUploadModule,
-    ProgressSpinnerModule,
     CommonModule,
-    TagModule,
     ProgressSpinnerComponent,
   ],
   templateUrl: './create.component.html',
 })
 export class CreateComponent {
-  uploadState : UploadStates = 'waiting';
+  uploadState: UploadStates = 'waiting';
   imageUploadState: UploadStates = 'waiting';
 
   markerForm: FormGroup = new FormGroup({
     name: new FormControl(null, [Validators.required]),
     description: new FormControl(null, [Validators.required]),
-    lat: new FormControl(null, [Validators.required]),
-    lng: new FormControl(null, [Validators.required]),
+    lat: new FormControl(null, [Validators.required,
+      Validators.maxLength(32),
+      Validators.min(-90),
+      Validators.max(90),
+      Validators.pattern(/-?\d*\.?\d{1,2}/)]),
+    lng: new FormControl(null, [Validators.required,
+      Validators.maxLength(32),
+      Validators.min(-180),
+      Validators.max(180),
+      Validators.pattern(/-?\d*\.?\d{1,2}/)]),
     pictureUrl: new FormControl(null, []),
   });
 
   tabsList: { name: string, disabled?: boolean }[] = [{
     name: 'Adresse',
     disabled: true,
-  },{
+  }, {
     name: 'Standort',
     disabled: true,
-  },{
-    name: 'Koordinaten (manuell)',
+  }, {
+    name: ' Koordinaten (manuell)',
   }];
 
   currentTab: number | null = 3;
@@ -110,7 +98,7 @@ export class CreateComponent {
       this.imageUploadState = 'uploading';
       try {
         const imageID = await this._requestService.uploadPicture(file);
-        this.markerForm.patchValue({ pictureUrl: `https://amazing-artur-images.s3.eu-central-1.amazonaws.com/${imageID}` });
+        this.markerForm.patchValue({pictureUrl: `https://amazing-artur-images.s3.eu-central-1.amazonaws.com/${imageID}`});
         this.fileName = file.name;
         this.imageUploadState = 'succeeded';
       } catch (err) {
@@ -121,6 +109,6 @@ export class CreateComponent {
   }
 
   protected selectTab(index: number) {
-    this.currentTab = index;
+    return;
   }
 }
