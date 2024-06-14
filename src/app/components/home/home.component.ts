@@ -1,5 +1,5 @@
 import * as L from 'leaflet';
-import { divIcon, icon, MapOptions, Marker, marker, tileLayer } from 'leaflet';
+import { divIcon, icon, LeafletMouseEvent, MapOptions, Marker, marker, tileLayer } from 'leaflet';
 import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { Router } from '@angular/router';
@@ -11,7 +11,6 @@ import { CurrentLocationService } from '../../services/location.service';
 import { RequestService } from '../../services/request.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { lucideLoader2, lucideMapPin, lucidePlus } from '@ng-icons/lucide';
-import { ContextMenuComponent } from '../shared/context-menu/context-menu.component';
 import { NgClass, NgStyle } from '@angular/common';
 
 @Component({
@@ -21,7 +20,6 @@ import { NgClass, NgStyle } from '@angular/common';
     LeafletModule,
     LeafletMarkerClusterModule,
     NgIconComponent,
-    ContextMenuComponent,
     NgClass,
     NgStyle,
   ],
@@ -52,6 +50,8 @@ export class HomeComponent implements OnInit {
   protected isContextMenuOpen = false;
   protected contextMenuX: WritableSignal<number> = signal(0);
   protected contextMenuY: WritableSignal<number> = signal(0);
+  clickedLat: number = 0;
+  clickedLng: number = 0 ;
 
   private _options: MapOptions = {
     layers: [
@@ -121,10 +121,11 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  protected openContextMenu(event: MouseEvent){
-    this.contextMenuX.set(event.clientX);
-    this.contextMenuY.set(event.clientY);
+  protected openContextMenu(event: LeafletMouseEvent){
+    this.contextMenuX.set(event.containerPoint.x);
+    this.contextMenuY.set(event.containerPoint.y);
+    this.clickedLat = event.latlng.lat;
+    this.clickedLng = event.latlng.lng;
     this.isContextMenuOpen = true;
-    event.preventDefault();
   }
 }
