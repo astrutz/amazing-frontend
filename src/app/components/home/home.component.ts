@@ -2,7 +2,7 @@ import * as L from 'leaflet';
 import { divIcon, icon, LeafletMouseEvent, MapOptions, Marker, marker, tileLayer } from 'leaflet';
 import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Marker as MarkerType } from '../../types/marker.type';
 import 'leaflet.markercluster';
 import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
@@ -22,6 +22,7 @@ import { NgClass, NgStyle } from '@angular/common';
     NgIconComponent,
     NgClass,
     NgStyle,
+    RouterLink,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
