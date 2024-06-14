@@ -11,7 +11,7 @@
     @if (isContextMenuOpen) {
       <div class="absolute w-20 h-20 z-[999]" [ngStyle]="positioning">
         <div class="fixed rounded-lg p-2 bg-amazing-bordeaux">
-          <a class="!text-white text-base" [href]="'/create?lat=' + clickedLat + '&lng=' + clickedLng ">Add a marker here</a>
+          <a class="!text-white text-base" routerLink="create" [queryParams]="{lat: clickedLat, lng: clickedLng}">Add a marker here</a>
         </div>
       </div>
     }
