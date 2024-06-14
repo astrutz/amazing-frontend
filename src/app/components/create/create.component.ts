@@ -1,17 +1,10 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RequestService } from '../../services/request.service';
 import { CommonModule } from '@angular/common';
-import {
-  ProgressSpinnerComponent
-} from '../shared/progress-spinner/progress-spinner.component';
-import {UploadStates} from "./create.type";
+import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
+import { UploadStates } from './create.type';
 
 @Component({
   selector: 'app-create',
@@ -35,12 +28,14 @@ export class CreateComponent {
       Validators.maxLength(32),
       Validators.min(-90),
       Validators.max(90),
-      Validators.pattern(/-?\d*\.?\d{1,2}/)]),
+      Validators.pattern(/-?\d*\.?\d{1,2}/),
+    ]),
     lng: new FormControl(null, [Validators.required,
       Validators.maxLength(32),
       Validators.min(-180),
       Validators.max(180),
-      Validators.pattern(/-?\d*\.?\d{1,2}/)]),
+      Validators.pattern(/-?\d*\.?\d{1,2}/)
+    ]),
     pictureUrl: new FormControl(null, []),
   });
 
@@ -58,7 +53,15 @@ export class CreateComponent {
 
   fileName: string = '';
 
-  constructor(private _router: Router, private _requestService: RequestService) {
+  constructor(private _router: Router, private _activatedRoute: ActivatedRoute, private _requestService: RequestService) {
+    this._activatedRoute.queryParams.subscribe((params) => {
+      if (params['lat']) {
+        this.markerForm.patchValue({ lat: +params['lat'] });
+      }
+      if (params['lng']) {
+        this.markerForm.patchValue({ lng: +params['lng'] });
+      }
+    });
   }
 
   protected navigateBack() {
@@ -99,7 +102,7 @@ export class CreateComponent {
       this.imageUploadState = 'uploading';
       try {
         const imageID = await this._requestService.uploadPicture(file);
-        this.markerForm.patchValue({pictureUrl: `https://amazing-artur-images.s3.eu-central-1.amazonaws.com/${imageID}`});
+        this.markerForm.patchValue({ pictureUrl: `https://amazing-artur-images.s3.eu-central-1.amazonaws.com/${imageID}` });
         this.fileName = file.name;
         this.imageUploadState = 'succeeded';
       } catch (err) {

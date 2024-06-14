@@ -2,12 +2,23 @@
   <div
     class="map"
     leaflet
+    (leafletClick)="openContextMenu($event)"
     [leafletOptions]="options"
     [leafletCenter]="mapCenter"
     (leafletCenterChange)="changeCurrentPosition($event)"
-    [leafletLayers]="layers"></div>
+    [leafletLayers]="layers">
 
-  <div class="fixed z-[999] bg-amazing-bordeaux rounded-lg py-6 px-8 mr-16 top-4 left-16 max-md:bottom-4 max-md:top-auto">
+    @if (isContextMenuOpen) {
+      <div class="absolute w-20 h-20 z-[999]" [ngStyle]="positioning">
+        <div class="fixed rounded-lg p-2 bg-amazing-bordeaux">
+          <a class="!text-white text-base" [href]="'/create?lat=' + clickedLat + '&lng=' + clickedLng ">Add a marker here</a>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div
+    class="fixed z-[999] bg-amazing-bordeaux rounded-lg py-6 px-8 mr-16 top-4 left-16 max-md:bottom-4 max-md:top-auto">
     <h2 class="text-3xl font-bold pb-1">Wo ist mein Amazing Artur?</h2>
     <p class="opacity-60 pb-5 italic">Silence be the last you hear</p>
     <p>Finde Amazing Artur Sticker!</p>
@@ -28,4 +39,7 @@
       <ng-icon size="32" name="lucidePlus"></ng-icon>
     </button>
   </div>
+
+
 </main>
+
