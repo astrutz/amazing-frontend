@@ -47,6 +47,7 @@ export class HomeComponent implements OnInit {
   private _currentLocation = inject(CurrentLocationService);
   private _requestService = inject(RequestService);
   private _router = inject(Router);
+  protected isInfoboxClosed = false;
 
   protected isContextMenuOpen = false;
   protected contextMenuX: WritableSignal<number> = signal(0);
@@ -128,5 +129,9 @@ export class HomeComponent implements OnInit {
     this.clickedLat = event.latlng.lat;
     this.clickedLng = event.latlng.lng;
     this.isContextMenuOpen = true;
+  }
+
+  protected closeInfoBox(): void {
+    this.isInfoboxClosed = true;
   }
 }
