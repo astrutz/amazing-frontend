@@ -10,7 +10,7 @@ import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluste
 import { CurrentLocationService } from '../../services/location.service';
 import { RequestService } from '../../services/request.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { lucideLoader2, lucideMapPin, lucidePlus } from '@ng-icons/lucide';
+import {lucideLoader2, lucideMapPin, lucidePlus, lucideX} from '@ng-icons/lucide';
 import { NgClass, NgStyle } from '@angular/common';
 
 @Component({
@@ -26,7 +26,7 @@ import { NgClass, NgStyle } from '@angular/common';
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
-  viewProviders: [provideIcons({ lucidePlus, lucideMapPin, lucideLoader2 })],
+  viewProviders: [provideIcons({ lucidePlus, lucideMapPin, lucideLoader2, lucideX })],
 })
 export class HomeComponent implements OnInit {
   markerClusterData: Marker[] = [];
