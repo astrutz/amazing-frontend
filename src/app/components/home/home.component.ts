@@ -140,6 +140,10 @@ export class HomeComponent implements OnInit {
     this.isContextMenuOpen = true;
   }
 
+  protected closeContextMenu(): void {
+    this.isContextMenuOpen = false;
+  }
+
   protected closeInfoBox(): void {
     this.isInfoboxClosed = true;
   }

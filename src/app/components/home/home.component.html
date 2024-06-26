@@ -2,6 +2,7 @@
   <div
     class="map"
     leaflet
+    (leafletMapMoveStart)="closeContextMenu()"
     (leafletClick)="openContextMenu($event)"
     [leafletOptions]="options"
     [leafletCenter]="mapCenter"
