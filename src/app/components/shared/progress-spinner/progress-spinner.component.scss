@@ -1,13 +1,13 @@
 .progress-spinner {
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 40px;
+  height: 40px;
   animation: progress-spinner-linear-rotate 2000ms linear infinite;
 }
 .progress-spinner svg {
   position: absolute;
-  width: 100px;
-  height: 100px;
+  width: 40px;
+  height: 40px;
   transform: rotate(-90deg);
   top: 0;
   left: 0;
@@ -19,7 +19,7 @@
   stroke-dasharray: 282.743px;
   stroke-width: 10%;
   fill: transparent;
-  stroke: #4285f4;
+  stroke: white;
   transform-origin: center;
   transition: stroke-dashoffset 225ms linear;
 }

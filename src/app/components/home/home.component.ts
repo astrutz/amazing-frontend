@@ -12,6 +12,8 @@ import { RequestService } from '../../services/request.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { lucideLoader2, lucideMapPin, lucidePlus, lucideX } from '@ng-icons/lucide';
 import { NgClass, NgStyle } from '@angular/common';
+import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-home',
@@ -23,6 +25,7 @@ import { NgClass, NgStyle } from '@angular/common';
     NgClass,
     NgStyle,
     RouterLink,
+    ProgressSpinnerComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -72,6 +75,9 @@ export class HomeComponent implements OnInit {
     center: this.mapCenter,
   };
 
+  constructor(private readonly _loadingService: LoadingService) {
+  }
+
   get options(): MapOptions {
     return this._options;
   }
@@ -108,9 +114,14 @@ export class HomeComponent implements OnInit {
     );
   }
 
+  protected get isLoading(): boolean {
+    return this._loadingService.isLoading;
+  }
+
   ngOnInit() {
     this._requestService.getMarkers().then((data) => {
       this.markers$.set(data);
+      this._loadingService.isLoading = false;
     });
   }
 

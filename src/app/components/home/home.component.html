@@ -22,7 +22,7 @@
     }
   </div>
 
-  @if (!isInfoboxClosed) {
+  @if (!isInfoboxClosed && !isLoading) {
     <div
       class="fixed z-[999] bg-amazing-bordeaux rounded-lg py-6 px-8 mr-16 top-4 left-16 max-md:bottom-4 max-md:top-auto">
       <div class="flex justify-between gap-x-6 max-md:gap-x-1">
@@ -54,4 +54,15 @@
       <ng-icon size="32" name="lucidePlus"></ng-icon>
     </button>
   </div>
+
+  @if(isLoading) {
+    <div class="fixed flex justify-center z-[999] bottom-4 md:left-1/2 max-md:w-full ">
+      <div class="inline-flex  justify-center gap-8 p-4 bg-amazing-bordeaux rounded-md w-auto">
+      <p class="self-center">Marker werden geladen...</p>
+      <progress-spinner [show]="isLoading">
+      </progress-spinner>
+      </div>
+    </div>
+  }
+
 </main>
