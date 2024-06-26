@@ -12,11 +12,11 @@ class CurrentLocationService {
     /** Allows to work with the cached location for one minute. One sticker at a time! */
     maximumAge: 60 * 1000,
     /** No one wants to wait more than 5sec, right? */
-    timeout: 5 * 1000
-  }
+    timeout: 5 * 1000,
+  };
   /**
    * Somewhere one has to be. At least in one’s heart. Let us give those a home who don’t have one (yet).
-    */
+   */
   private _homeBase: GeolocationCoordinates = {
     latitude: 51.21957,
     longitude: 6.81433,
@@ -24,8 +24,8 @@ class CurrentLocationService {
     altitude: null,
     altitudeAccuracy: null,
     heading: null,
-    speed: null
-  }
+    speed: null,
+  };
 
   /**
    * We use a signal to store the service’s state. This way all depending components are updated automatically
@@ -43,12 +43,12 @@ class CurrentLocationService {
   private set lastPosition(coords: GeolocationCoordinates) {
     this._lastPosition.set({
       coords,
-      timestamp: Date.now()
-    })
+      timestamp: Date.now(),
+    });
   }
 
   constructor() {
-    if (navigator && "geolocation" in navigator) {
+    if (navigator && 'geolocation' in navigator) {
       this._geolocation = navigator.geolocation;
     }
   }
@@ -59,7 +59,7 @@ class CurrentLocationService {
    */
   public async update(): Promise<void> {
     return new Promise((resolve, reject) => {
-      if (!this._geolocation) reject()
+      if (!this._geolocation) reject();
       else
         this._geolocation.getCurrentPosition(
           (position) => {
@@ -67,9 +67,9 @@ class CurrentLocationService {
             resolve();
           },
           reject,
-          this._positioningOpts
-        )
-    })
+          this._positioningOpts,
+        );
+    });
   }
 
   public setCurrentLocation(coords: SetLocationValue) {
@@ -77,4 +77,4 @@ class CurrentLocationService {
   }
 }
 
-export { CurrentLocationService }
+export { CurrentLocationService };

@@ -5,8 +5,5 @@ import { routes } from './app.routes';
 import { CurrentLocationService } from './services/location.service';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideRouter(routes),
-    { provide: CurrentLocationService }
-  ]
+  providers: [provideRouter(routes), { provide: CurrentLocationService }],
 };
