@@ -7,11 +7,15 @@
     [leafletCenter]="mapCenter"
     (leafletCenterChange)="changeCurrentPosition($event)"
     [leafletLayers]="layers">
-
     @if (isContextMenuOpen) {
       <div class="absolute w-20 h-20 z-[999]" [ngStyle]="positioning">
         <div class="fixed rounded-lg p-2 bg-amazing-bordeaux">
-          <a class="!text-white text-base" routerLink="create" [queryParams]="{lat: clickedLat, lng: clickedLng}">Add a marker here</a>
+          <a
+            class="!text-white text-base"
+            routerLink="create"
+            [queryParams]="{ lat: clickedLat, lng: clickedLng }"
+            >Add a marker here</a
+          >
         </div>
       </div>
     }
@@ -23,11 +27,10 @@
       <div class="flex justify-between gap-x-6 max-md:gap-x-1">
         <h2 class="text-3xl font-bold pb-1">Wo ist mein Amazing Artur?</h2>
         <button
-            type="button"
-            class="border-none cursor-pointer p-0 max-md:flex"
-            (click)="closeInfoBox()"
-        >
-            <ng-icon size="28" name="lucideX"></ng-icon>
+          type="button"
+          class="border-none cursor-pointer p-0 max-md:flex"
+          (click)="closeInfoBox()">
+          <ng-icon size="28" name="lucideX"></ng-icon>
         </button>
       </div>
 
@@ -40,18 +43,14 @@
     <button
       type="button"
       class="bg-amazing-bordeaux border-transparent flex items-center"
-      (click)="updatePosition()"
-    >
+      (click)="updatePosition()">
       <ng-icon size="32" [name]="isUpdatingPosition ? 'lucideLoader2' : 'lucideMapPin'"></ng-icon>
     </button>
     <button
       type="button"
       class="bg-amazing-bordeaux border-transparent flex items-center"
-      (click)="navigateToCreate()"
-    >
+      (click)="navigateToCreate()">
       <ng-icon size="32" name="lucidePlus"></ng-icon>
     </button>
   </div>
-
-
 </main>

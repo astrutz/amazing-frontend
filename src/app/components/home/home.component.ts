@@ -1,37 +1,16 @@
 import * as L from 'leaflet';
-import {
-  divIcon,
-  icon,
-  LeafletMouseEvent,
-  MapOptions,
-  Marker,
-  marker,
-  tileLayer
-} from 'leaflet';
-import {
-  Component,
-  inject,
-  OnInit,
-  signal,
-  WritableSignal
-} from '@angular/core';
+import { divIcon, icon, LeafletMouseEvent, MapOptions, Marker, marker, tileLayer } from 'leaflet';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { Router, RouterLink } from '@angular/router';
 import { Marker as MarkerType } from '../../types/marker.type';
 import 'leaflet.markercluster';
-import {
-  LeafletMarkerClusterModule
-} from '@asymmetrik/ngx-leaflet-markercluster';
+import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
 
 import { CurrentLocationService } from '../../services/location.service';
 import { RequestService } from '../../services/request.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import {
-  lucideLoader2,
-  lucideMapPin,
-  lucidePlus,
-  lucideX
-} from '@ng-icons/lucide';
+import { lucideLoader2, lucideMapPin, lucidePlus, lucideX } from '@ng-icons/lucide';
 import { NgClass, NgStyle } from '@angular/common';
 
 @Component({
@@ -47,12 +26,14 @@ import { NgClass, NgStyle } from '@angular/common';
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
-  viewProviders: [provideIcons({
-    lucidePlus,
-    lucideMapPin,
-    lucideLoader2,
-    lucideX
-  })],
+  viewProviders: [
+    provideIcons({
+      lucidePlus,
+      lucideMapPin,
+      lucideLoader2,
+      lucideX,
+    }),
+  ],
 })
 export class HomeComponent implements OnInit {
   markerClusterData: Marker[] = [];
@@ -63,7 +44,7 @@ export class HomeComponent implements OnInit {
       return divIcon({
         iconUrl: '/assets/marker-icon.svg',
         iconSize: [96, 90],
-        html: `<img src="/assets/marker-icon.svg" alt="Amazing Artur Symbolbild"/> <span class="bg-amazing-bordeaux text-xl absolute bottom-1 right-2 w-8 h-8 rounded-full flex justify-center items-center">${ count }</span>`,
+        html: `<img src="/assets/marker-icon.svg" alt="Amazing Artur Symbolbild"/> <span class="bg-amazing-bordeaux text-xl absolute bottom-1 right-2 w-8 h-8 rounded-full flex justify-center items-center">${count}</span>`,
         className: 'relative',
       });
     },
@@ -102,12 +83,14 @@ export class HomeComponent implements OnInit {
         title: markerElement.name,
         icon: icon({ iconUrl: '/assets/marker-icon.svg', iconSize: [80, 64] }),
       });
-      mapMarker.bindPopup(`<h3 class="text-xl mb-2" id="${ markerElement._id }">${ markerElement.name }</h3>
-        <h4 class="text-m">${ markerElement.description }</h4>
-        ${ markerElement.uploader
-           ? `<h5 class="text-s">von ${ markerElement.uploader } eingetragen</h5>`
-           : '' }
-        <img src="${ markerElement.pictureUrl ?? '' }" />`);
+      mapMarker.bindPopup(`<h3 class="text-xl mb-2" id="${markerElement._id}">${markerElement.name}</h3>
+        <h4 class="text-m">${markerElement.description}</h4>
+        ${
+          markerElement.uploader
+            ? `<h5 class="text-s">von ${markerElement.uploader} eingetragen</h5>`
+            : ''
+        }
+        <img src="${markerElement.pictureUrl ?? ''}" />`);
       return mapMarker;
     });
   }
@@ -137,11 +120,9 @@ export class HomeComponent implements OnInit {
 
   protected updatePosition() {
     this.isUpdatingPosition = true;
-    this._currentLocation
-      .update()
-      .finally(() => {
-        this.isUpdatingPosition = false;
-      });
+    this._currentLocation.update().finally(() => {
+      this.isUpdatingPosition = false;
+    });
   }
 
   protected changeCurrentPosition(mapCenter: L.LatLng) {

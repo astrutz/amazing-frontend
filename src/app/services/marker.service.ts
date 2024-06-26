@@ -5,9 +5,7 @@ import { Marker as AmazingMarker } from '../types/marker.type';
   providedIn: 'root',
 })
 export class MarkerService {
-
-  constructor() {
-  }
+  constructor() {}
 
   private _markers: AmazingMarker[] = [
     {
@@ -21,29 +19,29 @@ export class MarkerService {
       id: 'shdsdhfhsdfhsdhs',
       name: 'Palmetum Teneriffa',
       description: 'Auf der Rückseite vom Eingangsschild',
-      lat: 28.454120,
-      lng: -16.256980,
+      lat: 28.45412,
+      lng: -16.25698,
     },
     {
       id: 'sdfggsdfdfssgd',
       name: 'babiel GmbH',
       description: 'An verschiedenen Stellen im Office',
-      lat: 51.219570,
-      lng: 6.814330,
+      lat: 51.21957,
+      lng: 6.81433,
     },
     {
       id: 'sdfsdf',
       name: 'Koi Sushi',
       description: 'Das weiß nur Philipp Müller',
-      lat: 51.225630,
-      lng: 6.791980,
+      lat: 51.22563,
+      lng: 6.79198,
     },
     {
       id: 'ssdsgd',
       name: 'Restaurante El Meson Teneriffe',
       description: 'Unter einigen Tellern und auf der Herrentoilette',
-      lat: 28.239220,
-      lng: -16.839540,
+      lat: 28.23922,
+      lng: -16.83954,
     },
     {
       id: 'uksdjhgj',
@@ -56,7 +54,7 @@ export class MarkerService {
       id: 'uksdj345hgj',
       name: 'Ingolstadt Hauptbahnhof',
       description: 'Unter einer Bank bei den Bussen',
-      lat: 48.7445760,
+      lat: 48.744576,
       lng: 11.4362583,
     },
     {
@@ -134,13 +132,13 @@ export class MarkerService {
       name: 'Friterie New-Quinta',
       description: 'Unter dem ersten Tisch rechts',
       lat: 50.7010755,
-      lng: 6.0858870,
+      lng: 6.085887,
     },
     {
       id: 'asdasd',
       name: 'Vennbahntrasse',
       description: 'Auf dem Ortsschild "Hahn"',
-      lat: 50.7124910,
+      lat: 50.712491,
       lng: 6.1951132,
     },
     {
@@ -155,7 +153,7 @@ export class MarkerService {
       name: 'Mipri Grenzmarkt',
       description: 'Auf dem Einkaufswagenunterstand',
       lat: 50.7156092,
-      lng: 6.1214910,
+      lng: 6.121491,
     },
     {
       id: 'asdasd',
@@ -420,12 +418,12 @@ export class MarkerService {
       id: 'asdasd',
       name: 'Düsseldorf Graf-Adolf-Straße',
       description: 'Auf dem Mülleimer vor Bang Me',
-      lat: 51.2186420,
+      lat: 51.218642,
       lng: 6.7837508,
     },
     {
       id: 'asdasd',
-      name: 'Mona\'s WG',
+      name: "Mona's WG",
       description: 'Und auch auf ihrem Auto',
       lat: 51.219536701523054,
       lng: 6.785412291840453,
@@ -470,7 +468,7 @@ export class MarkerService {
       name: 'SV Alemannia Kamp',
       description: 'An der Laterne am Eingang',
       lat: 51.501123,
-      lng: 6.514050,
+      lng: 6.51405,
     },
     {
       id: 'asdasd',
@@ -490,7 +488,7 @@ export class MarkerService {
       id: 'asdasd',
       name: 'Kreuzau-Eifelstraße Bahnhof',
       description: 'Mülleimer am Bahnübergang',
-      lat: 50.7427070,
+      lat: 50.742707,
       lng: 6.4920442,
     },
     {
@@ -519,7 +517,7 @@ export class MarkerService {
       name: 'Parcheggio Auto Etna',
       description: 'Laterne am Parkplatz',
       lat: 37.6986734,
-      lng: 15.0049840,
+      lng: 15.004984,
     },
     {
       id: 'asdasd',
@@ -532,7 +530,7 @@ export class MarkerService {
       id: 'asdasd',
       name: 'Giardino della Kolymbethra\n',
       description: 'An einer Laterne',
-      lat: 37.2896520,
+      lat: 37.289652,
       lng: 13.5828355,
     },
     {
@@ -548,7 +546,7 @@ export class MarkerService {
       description: 'Auf einer Laterne vorm Eingang',
       lat: 37.4705283,
       lng: 15.0683817,
-    }
+    },
   ];
   get markers(): AmazingMarker[] {
     return this._markers;

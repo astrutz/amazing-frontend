@@ -9,11 +9,7 @@ import { UploadStates } from './create.type';
 @Component({
   selector: 'app-create',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    CommonModule,
-    ProgressSpinnerComponent,
-  ],
+  imports: [ReactiveFormsModule, CommonModule, ProgressSpinnerComponent],
   templateUrl: './create.component.html',
 })
 export class CreateComponent {
@@ -24,36 +20,46 @@ export class CreateComponent {
     name: new FormControl(null, [Validators.required]),
     description: new FormControl(null, [Validators.required]),
     uploader: new FormControl(null, []),
-    lat: new FormControl(null, [Validators.required,
+    lat: new FormControl(null, [
+      Validators.required,
       Validators.maxLength(32),
       Validators.min(-90),
       Validators.max(90),
       Validators.pattern(/-?\d*\.?\d{1,2}/),
     ]),
-    lng: new FormControl(null, [Validators.required,
+    lng: new FormControl(null, [
+      Validators.required,
       Validators.maxLength(32),
       Validators.min(-180),
       Validators.max(180),
-      Validators.pattern(/-?\d*\.?\d{1,2}/)
+      Validators.pattern(/-?\d*\.?\d{1,2}/),
     ]),
     pictureUrl: new FormControl(null, []),
   });
 
-  tabsList: { name: string, disabled?: boolean }[] = [{
-    name: 'Adresse',
-    disabled: true,
-  }, {
-    name: 'Standort',
-    disabled: true,
-  }, {
-    name: ' Koordinaten (manuell)',
-  }];
+  tabsList: { name: string; disabled?: boolean }[] = [
+    {
+      name: 'Adresse',
+      disabled: true,
+    },
+    {
+      name: 'Standort',
+      disabled: true,
+    },
+    {
+      name: ' Koordinaten (manuell)',
+    },
+  ];
 
   currentTab: number | null = 3;
 
   fileName: string = '';
 
-  constructor(private _router: Router, private _activatedRoute: ActivatedRoute, private _requestService: RequestService) {
+  constructor(
+    private _router: Router,
+    private _activatedRoute: ActivatedRoute,
+    private _requestService: RequestService,
+  ) {
     this._activatedRoute.queryParams.subscribe((params) => {
       if (params['lat']) {
         this.markerForm.patchValue({ lat: +params['lat'] });
@@ -102,7 +108,9 @@ export class CreateComponent {
       this.imageUploadState = 'uploading';
       try {
         const imageID = await this._requestService.uploadPicture(file);
-        this.markerForm.patchValue({ pictureUrl: `https://amazing-artur-images.s3.eu-central-1.amazonaws.com/${imageID}` });
+        this.markerForm.patchValue({
+          pictureUrl: `https://amazing-artur-images.s3.eu-central-1.amazonaws.com/${imageID}`,
+        });
         this.fileName = file.name;
         this.imageUploadState = 'succeeded';
       } catch (err) {

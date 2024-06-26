@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Marker } from '../types/marker.type';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RequestService {
   private _baseUrl = 'https://amazing-backend.vercel.app';

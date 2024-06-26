@@ -7,7 +7,7 @@ import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluste
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, LeafletModule, LeafletMarkerClusterModule ],
+  imports: [CommonModule, RouterOutlet, LeafletModule, LeafletMarkerClusterModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
