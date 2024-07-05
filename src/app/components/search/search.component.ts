@@ -1,0 +1,42 @@
+import { Component } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MarkerService } from '../shared/marker/marker.service';
+import { Marker } from '../../types/marker.type';
+import { CurrentLocationService } from '../../services/location.service';
+
+@Component({
+  selector: 'app-search',
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+  ],
+  templateUrl: './search.component.html',
+})
+export class SearchComponent {
+  protected foundMarkers: Marker[] = [];
+  protected searchTerm: FormControl<string | null>;
+
+  constructor(private _router: Router, private readonly _markerService: MarkerService, private readonly _currentLocation: CurrentLocationService) {
+    this.searchTerm = new FormControl('', [Validators.required, Validators.minLength(3)]);
+  }
+
+  search(): void {
+    if (this.searchTerm.valid) {
+      const markers = this._markerService.markers$();
+      const term = this.searchTerm.getRawValue()!.toLowerCase();
+      this.foundMarkers = markers.filter(marker => marker.name.toLowerCase().includes(term) || marker.description.toLowerCase().includes(term)) ?? [];
+    } else {
+      this.foundMarkers = [];
+    }
+  }
+
+  protected navigate(marker: Marker) {
+    this._currentLocation.setCurrentLocation({
+      latitude: marker.lat,
+      longitude: marker.lng,
+    });
+    this._router.navigate(['']);
+  }
+}

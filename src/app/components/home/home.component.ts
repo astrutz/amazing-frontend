@@ -1,19 +1,18 @@
 import * as L from 'leaflet';
 import { divIcon, icon, LeafletMouseEvent, MapOptions, Marker, marker, tileLayer } from 'leaflet';
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { Router, RouterLink } from '@angular/router';
-import { Marker as MarkerType } from '../../types/marker.type';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import 'leaflet.markercluster';
 import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
 
 import { CurrentLocationService } from '../../services/location.service';
-import { RequestService } from '../../services/request.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { lucideLoader2, lucideMapPin, lucidePlus, lucideX } from '@ng-icons/lucide';
+import { lucideLoader2, lucideMapPin, lucidePlus, lucideSearch, lucideX } from '@ng-icons/lucide';
 import { NgClass, NgStyle } from '@angular/common';
 import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
 import { LoadingService } from '../../services/loading.service';
+import { MarkerService } from '../shared/marker/marker.service';
 
 @Component({
   selector: 'app-home',
@@ -25,7 +24,7 @@ import { LoadingService } from '../../services/loading.service';
     NgClass,
     NgStyle,
     RouterLink,
-    ProgressSpinnerComponent
+    ProgressSpinnerComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -35,14 +34,15 @@ import { LoadingService } from '../../services/loading.service';
       lucideMapPin,
       lucideLoader2,
       lucideX,
+      lucideSearch,
     }),
   ],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   markerClusterData: Marker[] = [];
   markerClusterOptions: L.MarkerClusterGroupOptions = {
     showCoverageOnHover: false,
-    iconCreateFunction: function (cluster) {
+    iconCreateFunction: function(cluster) {
       const count = cluster.getChildCount();
       return divIcon({
         iconUrl: '/assets/marker-icon.svg',
@@ -52,18 +52,24 @@ export class HomeComponent implements OnInit {
       });
     },
   };
-  protected markers$: WritableSignal<MarkerType[]> = signal([]);
+  clickedLat: number = 0;
+  clickedLng: number = 0;
   protected isUpdatingPosition = false;
-  private _currentLocation = inject(CurrentLocationService);
-  private _requestService = inject(RequestService);
-  private _router = inject(Router);
   protected isInfoboxClosed = false;
-
   protected isContextMenuOpen = false;
   protected contextMenuX: WritableSignal<number> = signal(0);
   protected contextMenuY: WritableSignal<number> = signal(0);
-  clickedLat: number = 0;
-  clickedLng: number = 0;
+  private _currentLocation = inject(CurrentLocationService);
+  private _router = inject(Router);
+
+  constructor(private readonly _activatedRoute: ActivatedRoute, protected readonly markerService: MarkerService, private readonly _loadingService: LoadingService) {
+    const params = this._activatedRoute.snapshot.queryParams;
+    const latitude = +params['lat'];
+    const longitude = +params['lng'];
+    if (latitude && longitude) {
+      this._currentLocation.setCurrentLocation({ latitude, longitude });
+    }
+  }
 
   private _options: MapOptions = {
     layers: [
@@ -71,12 +77,9 @@ export class HomeComponent implements OnInit {
         maxZoom: 19,
       }),
     ],
-    zoom: 19,
+    zoom: 15,
     center: this.mapCenter,
   };
-
-  constructor(private readonly _loadingService: LoadingService) {
-  }
 
   get options(): MapOptions {
     return this._options;
@@ -84,7 +87,7 @@ export class HomeComponent implements OnInit {
 
   get layers(): Marker[] {
     // this.markerClusterData = this.markers$();
-    return this.markers$().map((markerElement) => {
+    return this.markerService.markers$().map((markerElement) => {
       const mapMarker = marker([markerElement.lat, markerElement.lng], {
         title: markerElement.name,
         icon: icon({ iconUrl: '/assets/marker-icon.svg', iconSize: [80, 64] }),
@@ -92,10 +95,10 @@ export class HomeComponent implements OnInit {
       mapMarker.bindPopup(`<h3 class="text-xl mb-2" id="${markerElement._id}">${markerElement.name}</h3>
         <h4 class="text-m">${markerElement.description}</h4>
         ${
-          markerElement.uploader
-            ? `<h5 class="text-s">von ${markerElement.uploader} eingetragen</h5>`
-            : ''
-        }
+        markerElement.uploader
+          ? `<h5 class="text-s">von ${markerElement.uploader} eingetragen</h5>`
+          : ''
+      }
         <img src="${markerElement.pictureUrl ?? ''}" />`);
       return mapMarker;
     });
@@ -118,15 +121,8 @@ export class HomeComponent implements OnInit {
     return this._loadingService.isLoading;
   }
 
-  ngOnInit() {
-    this._requestService.getMarkers().then((data) => {
-      this.markers$.set(data);
-      this._loadingService.isLoading = false;
-    });
-  }
-
-  protected navigateToCreate() {
-    this._router.navigate(['create']);
+  protected navigateTo(path: string) {
+    this._router.navigate([path]);
   }
 
   protected updatePosition() {
