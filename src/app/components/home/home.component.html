@@ -50,7 +50,13 @@
     <button
       type="button"
       class="bg-amazing-bordeaux border-transparent flex items-center"
-      (click)="navigateToCreate()">
+      routerLink="search">
+      <ng-icon size="32" name="lucideSearch"></ng-icon>
+    </button>
+    <button
+      type="button"
+      class="bg-amazing-bordeaux border-transparent flex items-center"
+      routerLink="create">
       <ng-icon size="32" name="lucidePlus"></ng-icon>
     </button>
   </div>
