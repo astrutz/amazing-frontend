@@ -62,7 +62,7 @@ export class HomeComponent {
   private _currentLocation = inject(CurrentLocationService);
   private _router = inject(Router);
 
-  constructor(private readonly _activatedRoute: ActivatedRoute, private readonly _markerService: MarkerService, private readonly _loadingService: LoadingService) {
+  constructor(private readonly _activatedRoute: ActivatedRoute, protected readonly markerService: MarkerService, private readonly _loadingService: LoadingService) {
     const params = this._activatedRoute.snapshot.queryParams;
     const latitude = +params['lat'];
     const longitude = +params['lng'];
@@ -87,7 +87,7 @@ export class HomeComponent {
 
   get layers(): Marker[] {
     // this.markerClusterData = this.markers$();
-    return this._markerService.markers$().map((markerElement) => {
+    return this.markerService.markers$().map((markerElement) => {
       const mapMarker = marker([markerElement.lat, markerElement.lng], {
         title: markerElement.name,
         icon: icon({ iconUrl: '/assets/marker-icon.svg', iconSize: [80, 64] }),
