@@ -5,6 +5,7 @@ import { RequestService } from '../../services/request.service';
 import { CommonModule } from '@angular/common';
 import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
 import { UploadStates } from './create.type';
+import { CountryService } from '../../services/country.service';
 
 @Component({
   selector: 'app-create',
@@ -35,6 +36,7 @@ export class CreateComponent {
       Validators.pattern(/-?\d*\.?\d{1,2}/),
     ]),
     pictureUrl: new FormControl(null, []),
+    country: new FormControl(null, []),
   });
 
   tabsList: { name: string; disabled?: boolean }[] = [
@@ -59,6 +61,7 @@ export class CreateComponent {
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
     private _requestService: RequestService,
+    private _countryService: CountryService,
   ) {
     this._activatedRoute.queryParams.subscribe((params) => {
       if (params['lat']) {
@@ -79,8 +82,10 @@ export class CreateComponent {
       this.uploadState = 'uploading';
 
       try {
+        const country = await this._countryService.getCountry(this.markerForm.getRawValue()!.lat, this.markerForm.getRawValue()!.lng);
+        this.markerForm.patchValue({ country });
         await this._requestService.createMarker(this.markerForm.getRawValue());
-        console.log('Marker was updated');
+        console.log('Marker was created');
         this.uploadState = 'succeeded';
       } catch (err) {
         console.error('An error occurred', err);
