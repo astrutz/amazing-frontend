@@ -126,7 +126,7 @@ export class CreateComponent {
     }
   }
 
-  // protected selectTab(index: number) {
-  //   return;
-  // }
+  protected selectTab(index: number) {
+    return;
+  }
 }
