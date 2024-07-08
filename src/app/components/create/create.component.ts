@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
 import { UploadStates } from './create.type';
 import { CountryService } from '../../services/country.service';
+import { environment } from '../../environment';
 
 @Component({
   selector: 'app-create',
@@ -114,7 +115,7 @@ export class CreateComponent {
       try {
         const imageID = await this._requestService.uploadPicture(file);
         this.markerForm.patchValue({
-          pictureUrl: `https://amazing-artur-images.s3.eu-central-1.amazonaws.com/${imageID}`,
+          pictureUrl: `${environment.s3BucketUrl}/${imageID}`,
         });
         this.fileName = file.name;
         this.imageUploadState = 'succeeded';
@@ -125,7 +126,7 @@ export class CreateComponent {
     }
   }
 
-  protected selectTab(index: number) {
-    return;
-  }
+  // protected selectTab(index: number) {
+  //   return;
+  // }
 }

@@ -6,7 +6,7 @@ import { environment } from '../environment';
   providedIn: 'root',
 })
 export class CountryService {
-  private _baseUrl = `http://api.geonames.org/countryCodeJSON?username=${environment.geonamesUser}`;
+  private _baseUrl = `${environment.geonamesUrl}?username=${environment.geonamesUser}`;
 
   async getCountry(lat: number, lng: number): Promise<string | null> {
     try {
