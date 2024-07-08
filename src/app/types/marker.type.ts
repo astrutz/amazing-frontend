@@ -7,4 +7,5 @@ export type Marker = {
   lng: number;
   pictureUrl: string;
   uploader: string;
+  country: string;
 };

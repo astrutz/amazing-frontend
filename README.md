@@ -10,3 +10,9 @@ _Let's build a site to worship our Amazing Artur by implementing a map based too
 
 - [PrimeNG](https://primeng.org/)
 - [Leaflet](https://github.com/bluehalo/ngx-leaflet)
+
+## Create an .env file for
+NG_APP_BACKEND_URL \
+NG_APP_GEONAMES_USER \
+NG_APP_GEONAMES_URL \
+NG_APP_S3_BUCKET_URL

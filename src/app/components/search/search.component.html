@@ -1,25 +1,33 @@
 <main class="min-h-screen relative bg-amazing-bordeaux-dark">
   <div class="text-end pt-4 px-6">
-    <button type="button" class="text-3xl cursor-pointer border-0" routerLink="">
-      X
-    </button>
+    <button type="button" class="text-3xl cursor-pointer border-0" routerLink="">X</button>
   </div>
   <div class="m-auto pb-6 px-28 max-sm:px-6 md:max-w-[80vw] lg:max-w-[40vw]">
     <h1 class="font-bold text-3xl mb-1">Suchen</h1>
     <p class="mb-8 italic">Ich schwöre ich hatte den irgendwo eingetragen!</p>
     <div class="flex flex-col gap-2 mb-10">
-      <input type="text" [formControl]="searchTerm" id="title" placeholder="Gebe mindestens drei Zeichen ein.."
-             (input)="search()" />
+      <input
+        type="text"
+        [formControl]="searchTerm"
+        id="title"
+        placeholder="Gebe mindestens drei Zeichen ein.."
+        (input)="search()" />
     </div>
     <div class="flex flex-col gap-4">
       @if (foundMarkers.length) {
         <h3>{{ foundMarkers.length }} Marker gefunden</h3>
       }
       @for (marker of foundMarkers; track marker.id) {
-        <a (click)="navigate(marker)"
-           class="bg-amazing-bordeaux hover:bg-amazing-bordeaux-light p-6 cursor-pointer rounded-lg">
-          <h4 class="text-xl mb-2">{{ marker.name }}</h4>
-          <p>{{ marker.description }}</p>
+        <a
+          (click)="navigate(marker)"
+          class="bg-amazing-bordeaux hover:bg-amazing-bordeaux-light p-6 cursor-pointer rounded-lg">
+          <div class="flex gap-4 items-center">
+            @if (marker.country && marker.country.length === 2) {
+              <img [src]="getFlagUrl(marker.country)" class="w-6 h-6 rounded-lg" />
+            }
+            <h4 class="text-xl">{{ marker.name }}</h4>
+          </div>
+          <p class="mt-2">{{ marker.description }}</p>
           @if (marker.uploader) {
             <small>Von {{ marker.uploader }} eingetragen</small>
           }
