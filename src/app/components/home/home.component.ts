@@ -99,7 +99,8 @@ export class HomeComponent {
           ? `<h5 class="text-s">von ${markerElement.uploader} eingetragen</h5>`
           : ''
       }
-        <img src="${markerElement.pictureUrl ?? ''}" />`);
+        `);
+      // <img src="${markerElement.pictureUrl ?? ''}" />
       return mapMarker;
     });
   }
