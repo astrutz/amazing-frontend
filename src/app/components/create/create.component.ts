@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
 import { UploadStates } from './create.type';
 import { CountryService } from '../../services/country.service';
-import { environment } from '../../environment';
 
 @Component({
   selector: 'app-create',
@@ -113,9 +112,9 @@ export class CreateComponent {
     if (file) {
       this.imageUploadState = 'uploading';
       try {
-        const imageID = await this._requestService.uploadPicture(file);
+        const imageURL = await this._requestService.uploadPicture(file);
         this.markerForm.patchValue({
-          pictureUrl: `${environment.s3BucketUrl}/${imageID}`,
+          pictureUrl: imageURL,
         });
         this.fileName = file.name;
         this.imageUploadState = 'succeeded';

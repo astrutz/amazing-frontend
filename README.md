@@ -14,5 +14,4 @@ _Let's build a site to worship our Amazing Artur by implementing a map based too
 ## Create an .env file for
 NG_APP_BACKEND_URL \
 NG_APP_GEONAMES_USER \
-NG_APP_GEONAMES_URL \
-NG_APP_S3_BUCKET_URL
+NG_APP_GEONAMES_URL
