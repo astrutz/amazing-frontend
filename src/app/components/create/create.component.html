@@ -25,31 +25,30 @@
         <input id="uploader" aria-describedby="uploader-help" formControlName="uploader" />
         <small id="uploader-help">Person, die den Sticker aufgehangen hat</small>
       </div>
-      <!--      TODO: Bring this back, when an alternative for S3 is found-->
-      <!--      <div class="flex flex-col gap-2 mb-12">-->
-      <!--        We need to fake the label because we cannot change the text "Choose file from the input"-->
-      <!--        <label>Bild (optional)</label>-->
-      <!--        <label class="border rounded-lg py-1.5 px-2 text-base text-center" for="upload">-->
-      <!--          Datei hochladen-->
-      <!--        </label>-->
-      <!--        <input type="file" id="upload" class="hidden" (change)="handleFileInput($event)" />-->
-      <!--        <small class="mb-4">Erlaubte Formate: .jpg, .png, .jpeg</small>-->
-      <!--        <div class="m-auto">-->
-      <!--          <p class="pb-3">-->
-      <!--            @if (imageUploadState === 'succeeded') {-->
-      <!--              Upload von "<span class="font-bold italic">{{ fileName }}</span-->
-      <!--              >" erfolgreich-->
-      <!--            }-->
-      <!--            @if (imageUploadState === 'uploading') {-->
-      <!--              Upload läuft...-->
-      <!--            }-->
-      <!--            @if (imageUploadState === 'failed') {-->
-      <!--              Upload fehlgeschlagen-->
-      <!--            }-->
-      <!--          </p>-->
-      <!--          <progress-spinner [show]="imageUploadState === 'uploading'" />-->
-      <!--        </div>-->
-      <!--      </div>-->
+            <div class="flex flex-col gap-2 mb-12">
+<!--              We need to fake the label because we cannot change the text "Choose file from the input"-->
+              <label>Bild (optional)</label>
+              <label class="border rounded-lg py-1.5 px-2 text-base text-center" for="upload">
+                Datei hochladen
+              </label>
+              <input type="file" id="upload" class="hidden" (change)="handleFileInput($event)" />
+              <small class="mb-4">Erlaubte Formate: .jpg, .png, .jpeg</small>
+              <div class="m-auto">
+                <p class="pb-3">
+                  @if (imageUploadState === 'succeeded') {
+                    Upload von "<span class="font-bold italic">{{ fileName }}</span
+                    >" erfolgreich
+                  }
+                  @if (imageUploadState === 'uploading') {
+                    Upload läuft...
+                  }
+                  @if (imageUploadState === 'failed') {
+                    Upload fehlgeschlagen
+                  }
+                </p>
+                <progress-spinner [show]="imageUploadState === 'uploading'" />
+              </div>
+            </div>
       <div class="flex flex-wrap gap-x-6 gap-y-2 mb-8">
         @for (tab of tabsList; track $index) {
           <button type="button" [disabled]="tab.disabled" (click)="selectTab($index)">

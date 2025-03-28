@@ -9,7 +9,7 @@ import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluste
 import { CurrentLocationService } from '../../services/location.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { lucideLoader2, lucideMapPin, lucidePlus, lucideSearch, lucideX } from '@ng-icons/lucide';
-import { NgClass, NgStyle } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
 import { LoadingService } from '../../services/loading.service';
 import { MarkerService } from '../shared/marker/marker.service';
@@ -21,7 +21,6 @@ import { MarkerService } from '../shared/marker/marker.service';
     LeafletModule,
     LeafletMarkerClusterModule,
     NgIconComponent,
-    NgClass,
     NgStyle,
     RouterLink,
     ProgressSpinnerComponent,
@@ -99,8 +98,13 @@ export class HomeComponent {
           ? `<h5 class="text-s">von ${markerElement.uploader} eingetragen</h5>`
           : ''
       }
+        ${
+        markerElement.pictureUrl
+          ? `<img src="${markerElement.pictureUrl ?? ''}" />`
+          : ''
+      }
         `);
-      // <img src="${markerElement.pictureUrl ?? ''}" />
+
       return mapMarker;
     });
   }

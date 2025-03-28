@@ -17,7 +17,7 @@ export class RequestService {
 
   async uploadPicture(picture: File): Promise<string> {
     const formData: FormData = new FormData();
-    formData.append('file', picture, picture.name);
+    formData.append('image', picture, picture.name);
     const imageID = await axios.post(`${environment.backendUrl}/picture`, formData);
     return imageID.data.toString();
   }
