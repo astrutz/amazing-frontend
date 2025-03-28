@@ -9,7 +9,7 @@
     (leafletCenterChange)="changeCurrentPosition($event)"
     [leafletLayers]="layers">
     @if (isContextMenuOpen) {
-      <div class="absolute w-20 h-20 z-[999]" [style]="positioning">
+      <div class="absolute w-20 h-20 z-[999]" [ngStyle]="positioning">
         <div class="fixed rounded-lg p-2 bg-amazing-bordeaux">
           <a
             class="!text-white text-base"
