@@ -138,7 +138,7 @@ export class CreateComponent {
   }
 
   /**
-   * Triggered when something is pated into an input
+   * Triggered when something is pasted into an input
    * @param pasteEvent - The event triggered when pasting into input
    */
   protected onPaste(pasteEvent: ClipboardEvent): void {
