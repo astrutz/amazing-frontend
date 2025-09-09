@@ -7,6 +7,9 @@ import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-sp
 import { UploadStates } from './create.type';
 import { CountryService } from '../../services/country.service';
 
+const LATITUDE_REGEXP = /^[-+]?(?:[0-8]?\d(?:[.,]\d+)?|90(?:[.,]0+)?)$/;
+const LONGITUDE_REGEXP = /^[-+]?(?:(?:[0-9]?\d|1[0-7]\d)(?:[.,]\d+)?|180(?:[.,]0+)?)$/;
+
 @Component({
   selector: 'app-create',
   standalone: true,
@@ -14,10 +17,15 @@ import { CountryService } from '../../services/country.service';
   templateUrl: './create.component.html',
 })
 export class CreateComponent {
-  uploadState: UploadStates = 'waiting';
-  imageUploadState: UploadStates = 'waiting';
+  protected uploadState: UploadStates = 'waiting';
+  protected imageUploadState: UploadStates = 'waiting';
 
-  markerForm: FormGroup = new FormGroup({
+  /**
+   * Indicates if the pasted value is correct or not
+   */
+  protected pastedInputsValid: boolean = true;
+
+  protected markerForm: FormGroup = new FormGroup({
     name: new FormControl(null, [Validators.required]),
     description: new FormControl(null, [Validators.required]),
     uploader: new FormControl(null, []),
@@ -39,7 +47,7 @@ export class CreateComponent {
     country: new FormControl(null, []),
   });
 
-  tabsList: { name: string; disabled?: boolean }[] = [
+  protected tabsList: { name: string; disabled?: boolean }[] = [
     {
       name: 'Adresse',
       disabled: true,
@@ -53,15 +61,15 @@ export class CreateComponent {
     },
   ];
 
-  currentTab: number | null = 3;
+  protected currentTab: number | null = 3;
 
-  fileName: string = '';
+  protected fileName: string = '';
 
   constructor(
-    private _router: Router,
-    private _activatedRoute: ActivatedRoute,
-    private _requestService: RequestService,
-    private _countryService: CountryService,
+    private readonly _router: Router,
+    private readonly _activatedRoute: ActivatedRoute,
+    private readonly _requestService: RequestService,
+    private readonly _countryService: CountryService,
   ) {
     this._activatedRoute.queryParams.subscribe((params) => {
       if (params['lat']) {
@@ -127,5 +135,43 @@ export class CreateComponent {
 
   protected selectTab(index: number) {
     return;
+  }
+
+  /**
+   * Triggered when something is pated into an input
+   * @param pasteEvent - The event triggered when pasting into input
+   */
+  protected onPaste(pasteEvent: ClipboardEvent): void {
+    pasteEvent.preventDefault();
+    const text = pasteEvent.clipboardData?.getData('text') ?? '';
+    this._autoSplitLongLat(text);
+  }
+
+  /**
+   * Splits the pasted coordinates into the right format and automatically set
+   * it into the longitude and latitude form
+   * @example (51.226022, 6.792637) => [51.226022, 6.792637]
+   * @param input to be split
+   */
+  private _autoSplitLongLat(input: string): void {
+    if (!input.length) return;
+
+    // Removes every other character but the numbers separate by a comma
+    const removeCharsString = input.replace(/[^\d.,\-\s]/g, ' ').trim();
+
+    const coordinateParts = removeCharsString.split(',');
+
+    if (coordinateParts.length !== 2) {
+      this.pastedInputsValid = false;
+      return;
+    }
+
+    const latitude = parseFloat(coordinateParts[0].replace(',', '.'));
+    const longitude = parseFloat(coordinateParts[1].replace(',', '.'));
+
+    if (LATITUDE_REGEXP.test(latitude.toString()) && LONGITUDE_REGEXP.test(longitude.toString())) {
+      this.pastedInputsValid = true;
+      this.markerForm.patchValue({ lat: latitude, lng: longitude });
+    }
   }
 }
