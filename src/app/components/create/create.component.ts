@@ -20,11 +20,6 @@ export class CreateComponent {
   protected uploadState: UploadStates = 'waiting';
   protected imageUploadState: UploadStates = 'waiting';
 
-  /**
-   * Indicates if the pasted value is correct or not
-   */
-  protected pastedInputsValid: boolean = true;
-
   protected markerForm: FormGroup = new FormGroup({
     name: new FormControl(null, [Validators.required]),
     description: new FormControl(null, [Validators.required]),
@@ -138,13 +133,14 @@ export class CreateComponent {
   }
 
   /**
-   * Triggered when something is pasted into an input
+   * Triggered when something is pasted into an input. Handle the automatic
+   * split for long and lat when the format is correct. Otherwise, simply just
+   * use the pasted value.
    * @param pasteEvent - The event triggered when pasting into input
    */
   protected onPaste(pasteEvent: ClipboardEvent): void {
-    pasteEvent.preventDefault();
     const text = pasteEvent.clipboardData?.getData('text') ?? '';
-    this._autoSplitLongLat(text);
+    this._autoSplitLongLat(text, pasteEvent);
   }
 
   /**
@@ -152,8 +148,9 @@ export class CreateComponent {
    * it into the longitude and latitude form
    * @example (51.226022, 6.792637) => [51.226022, 6.792637]
    * @param input to be split
+   * @param pasteEvent - The event triggered when pasting into input
    */
-  private _autoSplitLongLat(input: string): void {
+  private _autoSplitLongLat(input: string, pasteEvent: ClipboardEvent): void {
     if (!input.length) return;
 
     // Removes every other character but the numbers separate by a comma
@@ -161,16 +158,13 @@ export class CreateComponent {
 
     const coordinateParts = removeCharsString.split(',');
 
-    if (coordinateParts.length !== 2) {
-      this.pastedInputsValid = false;
-      return;
-    }
+    if (coordinateParts.length !== 2) return;
 
     const latitude = parseFloat(coordinateParts[0].replace(',', '.'));
     const longitude = parseFloat(coordinateParts[1].replace(',', '.'));
 
     if (LATITUDE_REGEXP.test(latitude.toString()) && LONGITUDE_REGEXP.test(longitude.toString())) {
-      this.pastedInputsValid = true;
+      pasteEvent.preventDefault();
       this.markerForm.patchValue({ lat: latitude, lng: longitude });
     }
   }

@@ -61,9 +61,6 @@
           <div class="flex flex-col gap-2">
             <label for="latitude">Längengrad</label>
             <input
-              [ngClass]="{
-                'border-red-500 border-2': !pastedInputsValid
-              }"
               id="latitude"
               type="number"
               aria-describedby="latitude"
@@ -74,16 +71,10 @@
               (paste)="onPaste($event)"
             />
             <small>Dezimalwert zwischen 0-90</small>
-              @if (!pastedInputsValid) {
-                  <span class="text-red-500">Der eingefügte Input ist falsch.</span>
-              }
           </div>
           <div class="flex flex-col gap-2">
             <label for="longitude">Breitengrad</label>
             <input
-              [ngClass]="{
-                'border-red-500 border-2': !pastedInputsValid
-              }"
               id="longitude"
               type="number"
               aria-describedby="longitude"
@@ -93,9 +84,6 @@
               (paste)="onPaste($event)"
               required />
             <small>Dezimalwert zwischen 0-180</small>
-              @if (!pastedInputsValid) {
-                  <span class="text-red-500">Der eingefügte Input ist falsch.</span>
-              }
           </div>
         </div>
       }
