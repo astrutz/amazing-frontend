@@ -73,7 +73,6 @@ class LocationService {
   }
 
   public setCurrentLocation(coords: SetLocationValue) {
-    console.log(coords);
     this.lastPosition = Object.assign(this._homeBase, coords);
   }
 }
