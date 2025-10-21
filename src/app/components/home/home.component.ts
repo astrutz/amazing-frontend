@@ -64,18 +64,10 @@ export class HomeComponent {
   private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly _loadingService = inject(LoadingService);
   private readonly _locationService = inject(LocationService);
-  private readonly _router = inject(Router);
   protected readonly markerService = inject(MarkerService);
 
   constructor() {
-    const params = this._activatedRoute.snapshot.queryParams;
-    const latitude = +params['lat'];
-    const longitude = +params['lng'];
-
-    if (latitude && longitude) {
-      console.log(longitude, latitude);
-      this._locationService.setCurrentLocation({ latitude, longitude });
-    }
+    this._initLatLongByQueryParams();
 
     effect(() => {
       this._renderCurrentPosition();
@@ -213,6 +205,19 @@ export class HomeComponent {
    */
   protected get contextMenuPositioning(): any {
     return { 'left.px': this.contextMenuX(), 'top.px': this.contextMenuY() };
+  }
+
+  /**
+   * Sets the latitude and longitude if provided by the queryParams
+   */
+  private _initLatLongByQueryParams(): void {
+    const params = this._activatedRoute.snapshot.queryParams;
+    const latitude = +params['lat'];
+    const longitude = +params['lng'];
+
+    if (latitude && longitude) {
+      this._locationService.setCurrentLocation({ latitude, longitude });
+    }
   }
 
   /**
