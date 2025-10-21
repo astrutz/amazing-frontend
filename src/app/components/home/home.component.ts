@@ -89,6 +89,7 @@ export class HomeComponent {
   protected isContextMenuOpen = false;
   protected contextMenuX: WritableSignal<number> = signal(0);
   protected contextMenuY: WritableSignal<number> = signal(0);
+  protected viewportCenter$ = signal<L.LatLng>(this.mapCenter);
   private _options: MapOptions = {
     layers: [
       tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -137,14 +138,6 @@ export class HomeComponent {
     return layers;
   }
 
-  protected get options(): MapOptions {
-    return this._options;
-  }
-
-  protected get contextMenuPositioning(): any {
-    return { 'left.px': this.contextMenuX(), 'top.px': this.contextMenuY() };
-  }
-
   /** Provides the currentPosition to be used as centre of the map. */
   protected get mapCenter(): L.LatLng {
     return new L.LatLng(
@@ -153,28 +146,39 @@ export class HomeComponent {
     );
   }
 
+  /**
+   * Returns the loading state
+   */
   protected get isLoading(): boolean {
     return this._loadingService.isLoading;
   }
 
-  protected navigateTo(path: string) {
-    this._router.navigate([path]);
-  }
-
-  protected updatePosition() {
+  /**
+   * Called when clicking on the curren position button
+   */
+  protected async updatePosition() {
     this.isUpdatingPosition = true;
-    this._locationService.update().finally(() => {
+    try {
+      await this._locationService.update();
+      const { latitude, longitude } = this._locationService.lastPosition.coords;
+      const latLng = L.latLng(latitude, longitude);
+
+      this.viewportCenter$.set(latLng);
+    } finally {
       this.isUpdatingPosition = false;
-    });
+    }
   }
 
-  protected changeCurrentPosition(mapCenter: L.LatLng) {
-    this._locationService.setCurrentLocation({
-      latitude: mapCenter.lat,
-      longitude: mapCenter.lng,
-    });
+  /**
+   * Called when the center changes. E.g. when zooming in or out or scrolling
+   */
+  protected onViewportCenterChange(center: L.LatLng) {
+    this.viewportCenter$.set(center);
   }
 
+  /**
+   * Opens the leaflet contextMenu
+   */
   protected openContextMenu(event: LeafletMouseEvent) {
     this.contextMenuX.set(event.containerPoint.x);
     this.contextMenuY.set(event.containerPoint.y);
@@ -183,12 +187,32 @@ export class HomeComponent {
     this.isContextMenuOpen = true;
   }
 
+  /**
+   * Closes the leaflet contextMenu
+   */
   protected closeContextMenu(): void {
     this.isContextMenuOpen = false;
   }
 
+  /**
+   * Closes the info box
+   */
   protected closeInfoBox(): void {
     this.isInfoboxClosed = true;
+  }
+
+  /**
+   * Returns the leaflet options
+   */
+  protected get options(): MapOptions {
+    return this._options;
+  }
+
+  /**
+    Returns the contextMenu position
+   */
+  protected get contextMenuPositioning(): any {
+    return { 'left.px': this.contextMenuX(), 'top.px': this.contextMenuY() };
   }
 
   /**
