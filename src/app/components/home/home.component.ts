@@ -1,16 +1,39 @@
 import * as L from 'leaflet';
-import { divIcon, icon, LeafletMouseEvent, MapOptions, Marker, marker, tileLayer } from 'leaflet';
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import {
+  icon,
+  LeafletMouseEvent,
+  MapOptions,
+  Marker,
+  marker,
+  tileLayer
+} from 'leaflet';
+import {
+  Component, computed,
+  effect,
+  inject,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import 'leaflet.markercluster';
-import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
+import {
+  LeafletMarkerClusterModule
+} from '@asymmetrik/ngx-leaflet-markercluster';
 
-import { CurrentLocationService } from '../../services/location.service';
+import { LocationService } from '../../services/location.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { lucideLoader2, lucideMapPin, lucidePlus, lucideSearch, lucideX } from '@ng-icons/lucide';
+import {
+  lucideLoader2,
+  lucideMapPin,
+  lucidePlus,
+  lucideSearch,
+  lucideX
+} from '@ng-icons/lucide';
 import { NgStyle } from '@angular/common';
-import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
+import {
+  ProgressSpinnerComponent
+} from '../shared/progress-spinner/progress-spinner.component';
 import { LoadingService } from '../../services/loading.service';
 import { MarkerService } from '../shared/marker/marker.service';
 
@@ -38,38 +61,34 @@ import { MarkerService } from '../shared/marker/marker.service';
   ],
 })
 export class HomeComponent {
-  markerClusterData: Marker[] = [];
-  markerClusterOptions: L.MarkerClusterGroupOptions = {
-    showCoverageOnHover: false,
-    iconCreateFunction: function(cluster) {
-      const count = cluster.getChildCount();
-      return divIcon({
-        iconUrl: '/assets/marker-icon.svg',
-        iconSize: [96, 90],
-        html: `<img src="/assets/marker-icon.svg" alt="Amazing Artur Symbolbild"/> <span class="bg-amazing-bordeaux text-xl absolute bottom-1 right-2 w-8 h-8 rounded-full flex justify-center items-center">${count}</span>`,
-        className: 'relative',
-      });
-    },
-  };
-  clickedLat: number = 0;
-  clickedLng: number = 0;
+  private readonly _activatedRoute = inject(ActivatedRoute);
+  private readonly _loadingService = inject(LoadingService);
+  private readonly _locationService = inject(LocationService);
+  private readonly _router = inject(Router);
+  protected readonly markerService = inject(MarkerService);
+
+  constructor() {
+    const params = this._activatedRoute.snapshot.queryParams;
+    const latitude = +params['lat'];
+    const longitude = +params['lng'];
+
+    if (latitude && longitude) {
+      console.log(longitude, latitude);
+      this._locationService.setCurrentLocation({ latitude, longitude });
+    }
+
+    effect(() => {
+      this._renderCurrentPosition();
+    });
+  }
+
+  protected clickedLat: number = 0;
+  protected clickedLng: number = 0;
   protected isUpdatingPosition = false;
   protected isInfoboxClosed = false;
   protected isContextMenuOpen = false;
   protected contextMenuX: WritableSignal<number> = signal(0);
   protected contextMenuY: WritableSignal<number> = signal(0);
-  private _currentLocation = inject(CurrentLocationService);
-  private _router = inject(Router);
-
-  constructor(private readonly _activatedRoute: ActivatedRoute, protected readonly markerService: MarkerService, private readonly _loadingService: LoadingService) {
-    const params = this._activatedRoute.snapshot.queryParams;
-    const latitude = +params['lat'];
-    const longitude = +params['lng'];
-    if (latitude && longitude) {
-      this._currentLocation.setCurrentLocation({ latitude, longitude });
-    }
-  }
-
   private _options: MapOptions = {
     layers: [
       tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -79,46 +98,58 @@ export class HomeComponent {
     zoom: 15,
     center: this.mapCenter,
   };
+  private _currentPostionMarker?: Marker;
 
-  get options(): MapOptions {
-    return this._options;
-  }
-
-  get layers(): Marker[] {
-    // this.markerClusterData = this.markers$();
+  /**
+   * Creates all amazing markers for the layer
+   */
+  private _amazingLayers$ = computed<Marker[]>(() => {
     return this.markerService.markers$().map((markerElement) => {
       const mapMarker = marker([markerElement.lat, markerElement.lng], {
         title: markerElement.name,
-        icon: icon({ iconUrl: '/assets/marker-icon.svg', iconSize: [80, 64] }),
+        icon: icon({ iconUrl: '/assets/icons/marker-icon.svg', iconSize: [80, 64] }),
       });
-      mapMarker.bindPopup(`<h3 class="text-xl mb-2" id="${markerElement._id}">${markerElement.name}</h3>
-        <h4 class="text-m">${markerElement.description}</h4>
+      mapMarker.bindPopup(`<h3 class="text-xl mb-2" id="${ markerElement._id }">${ markerElement.name }</h3>
+        <h4 class="text-m">${ markerElement.description }</h4>
         ${
         markerElement.uploader
-          ? `<h5 class="text-s">von ${markerElement.uploader} eingetragen</h5>`
-          : ''
+        ? `<h5 class="text-s">von ${ markerElement.uploader } eingetragen</h5>`
+        : ''
       }
         ${
         markerElement.pictureUrl
-          ? `<img src="${markerElement.pictureUrl ?? ''}" />`
-          : ''
+        ? `<img src="${ markerElement.pictureUrl ?? '' }" />`
+        : ''
       }
         `);
 
       return mapMarker;
     });
+  })
+
+  /**
+   * Returns all amazing layers and the current position marker layer
+   */
+  protected get allLayers(): Marker[] {
+    const layers = [...this._amazingLayers$()];
+    if (this._currentPostionMarker) layers.push(this._currentPostionMarker);
+
+    return layers;
   }
 
-  get positioning(): any {
+  protected get options(): MapOptions {
+    return this._options;
+  }
+
+  protected get contextMenuPositioning(): any {
     return { 'left.px': this.contextMenuX(), 'top.px': this.contextMenuY() };
-    // return `left: ${this.contextMenuX()}px top: ${this.contextMenuY()}px`;
   }
 
   /** Provides the currentPosition to be used as centre of the map. */
   protected get mapCenter(): L.LatLng {
     return new L.LatLng(
-      this._currentLocation.lastPosition.coords.latitude,
-      this._currentLocation.lastPosition.coords.longitude,
+      this._locationService.lastPosition.coords.latitude,
+      this._locationService.lastPosition.coords.longitude,
     );
   }
 
@@ -132,13 +163,13 @@ export class HomeComponent {
 
   protected updatePosition() {
     this.isUpdatingPosition = true;
-    this._currentLocation.update().finally(() => {
+    this._locationService.update().finally(() => {
       this.isUpdatingPosition = false;
     });
   }
 
   protected changeCurrentPosition(mapCenter: L.LatLng) {
-    this._currentLocation.setCurrentLocation({
+    this._locationService.setCurrentLocation({
       latitude: mapCenter.lat,
       longitude: mapCenter.lng,
     });
@@ -158,5 +189,26 @@ export class HomeComponent {
 
   protected closeInfoBox(): void {
     this.isInfoboxClosed = true;
+  }
+
+  /**
+   * Either creates a new marker for the current position or updates the
+   * latitude and longitude
+   */
+  private _renderCurrentPosition(): void {
+    const pos = this._locationService.lastPosition;
+    const { latitude, longitude } = pos.coords;
+    const latLng = L.latLng(latitude, longitude);
+
+    if (!this._currentPostionMarker) {
+      this._currentPostionMarker = marker(latLng, {
+        icon: icon({
+          iconUrl: '/assets/icons/current-position-icon.svg',
+          iconSize: [40, 40],
+        })
+      });
+    } else {
+      this._currentPostionMarker.setLatLng(latLng);
+    }
   }
 }
