@@ -15,7 +15,7 @@ import {
   WritableSignal
 } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import 'leaflet.markercluster';
 import {
   LeafletMarkerClusterModule
