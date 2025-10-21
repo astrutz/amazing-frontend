@@ -5,7 +5,7 @@ import type { SetLocationValue } from '../types/location.type';
  * This service is intended to provide the whole app with a somewhat useful and reliable current location.
  */
 @Injectable({ providedIn: 'root' })
-class CurrentLocationService {
+class LocationService {
   private readonly _geolocation: Geolocation | null = null;
   private readonly _positioningOpts: PositionOptions = {
     enableHighAccuracy: true,
@@ -35,8 +35,8 @@ class CurrentLocationService {
     timestamp: Date.now(),
   });
 
+  /** Returns the signal in a read-only way. */
   public get lastPosition(): GeolocationPosition {
-    /** Returns the signal in a read-only way. */
     return this._lastPosition();
   }
 
@@ -73,8 +73,9 @@ class CurrentLocationService {
   }
 
   public setCurrentLocation(coords: SetLocationValue) {
+    console.log(coords);
     this.lastPosition = Object.assign(this._homeBase, coords);
   }
 }
 
-export { CurrentLocationService };
+export { LocationService };
