@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, Signal, signal } from '@angular/core';
 import type { SetLocationValue } from '../types/location.type';
 
 /**
@@ -30,18 +30,18 @@ class LocationService {
   /**
    * We use a signal to store the service’s state. This way all depending components are updated automatically
    * when the state changes without the need for the more costly zone.js change detections cycles. */
-  private readonly _lastPosition = signal<GeolocationPosition>({
+  private readonly _lastPosition$ = signal<GeolocationPosition>({
     coords: this._homeBase,
     timestamp: Date.now(),
   });
 
   /** Returns the signal in a read-only way. */
-  public get lastPosition(): GeolocationPosition {
-    return this._lastPosition();
+  public get lastPosition$(): Signal<GeolocationPosition> {
+    return this._lastPosition$.asReadonly();
   }
 
-  private set lastPosition(coords: GeolocationCoordinates) {
-    this._lastPosition.set({
+  private set lastPosition$(coords: GeolocationCoordinates) {
+    this._lastPosition$.set({
       coords,
       timestamp: Date.now(),
     });
@@ -63,7 +63,7 @@ class LocationService {
       else
         this._geolocation.getCurrentPosition(
           (position) => {
-            this._lastPosition.set(position);
+            this._lastPosition$.set(position);
             resolve();
           },
           reject,
@@ -73,7 +73,7 @@ class LocationService {
   }
 
   public setCurrentLocation(coords: SetLocationValue) {
-    this.lastPosition = Object.assign(this._homeBase, coords);
+    this.lastPosition$ = Object.assign(this._homeBase, coords);
   }
 }
 

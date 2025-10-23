@@ -133,8 +133,8 @@ export class HomeComponent {
   /** Provides the currentPosition to be used as centre of the map. */
   protected get mapCenter(): L.LatLng {
     return new L.LatLng(
-      this._locationService.lastPosition.coords.latitude,
-      this._locationService.lastPosition.coords.longitude,
+      this._locationService.lastPosition$().coords.latitude,
+      this._locationService.lastPosition$().coords.longitude,
     );
   }
 
@@ -152,7 +152,7 @@ export class HomeComponent {
     this.isUpdatingPosition = true;
     try {
       await this._locationService.update();
-      const { latitude, longitude } = this._locationService.lastPosition.coords;
+      const { latitude, longitude } = this._locationService.lastPosition$().coords;
       const latLng = L.latLng(latitude, longitude);
 
       this.viewportCenter$.set(latLng);
@@ -225,7 +225,7 @@ export class HomeComponent {
    * latitude and longitude
    */
   private _renderCurrentPosition(): void {
-    const pos = this._locationService.lastPosition;
+    const pos = this._locationService.lastPosition$();
     const { latitude, longitude } = pos.coords;
     const latLng = L.latLng(latitude, longitude);
 
