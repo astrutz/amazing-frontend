@@ -7,7 +7,7 @@
         [leafletOptions]="options"
         [leafletCenter]="viewportCenter$()"
         (leafletCenterChange)="onViewportCenterChange($event)"
-        [leafletLayers]="allLayers"
+        [leafletLayers]="allLayers$()"
     >
         @if (isContextMenuOpen) {
             <div
@@ -32,18 +32,20 @@
             class="fixed z-[999] bg-amazing-bordeaux rounded-lg py-6 px-8 mr-16 top-4 left-16 max-md:bottom-4 max-md:top-auto"
         >
             <div class="flex justify-between gap-x-6 max-md:gap-x-1">
-                <h2 class="text-3xl font-bold pb-1">Wo ist mein Amazing
-                                                    Artur?</h2>
+                <h2 class="text-3xl font-bold pb-1">
+                    Wo ist mein Amazing Artur?
+                </h2>
                 <button
                     type="button"
                     class="border-none cursor-pointer p-0 max-md:flex"
                     (click)="closeInfoBox()"
                 >
-                    <ng-icon size="28" name="lucideX"></ng-icon>
+                    <ng-icon size="28" name="lucideX" />
                 </button>
             </div>
 
-            <p class="opacity-60 pb-5 italic">Silence be the last you hear</p>
+            <p class="opacity-60 pb-5 italic">Silence be the last you hear
+            </p>
             <p>Finde einen von {{ markerService.markers$().length }} Amazing
                Artur Sticker!
             </p>
@@ -59,21 +61,21 @@
             <ng-icon
                 size="32"
                 [name]="isUpdatingPosition ? 'lucideLoader2' : 'lucideMapPin'"
-            ></ng-icon>
+            />
         </button>
         <button
             type="button"
             class="bg-amazing-bordeaux border-transparent flex items-center"
             routerLink="search"
         >
-            <ng-icon size="32" name="lucideSearch"></ng-icon>
+            <ng-icon size="32" name="lucideSearch" />
         </button>
         <button
             type="button"
             class="bg-amazing-bordeaux border-transparent flex items-center"
             routerLink="create"
         >
-            <ng-icon size="32" name="lucidePlus"></ng-icon>
+            <ng-icon size="32" name="lucidePlus" />
         </button>
     </div>
 
@@ -81,10 +83,8 @@
         <div class="fixed flex justify-center z-[999] bottom-4 w-full ">
             <div class="inline-flex justify-center gap-8 p-4 bg-amazing-bordeaux rounded-md w-auto">
                 <p class="self-center">Marker werden geladen...</p>
-                <progress-spinner [show]="isLoading">
-                </progress-spinner>
+                <progress-spinner [show]="isLoading" />
             </div>
         </div>
     }
-
 </main>
