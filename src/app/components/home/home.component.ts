@@ -1,16 +1,39 @@
 import * as L from 'leaflet';
-import { divIcon, icon, LeafletMouseEvent, MapOptions, Marker, marker, tileLayer } from 'leaflet';
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import {
+  icon,
+  LeafletMouseEvent,
+  MapOptions,
+  Marker,
+  marker,
+  tileLayer
+} from 'leaflet';
+import {
+  Component,
+  computed,
+  inject, Signal,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import 'leaflet.markercluster';
-import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
+import {
+  LeafletMarkerClusterModule
+} from '@asymmetrik/ngx-leaflet-markercluster';
 
-import { CurrentLocationService } from '../../services/location.service';
+import { LocationService } from '../../services/location.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { lucideLoader2, lucideMapPin, lucidePlus, lucideSearch, lucideX } from '@ng-icons/lucide';
+import {
+  lucideLoader2,
+  lucideMapPin,
+  lucidePlus,
+  lucideSearch,
+  lucideX
+} from '@ng-icons/lucide';
 import { NgStyle } from '@angular/common';
-import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
+import {
+  ProgressSpinnerComponent
+} from '../shared/progress-spinner/progress-spinner.component';
 import { LoadingService } from '../../services/loading.service';
 import { MarkerService } from '../shared/marker/marker.service';
 
@@ -38,37 +61,31 @@ import { MarkerService } from '../shared/marker/marker.service';
   ],
 })
 export class HomeComponent {
-  markerClusterData: Marker[] = [];
-  markerClusterOptions: L.MarkerClusterGroupOptions = {
-    showCoverageOnHover: false,
-    iconCreateFunction: function(cluster) {
-      const count = cluster.getChildCount();
-      return divIcon({
-        iconUrl: '/assets/marker-icon.svg',
-        iconSize: [96, 90],
-        html: `<img src="/assets/marker-icon.svg" alt="Amazing Artur Symbolbild"/> <span class="bg-amazing-bordeaux text-xl absolute bottom-1 right-2 w-8 h-8 rounded-full flex justify-center items-center">${count}</span>`,
-        className: 'relative',
-      });
-    },
-  };
-  clickedLat: number = 0;
-  clickedLng: number = 0;
-  protected isUpdatingPosition = false;
-  protected isInfoboxClosed = false;
-  protected isContextMenuOpen = false;
-  protected contextMenuX: WritableSignal<number> = signal(0);
-  protected contextMenuY: WritableSignal<number> = signal(0);
-  private _currentLocation = inject(CurrentLocationService);
-  private _router = inject(Router);
+  private readonly _activatedRoute = inject(ActivatedRoute);
+  private readonly _loadingService = inject(LoadingService);
+  private readonly _locationService = inject(LocationService);
+  protected readonly markerService = inject(MarkerService);
 
-  constructor(private readonly _activatedRoute: ActivatedRoute, protected readonly markerService: MarkerService, private readonly _loadingService: LoadingService) {
-    const params = this._activatedRoute.snapshot.queryParams;
-    const latitude = +params['lat'];
-    const longitude = +params['lng'];
-    if (latitude && longitude) {
-      this._currentLocation.setCurrentLocation({ latitude, longitude });
-    }
+  constructor() {
+    this._initLatLongByQueryParams();
   }
+
+  /** Provides the currentPosition to be used as centre of the map. */
+  protected mapCenter$ = computed<L.LatLng>(() => {
+    return new L.LatLng(
+      this._locationService.lastPosition$().coords.latitude,
+      this._locationService.lastPosition$().coords.longitude,
+    );
+  });
+
+  protected clickedLat$ = signal<number>(0);
+  protected clickedLng$ = signal<number>(0);
+  protected isUpdatingPosition$ = signal<boolean>(false);
+  protected isInfoboxClosed$ = signal<boolean>(false);
+  protected isContextMenuOpen$ = signal<boolean>(false);
+  protected contextMenuX$: WritableSignal<number> = signal(0);
+  protected contextMenuY$: WritableSignal<number> = signal(0);
+  protected viewportCenter$ = signal<L.LatLng>(this.mapCenter$());
 
   private _options: MapOptions = {
     layers: [
@@ -77,86 +94,153 @@ export class HomeComponent {
       }),
     ],
     zoom: 15,
-    center: this.mapCenter,
+    center: this.mapCenter$(),
   };
 
-  get options(): MapOptions {
-    return this._options;
-  }
+  private _currentPostionMarker: Marker | null = null;
 
-  get layers(): Marker[] {
-    // this.markerClusterData = this.markers$();
+  /**
+   * Creates all amazing markers for the layer
+   */
+  private _amazingLayers$ = computed<Marker[]>(() => {
     return this.markerService.markers$().map((markerElement) => {
       const mapMarker = marker([markerElement.lat, markerElement.lng], {
         title: markerElement.name,
-        icon: icon({ iconUrl: '/assets/marker-icon.svg', iconSize: [80, 64] }),
+        icon: icon({
+          iconUrl: '/assets/icons/marker-icon.svg',
+          iconSize: [80, 64]
+        }),
       });
-      mapMarker.bindPopup(`<h3 class="text-xl mb-2" id="${markerElement._id}">${markerElement.name}</h3>
-        <h4 class="text-m">${markerElement.description}</h4>
+      mapMarker.bindPopup(`<h3 class="text-xl mb-2" id="${ markerElement._id }">${ markerElement.name }</h3>
+        <h4 class="text-m">${ markerElement.description }</h4>
         ${
         markerElement.uploader
-          ? `<h5 class="text-s">von ${markerElement.uploader} eingetragen</h5>`
-          : ''
+        ? `<h5 class="text-s">von ${ markerElement.uploader } eingetragen</h5>`
+        : ''
       }
         ${
         markerElement.pictureUrl
-          ? `<img src="${markerElement.pictureUrl ?? ''}" />`
-          : ''
+        ? `<img src="${ markerElement.pictureUrl ?? '' }" />`
+        : ''
       }
         `);
 
       return mapMarker;
     });
+  });
+
+  /**
+   * Returns all amazing layers and the current position marker layer
+   */
+  protected allLayers$ = computed<Marker[]>(() =>
+    [...this._amazingLayers$(), this.currentPositionMarker$()]
+  );
+
+  /**
+   * Either creates a new marker for the current position or updates the
+   * latitude and longitude
+   */
+  protected currentPositionMarker$ = computed<Marker>(() => {
+    const pos = this._locationService.lastPosition$();
+    const { latitude, longitude } = pos.coords;
+    const latLng = L.latLng(latitude, longitude);
+
+    if (!this._currentPostionMarker) {
+      this._currentPostionMarker = marker(latLng, {
+        icon: icon({
+          iconUrl: '/assets/icons/current-position-icon.svg',
+          iconSize: [40, 40],
+        })
+      });
+    } else {
+      this._currentPostionMarker.setLatLng(latLng);
+    }
+
+    return this._currentPostionMarker;
+  });
+
+  /**
+   * Returns the loading state
+   */
+  protected get isLoading$(): Signal<boolean> {
+    return this._loadingService.isLoading$;
   }
 
-  get positioning(): any {
-    return { 'left.px': this.contextMenuX(), 'top.px': this.contextMenuY() };
-    // return `left: ${this.contextMenuX()}px top: ${this.contextMenuY()}px`;
+  /**
+   * Called when clicking on the curren position button
+   */
+  protected async updatePosition() {
+    this.isUpdatingPosition$.set(true);
+    try {
+      await this._locationService.update();
+      const {
+        latitude,
+        longitude
+      } = this._locationService.lastPosition$().coords;
+      const latLng = L.latLng(latitude, longitude);
+
+      this.viewportCenter$.set(latLng);
+    } finally {
+      this.isUpdatingPosition$.set(false);
+    }
   }
 
-  /** Provides the currentPosition to be used as centre of the map. */
-  protected get mapCenter(): L.LatLng {
-    return new L.LatLng(
-      this._currentLocation.lastPosition.coords.latitude,
-      this._currentLocation.lastPosition.coords.longitude,
-    );
+  /**
+   * Called when the center changes. E.g. when zooming in or out or scrolling
+   */
+  protected onViewportCenterChange(center: L.LatLng) {
+    this.viewportCenter$.set(center);
   }
 
-  protected get isLoading(): boolean {
-    return this._loadingService.isLoading;
-  }
-
-  protected navigateTo(path: string) {
-    this._router.navigate([path]);
-  }
-
-  protected updatePosition() {
-    this.isUpdatingPosition = true;
-    this._currentLocation.update().finally(() => {
-      this.isUpdatingPosition = false;
-    });
-  }
-
-  protected changeCurrentPosition(mapCenter: L.LatLng) {
-    this._currentLocation.setCurrentLocation({
-      latitude: mapCenter.lat,
-      longitude: mapCenter.lng,
-    });
-  }
-
+  /**
+   * Opens the leaflet contextMenu
+   */
   protected openContextMenu(event: LeafletMouseEvent) {
-    this.contextMenuX.set(event.containerPoint.x);
-    this.contextMenuY.set(event.containerPoint.y);
-    this.clickedLat = event.latlng.lat;
-    this.clickedLng = event.latlng.lng;
-    this.isContextMenuOpen = true;
+    this.contextMenuX$.set(event.containerPoint.x);
+    this.contextMenuY$.set(event.containerPoint.y);
+    this.clickedLat$.set(event.latlng.lat);
+    this.clickedLng$.set(event.latlng.lng);
+    this.isContextMenuOpen$.set(true);
   }
 
+  /**
+   * Closes the leaflet contextMenu
+   */
   protected closeContextMenu(): void {
-    this.isContextMenuOpen = false;
+    this.isContextMenuOpen$.set(false);
   }
 
+  /**
+   * Closes the info box
+   */
   protected closeInfoBox(): void {
-    this.isInfoboxClosed = true;
+    this.isInfoboxClosed$.set(true);
+  }
+
+  /**
+   * Returns the leaflet options
+   */
+  protected get options(): MapOptions {
+    return this._options;
+  }
+
+  /**
+   Returns the contextMenu position
+   */
+  protected get contextMenuPositioning(): any {
+    return { 'left.px': this.contextMenuX$(), 'top.px': this.contextMenuY$() };
+  }
+
+  /**
+   * Sets the latitude and longitude if provided by the queryParams
+   */
+  private _initLatLongByQueryParams(): void {
+    const params = this._activatedRoute.snapshot.queryParams;
+    const latitude = +params['lat'];
+    const longitude = +params['lng'];
+
+    if (latitude && longitude) {
+      this._locationService.setCurrentLocation({ latitude, longitude });
+    }
   }
 }

@@ -3,7 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MarkerService } from '../shared/marker/marker.service';
 import { Marker } from '../../types/marker.type';
-import { CurrentLocationService } from '../../services/location.service';
+import { LocationService } from '../../services/location.service';
 
 @Component({
   selector: 'app-search',
@@ -18,7 +18,7 @@ export class SearchComponent {
   constructor(
     private _router: Router,
     private readonly _markerService: MarkerService,
-    private readonly _currentLocation: CurrentLocationService,
+    private readonly _currentLocation: LocationService,
   ) {
     this.searchTerm = new FormControl('', [Validators.required, Validators.minLength(3)]);
   }
