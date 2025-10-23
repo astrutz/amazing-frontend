@@ -10,7 +10,7 @@ import {
 import {
   Component,
   computed,
-  inject,
+  inject, Signal,
   signal,
   WritableSignal
 } from '@angular/core';
@@ -162,8 +162,8 @@ export class HomeComponent {
   /**
    * Returns the loading state
    */
-  protected get isLoading(): boolean {
-    return this._loadingService.isLoading;
+  protected get isLoading$(): Signal<boolean> {
+    return this._loadingService.isLoading$;
   }
 
   /**

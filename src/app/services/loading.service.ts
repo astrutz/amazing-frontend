@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Signal, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoadingService {
-  private _isLoading = true;
+  private _isLoading$ = signal<boolean>(true);
 
-  get isLoading() {
-    return this._isLoading;
+  public get isLoading$(): Signal<boolean> {
+    return this._isLoading$.asReadonly();
   }
 
-  set isLoading(isLoading: boolean) {
-    this._isLoading = isLoading;
+  public set isLoading(isLoading: boolean) {
+    this._isLoading$.set(isLoading);
   }
 }
