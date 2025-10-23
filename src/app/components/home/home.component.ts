@@ -10,7 +10,6 @@ import {
 import {
   Component,
   computed,
-  effect,
   inject,
   signal,
   WritableSignal
@@ -69,10 +68,6 @@ export class HomeComponent {
 
   constructor() {
     this._initLatLongByQueryParams();
-
-    effect(() => {
-      this._renderCurrentPosition();
-    });
   }
 
   /** Provides the currentPosition to be used as centre of the map. */
@@ -91,6 +86,7 @@ export class HomeComponent {
   protected contextMenuX$: WritableSignal<number> = signal(0);
   protected contextMenuY$: WritableSignal<number> = signal(0);
   protected viewportCenter$ = signal<L.LatLng>(this.mapCenter$());
+
   private _options: MapOptions = {
     layers: [
       tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -100,7 +96,8 @@ export class HomeComponent {
     zoom: 15,
     center: this.mapCenter$(),
   };
-  private _currentPostionMarker?: Marker;
+
+  private _currentPostionMarker: Marker | null = null;
 
   /**
    * Creates all amazing markers for the layer
@@ -135,11 +132,31 @@ export class HomeComponent {
   /**
    * Returns all amazing layers and the current position marker layer
    */
-  protected allLayers$ = computed<Marker[]>(() => {
-    const layers = [...this._amazingLayers$()];
-    if (this._currentPostionMarker) layers.push(this._currentPostionMarker);
+  protected allLayers$ = computed<Marker[]>(() =>
+    [...this._amazingLayers$(), this.currentPositionMarker$()]
+  );
 
-    return layers;
+  /**
+   * Either creates a new marker for the current position or updates the
+   * latitude and longitude
+   */
+  protected currentPositionMarker$ = computed<Marker>(() => {
+    const pos = this._locationService.lastPosition$();
+    const { latitude, longitude } = pos.coords;
+    const latLng = L.latLng(latitude, longitude);
+
+    if (!this._currentPostionMarker) {
+      this._currentPostionMarker = marker(latLng, {
+        icon: icon({
+          iconUrl: '/assets/icons/current-position-icon.svg',
+          iconSize: [40, 40],
+        })
+      });
+    } else {
+      this._currentPostionMarker.setLatLng(latLng);
+    }
+
+    return this._currentPostionMarker;
   });
 
   /**
@@ -224,27 +241,6 @@ export class HomeComponent {
 
     if (latitude && longitude) {
       this._locationService.setCurrentLocation({ latitude, longitude });
-    }
-  }
-
-  /**
-   * Either creates a new marker for the current position or updates the
-   * latitude and longitude
-   */
-  private _renderCurrentPosition(): void {
-    const pos = this._locationService.lastPosition$();
-    const { latitude, longitude } = pos.coords;
-    const latLng = L.latLng(latitude, longitude);
-
-    if (!this._currentPostionMarker) {
-      this._currentPostionMarker = marker(latLng, {
-        icon: icon({
-          iconUrl: '/assets/icons/current-position-icon.svg',
-          iconSize: [40, 40],
-        })
-      });
-    } else {
-      this._currentPostionMarker.setLatLng(latLng);
     }
   }
 }
