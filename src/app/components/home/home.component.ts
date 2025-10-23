@@ -8,7 +8,8 @@ import {
   tileLayer
 } from 'leaflet';
 import {
-  Component, computed,
+  Component,
+  computed,
   effect,
   inject,
   signal,
@@ -74,14 +75,22 @@ export class HomeComponent {
     });
   }
 
-  protected clickedLat: number = 0;
-  protected clickedLng: number = 0;
-  protected isUpdatingPosition = false;
-  protected isInfoboxClosed = false;
-  protected isContextMenuOpen = false;
-  protected contextMenuX: WritableSignal<number> = signal(0);
-  protected contextMenuY: WritableSignal<number> = signal(0);
-  protected viewportCenter$ = signal<L.LatLng>(this.mapCenter);
+  /** Provides the currentPosition to be used as centre of the map. */
+  protected mapCenter$ = computed<L.LatLng>(() => {
+    return new L.LatLng(
+      this._locationService.lastPosition$().coords.latitude,
+      this._locationService.lastPosition$().coords.longitude,
+    );
+  });
+
+  protected clickedLat$ = signal<number>(0);
+  protected clickedLng$ = signal<number>(0);
+  protected isUpdatingPosition$ = signal<boolean>(false);
+  protected isInfoboxClosed$ = signal<boolean>(false);
+  protected isContextMenuOpen$ = signal<boolean>(false);
+  protected contextMenuX$: WritableSignal<number> = signal(0);
+  protected contextMenuY$: WritableSignal<number> = signal(0);
+  protected viewportCenter$ = signal<L.LatLng>(this.mapCenter$());
   private _options: MapOptions = {
     layers: [
       tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -89,7 +98,7 @@ export class HomeComponent {
       }),
     ],
     zoom: 15,
-    center: this.mapCenter,
+    center: this.mapCenter$(),
   };
   private _currentPostionMarker?: Marker;
 
@@ -100,7 +109,10 @@ export class HomeComponent {
     return this.markerService.markers$().map((markerElement) => {
       const mapMarker = marker([markerElement.lat, markerElement.lng], {
         title: markerElement.name,
-        icon: icon({ iconUrl: '/assets/icons/marker-icon.svg', iconSize: [80, 64] }),
+        icon: icon({
+          iconUrl: '/assets/icons/marker-icon.svg',
+          iconSize: [80, 64]
+        }),
       });
       mapMarker.bindPopup(`<h3 class="text-xl mb-2" id="${ markerElement._id }">${ markerElement.name }</h3>
         <h4 class="text-m">${ markerElement.description }</h4>
@@ -118,25 +130,17 @@ export class HomeComponent {
 
       return mapMarker;
     });
-  })
+  });
 
   /**
    * Returns all amazing layers and the current position marker layer
    */
-  protected get allLayers(): Marker[] {
+  protected allLayers$ = computed<Marker[]>(() => {
     const layers = [...this._amazingLayers$()];
     if (this._currentPostionMarker) layers.push(this._currentPostionMarker);
 
     return layers;
-  }
-
-  /** Provides the currentPosition to be used as centre of the map. */
-  protected get mapCenter(): L.LatLng {
-    return new L.LatLng(
-      this._locationService.lastPosition$().coords.latitude,
-      this._locationService.lastPosition$().coords.longitude,
-    );
-  }
+  });
 
   /**
    * Returns the loading state
@@ -149,15 +153,18 @@ export class HomeComponent {
    * Called when clicking on the curren position button
    */
   protected async updatePosition() {
-    this.isUpdatingPosition = true;
+    this.isUpdatingPosition$.set(true);
     try {
       await this._locationService.update();
-      const { latitude, longitude } = this._locationService.lastPosition$().coords;
+      const {
+        latitude,
+        longitude
+      } = this._locationService.lastPosition$().coords;
       const latLng = L.latLng(latitude, longitude);
 
       this.viewportCenter$.set(latLng);
     } finally {
-      this.isUpdatingPosition = false;
+      this.isUpdatingPosition$.set(false);
     }
   }
 
@@ -172,25 +179,25 @@ export class HomeComponent {
    * Opens the leaflet contextMenu
    */
   protected openContextMenu(event: LeafletMouseEvent) {
-    this.contextMenuX.set(event.containerPoint.x);
-    this.contextMenuY.set(event.containerPoint.y);
-    this.clickedLat = event.latlng.lat;
-    this.clickedLng = event.latlng.lng;
-    this.isContextMenuOpen = true;
+    this.contextMenuX$.set(event.containerPoint.x);
+    this.contextMenuY$.set(event.containerPoint.y);
+    this.clickedLat$.set(event.latlng.lat);
+    this.clickedLng$.set(event.latlng.lng);
+    this.isContextMenuOpen$.set(true);
   }
 
   /**
    * Closes the leaflet contextMenu
    */
   protected closeContextMenu(): void {
-    this.isContextMenuOpen = false;
+    this.isContextMenuOpen$.set(false);
   }
 
   /**
    * Closes the info box
    */
   protected closeInfoBox(): void {
-    this.isInfoboxClosed = true;
+    this.isInfoboxClosed$.set(true);
   }
 
   /**
@@ -201,10 +208,10 @@ export class HomeComponent {
   }
 
   /**
-    Returns the contextMenu position
+   Returns the contextMenu position
    */
   protected get contextMenuPositioning(): any {
-    return { 'left.px': this.contextMenuX(), 'top.px': this.contextMenuY() };
+    return { 'left.px': this.contextMenuX$(), 'top.px': this.contextMenuY$() };
   }
 
   /**

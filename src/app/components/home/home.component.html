@@ -9,7 +9,7 @@
         (leafletCenterChange)="onViewportCenterChange($event)"
         [leafletLayers]="allLayers$()"
     >
-        @if (isContextMenuOpen) {
+        @if (isContextMenuOpen$()) {
             <div
                 class="absolute w-20 h-20 z-[999]"
                 [ngStyle]="contextMenuPositioning"
@@ -18,7 +18,7 @@
                     <a
                         class="!text-white text-base"
                         routerLink="create"
-                        [queryParams]="{ lat: clickedLat, lng: clickedLng }"
+                        [queryParams]="{ lat: clickedLat$, lng: clickedLng$ }"
                     >
                         Sticker hinzufügen
                     </a>
@@ -27,7 +27,7 @@
         }
     </div>
 
-    @if (!isInfoboxClosed && !isLoading) {
+    @if (!isInfoboxClosed$() && !isLoading) {
         <div
             class="fixed z-[999] bg-amazing-bordeaux rounded-lg py-6 px-8 mr-16 top-4 left-16 max-md:bottom-4 max-md:top-auto"
         >
@@ -60,7 +60,7 @@
         >
             <ng-icon
                 size="32"
-                [name]="isUpdatingPosition ? 'lucideLoader2' : 'lucideMapPin'"
+                [name]="isUpdatingPosition$() ? 'lucideLoader2' : 'lucideMapPin'"
             />
         </button>
         <button
