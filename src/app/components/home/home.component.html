@@ -18,7 +18,7 @@
                     <a
                         class="!text-white text-base"
                         routerLink="create"
-                        [queryParams]="{ lat: clickedLat$, lng: clickedLng$ }"
+                        [queryParams]="{ lat: clickedLat$(), lng: clickedLng$() }"
                     >
                         Sticker hinzufügen
                     </a>
