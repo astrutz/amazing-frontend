@@ -106,7 +106,7 @@ class LocationService {
               case error.PERMISSION_DENIED:
                 this._geolocationError$.set({
                   code: GeolocationErrorCode.PERMISSION_DENIED,
-                  message: 'Der Nutzer hat die Abrufung des Standorts abgelehnt.'
+                  message: 'Die Standortfreigabe wurde verweigert.'
                 });
                 break;
               case error.POSITION_UNAVAILABLE:
@@ -129,6 +129,7 @@ class LocationService {
                 break;
             }
             this.isGeolocation = false;
+            this.isUpdatingPosition$.set(false);
           },
           this._positioningOpts,
         );
