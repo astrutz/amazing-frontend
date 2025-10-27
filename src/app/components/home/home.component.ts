@@ -84,7 +84,7 @@ export class HomeComponent {
   private _currentPostionMarker: Marker | null = null;
 
   private _amazingClusterGroup$ = computed<MarkerClusterGroup>(() => {
-    const clusterGroup = L.markerClusterGroup();
+    const clusterGroup = (L as any).markerClusterGroup();
     this._amazingLayers$().forEach((m) => clusterGroup.addLayer(m));
     return clusterGroup;
   });
