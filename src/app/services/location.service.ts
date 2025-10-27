@@ -1,5 +1,5 @@
-import {Injectable, Signal, signal, WritableSignal} from '@angular/core';
-import {GeolocationErrorCode, GeolocationErrorCodeMessage, SetLocationValue} from '../types/location.type';
+import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { GeolocationErrorCode, GeolocationErrorCodeMessage, SetLocationValue } from '../types/location.type';
 
 /**
  * This service is intended to provide the whole app with a somewhat useful and reliable current location.
@@ -141,7 +141,6 @@ class LocationService {
                 break;
             }
             this.isGeolocation = false;
-            this.isUpdatingPosition$.set(false);
           },
           this._positioningOpts,
         );
@@ -155,4 +154,4 @@ class LocationService {
   }
 }
 
-export {LocationService};
+export { LocationService };
