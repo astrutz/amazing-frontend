@@ -15,26 +15,26 @@ import { LoadingService } from '../../services/loading.service';
 import { MarkerService } from '../shared/marker/marker.service';
 
 @Component({
-  selector: 'app-home',
-  imports: [
-    LeafletModule,
-    LeafletMarkerClusterModule,
-    NgIconComponent,
-    NgStyle,
-    RouterLink,
-    ProgressSpinnerComponent,
-  ],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
-  viewProviders: [
-    provideIcons({
-      lucidePlus,
-      lucideMapPin,
-      lucideLoader2,
-      lucideX,
-      lucideSearch,
-    }),
-  ],
+    selector: 'app-home',
+    imports: [
+        LeafletModule,
+        LeafletMarkerClusterModule,
+        NgIconComponent,
+        NgStyle,
+        RouterLink,
+        ProgressSpinnerComponent,
+    ],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.css',
+    viewProviders: [
+        provideIcons({
+            lucidePlus,
+            lucideMapPin,
+            lucideLoader2,
+            lucideX,
+            lucideSearch,
+        }),
+    ]
 })
 export class HomeComponent {
   private readonly _activatedRoute = inject(ActivatedRoute);
@@ -75,12 +75,6 @@ export class HomeComponent {
 
   private _currentPostionMarker: Marker | null = null;
 
-  private _amazingClusterGroup$ = computed<L.MarkerClusterGroup>(() => {
-    const clusterGroup = L.markerClusterGroup();
-    this._amazingLayers$().forEach((m) => clusterGroup.addLayer(m));
-    return clusterGroup;
-  });
-
   /**
    * Creates all amazing markers for the layer
    */
@@ -110,13 +104,12 @@ export class HomeComponent {
   /**
    * Returns all amazing layers and the current position marker layer
    */
-  protected allLayers$ = computed<(L.Layer | L.MarkerClusterGroup)[]>(() => {
+  protected allLayers$ = computed<Marker[]>(() => {
     const currentPositionMarker = this.currentPositionMarker$();
-    const layers: (L.Layer | L.MarkerClusterGroup)[] = [this._amazingClusterGroup$()];
     if (currentPositionMarker) {
-      layers.push(currentPositionMarker);
+      return [...this._amazingLayers$(), currentPositionMarker];
     }
-    return layers;
+    return [...this._amazingLayers$()];
   });
 
   /**
