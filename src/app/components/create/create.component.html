@@ -46,7 +46,7 @@
               Upload fehlgeschlagen
             }
           </p>
-          <progress-spinner [show]="imageUploadState === 'uploading'"/>
+          <progress-spinner [show$]="imageUploadState === 'uploading'"/>
         </div>
       </div>
       <div class="flex flex-wrap gap-x-6 gap-y-2 mb-8">
