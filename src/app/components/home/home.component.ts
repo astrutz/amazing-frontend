@@ -15,26 +15,26 @@ import { LoadingService } from '../../services/loading.service';
 import { MarkerService } from '../shared/marker/marker.service';
 
 @Component({
-    selector: 'app-home',
-    imports: [
-        LeafletModule,
-        LeafletMarkerClusterModule,
-        NgIconComponent,
-        NgStyle,
-        RouterLink,
-        ProgressSpinnerComponent,
-    ],
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.css',
-    viewProviders: [
-        provideIcons({
-            lucidePlus,
-            lucideMapPin,
-            lucideLoader2,
-            lucideX,
-            lucideSearch,
-        }),
-    ]
+  selector: 'app-home',
+  imports: [
+    LeafletModule,
+    LeafletMarkerClusterModule,
+    NgIconComponent,
+    NgStyle,
+    RouterLink,
+    ProgressSpinnerComponent,
+  ],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.css',
+  viewProviders: [
+    provideIcons({
+      lucidePlus,
+      lucideMapPin,
+      lucideLoader2,
+      lucideX,
+      lucideSearch,
+    }),
+  ]
 })
 export class HomeComponent {
   private readonly _activatedRoute = inject(ActivatedRoute);
@@ -89,10 +89,10 @@ export class HomeComponent {
       mapMarker.bindPopup(`<h3 class="text-xl mb-2" id="${markerElement._id}">${markerElement.name}</h3>
         <h4 class="text-m">${markerElement.description}</h4>
         ${
-          markerElement.uploader
-            ? `<h5 class="text-s">von ${markerElement.uploader} eingetragen</h5>`
-            : ''
-        }
+        markerElement.uploader
+          ? `<h5 class="text-s">von ${markerElement.uploader} eingetragen</h5>`
+          : ''
+      }
         ${markerElement.pictureUrl ? `<img src="${markerElement.pictureUrl ?? ''}" />` : ''}
         `);
 
@@ -117,7 +117,7 @@ export class HomeComponent {
    */
   protected currentPositionMarker$ = computed<Marker | null>(() => {
     const pos = this.locationService.lastPosition$();
-    const { latitude, longitude } = pos.coords;
+    const {latitude, longitude} = pos.coords;
     const latLng = L.latLng(latitude, longitude);
 
     if (!this.locationService.isGeolocation$()) {
@@ -150,7 +150,7 @@ export class HomeComponent {
    */
   protected updatePostionAndViewportCenter() {
     this.locationService.updatePosition().then(() => {
-      const { latitude, longitude } = this.locationService.lastPosition$().coords;
+      const {latitude, longitude} = this.locationService.lastPosition$().coords;
       const latLng = L.latLng(latitude, longitude);
 
       this.viewportCenter$.set(latLng);
@@ -200,7 +200,7 @@ export class HomeComponent {
    Returns the contextMenu position
    */
   protected get contextMenuPositioning(): any {
-    return { 'left.px': this.contextMenuX$(), 'top.px': this.contextMenuY$() };
+    return {'left.px': this.contextMenuX$(), 'top.px': this.contextMenuY$()};
   }
 
   /**
@@ -212,7 +212,7 @@ export class HomeComponent {
     const longitude = +params['lng'];
 
     if (latitude && longitude) {
-      this.locationService.setCurrentLocation({ latitude, longitude }, false);
+      this.locationService.setCurrentLocation({latitude, longitude}, false);
     }
   }
 }
