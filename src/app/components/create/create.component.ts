@@ -69,7 +69,7 @@ export class CreateComponent {
     },
     {
       type: 'manual',
-      name: ' Koordinaten (manuell)',
+      name: 'Manuelle Eingabe',
     },
   ];
 
