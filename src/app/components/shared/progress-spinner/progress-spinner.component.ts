@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {Component, input, Input} from '@angular/core';
 
 @Component({
   standalone: true,
@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
   styleUrl: 'progress-spinner.component.scss',
 })
 export class ProgressSpinnerComponent {
-  @Input()
-  show: boolean = false;
+  public show$ = input.required<boolean>();
+
+  public loadingText$ = input<string | null>(null);
 }
