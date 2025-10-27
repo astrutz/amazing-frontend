@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RequestService } from '../../services/request.service';
-import { CommonModule } from '@angular/common';
+
 import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
 import { UploadStates } from './create.type';
 import { CountryService } from '../../services/country.service';
@@ -14,7 +14,7 @@ const LONGITUDE_REGEXP = /^[-+]?(?:(?:[0-9]?\d|1[0-7]\d)(?:[.,]\d+)?|180(?:[.,]0
 
 @Component({
     selector: 'app-create',
-    imports: [ReactiveFormsModule, CommonModule, ProgressSpinnerComponent],
+    imports: [ReactiveFormsModule, ProgressSpinnerComponent],
     templateUrl: './create.component.html'
 })
 export class CreateComponent {
@@ -86,7 +86,7 @@ export class CreateComponent {
   }
 
   protected async onSubmit() {
-    if (this.markerForm.valid && this.uploadState !== ('uploading' || 'failed')) {
+    if (this.markerForm.valid && this.uploadState !== 'uploading' && this.uploadState !== 'failed') {
       this.uploadState = 'uploading';
 
       try {
