@@ -161,6 +161,8 @@ export class CreateComponent {
     this.currentTab = newTab;
 
     if (newTab === 'position') {
+      this._locationService.resetGeolocationError();
+
       if (!this._locationService.isGeolocation$()) {
         await this._locationService.updatePosition();
       }

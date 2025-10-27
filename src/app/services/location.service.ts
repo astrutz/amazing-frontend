@@ -100,6 +100,13 @@ class LocationService {
   }
 
   /**
+   * Resets the geolocation error
+   */
+  public resetGeolocationError() {
+    this._geolocationError$.set(null);
+  }
+
+  /**
    * Force updates the current position provided by this service
    * @returns {Promise<void>} Rejects on any error; it's up to the user whether to work with the - then - stale position or ignore this service’s position.
    */
