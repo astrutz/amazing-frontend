@@ -10,11 +10,12 @@ import {MarkerService} from '../shared/marker/marker.service';
 import {LocationService} from '../../services/location.service';
 import {PositionComponent} from "./tabs/position/position.component";
 import {ManualComponent} from "./tabs/manual/manual.component";
+import {NgClass} from "@angular/common";
 
 
 @Component({
   selector: 'app-create',
-  imports: [ReactiveFormsModule, ProgressSpinnerComponent, PositionComponent, ManualComponent],
+  imports: [ReactiveFormsModule, ProgressSpinnerComponent, PositionComponent, ManualComponent, NgClass],
   templateUrl: './create.component.html'
 })
 export class CreateComponent {
@@ -62,11 +63,6 @@ export class CreateComponent {
   });
 
   protected tabsList: { type: Tabs, name: string; disabled?: boolean }[] = [
-    {
-      type: 'address',
-      name: 'Adresse',
-      disabled: true,
-    },
     {
       type: 'position',
       name: 'Standort',

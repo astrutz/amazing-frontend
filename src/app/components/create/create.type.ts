@@ -1,2 +1,2 @@
 export type UploadStates = 'waiting' | 'uploading' | 'failed' | 'succeeded';
-export type Tabs = 'address' | 'position' | 'manual';
+export type Tabs = 'position' | 'manual';
