@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RequestService } from '../../services/request.service';
@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
 import { UploadStates } from './create.type';
 import { CountryService } from '../../services/country.service';
+import { MarkerService } from '../shared/marker/marker.service';
+import { LocationService } from '../../services/location.service';
 
 const LATITUDE_REGEXP = /^[-+]?(?:[0-8]?\d(?:[.,]\d+)?|90(?:[.,]0+)?)$/;
 const LONGITUDE_REGEXP = /^[-+]?(?:(?:[0-9]?\d|1[0-7]\d)(?:[.,]\d+)?|180(?:[.,]0+)?)$/;
@@ -17,6 +19,13 @@ const LONGITUDE_REGEXP = /^[-+]?(?:(?:[0-9]?\d|1[0-7]\d)(?:[.,]\d+)?|180(?:[.,]0
   templateUrl: './create.component.html',
 })
 export class CreateComponent {
+  private readonly _router = inject(Router);
+  private readonly _activatedRoute = inject(ActivatedRoute);
+  private readonly _countryService = inject(CountryService);
+  private readonly _requestService = inject(RequestService);
+  private readonly _markerService = inject(MarkerService);
+  private readonly _locationService = inject(LocationService);
+
   protected uploadState: UploadStates = 'waiting';
   protected imageUploadState: UploadStates = 'waiting';
 
@@ -61,10 +70,7 @@ export class CreateComponent {
   protected fileName: string = '';
 
   constructor(
-    private readonly _router: Router,
-    private readonly _activatedRoute: ActivatedRoute,
-    private readonly _requestService: RequestService,
-    private readonly _countryService: CountryService,
+
   ) {
     this._activatedRoute.queryParams.subscribe((params) => {
       if (params['lat']) {
@@ -89,6 +95,8 @@ export class CreateComponent {
         this.markerForm.patchValue({ country });
         await this._requestService.createMarker(this.markerForm.getRawValue());
         console.log('Marker was created');
+        this._addCreatedMarkerToMap();
+        this.navigateBack();
         this.uploadState = 'succeeded';
       } catch (err) {
         console.error('An error occurred', err);
@@ -126,6 +134,15 @@ export class CreateComponent {
         this.imageUploadState = 'failed';
       }
     }
+  }
+
+  private _addCreatedMarkerToMap(): void {
+    const markers = this._markerService.markers$();
+    markers.push(this.markerForm.getRawValue());
+    const latitude = this.markerForm.get('lat')!.value;
+    const longitude = this.markerForm.get('lng')!.value;
+    this._markerService.markers$.set(markers);
+    this._locationService.setCurrentLocation({ latitude, longitude });
   }
 
   protected selectTab(index: number) {
