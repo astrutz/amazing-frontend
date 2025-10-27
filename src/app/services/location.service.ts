@@ -1,5 +1,7 @@
 import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import type { SetLocationValue } from '../types/location.type';
+import * as L from "leaflet";
+import {LeafletMouseEvent} from "leaflet";
 
 /**
  * This service is intended to provide the whole app with a somewhat useful and reliable current location.
@@ -8,6 +10,7 @@ import type { SetLocationValue } from '../types/location.type';
 class LocationService {
   private readonly _geolocation: Geolocation | null = null;
   private readonly _positioningOpts: PositionOptions = {
+
     enableHighAccuracy: true,
     /** Allows to work with the cached location for one minute. One sticker at a time! */
     maximumAge: 60 * 1000,
@@ -36,6 +39,11 @@ class LocationService {
     timestamp: Date.now(),
     toJSON: () => null,
   });
+
+  /**
+   * Waits for the geolocation dialog and is updated after option was chosen
+   */
+  public isUpdatingPosition$ = signal<boolean>(false);
 
   /** Returns the signal in a read-only way. */
   public get lastPosition$(): Signal<GeolocationPosition> {
@@ -87,6 +95,18 @@ class LocationService {
           this._positioningOpts,
         );
     });
+  }
+
+  /**
+   * Called when clicking on the curren position button
+   */
+  public async updatePosition() {
+    this.isUpdatingPosition$.set(true);
+    try {
+      await this.update();
+    } finally {
+      this.isUpdatingPosition$.set(false);
+    }
   }
 
   public setCurrentLocation(coords: SetLocationValue, isGeolocation: boolean) {

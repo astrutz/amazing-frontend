@@ -57,11 +57,11 @@
             <button
                 type="button"
                 class="bg-amazing-bordeaux border-transparent flex items-center"
-                (click)="updatePosition()"
+                (click)="updatePostionAndViewportCenter()"
             >
                 <ng-icon
                     size="32"
-                    [name]="isUpdatingPosition$() ? 'lucideLoader2' : 'lucideMapPin'"
+                    [name]="locationService.isUpdatingPosition$() ? 'lucideLoader2' : 'lucideMapPin'"
                 />
             </button>
             <button
