@@ -1,7 +1,5 @@
 import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import type { SetLocationValue } from '../types/location.type';
-import * as L from "leaflet";
-import {LeafletMouseEvent} from "leaflet";
 
 /**
  * This service is intended to provide the whole app with a somewhat useful and reliable current location.
