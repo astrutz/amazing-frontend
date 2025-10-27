@@ -1,16 +1,16 @@
-import {Component, computed, inject} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {RequestService} from '../../services/request.service';
+import { Component, computed, inject } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RequestService } from '../../services/request.service';
 
-import {ProgressSpinnerComponent} from '../shared/progress-spinner/progress-spinner.component';
-import {Tabs, UploadStates} from './create.type';
-import {CountryService} from '../../services/country.service';
-import {MarkerService} from '../shared/marker/marker.service';
-import {LocationService} from '../../services/location.service';
-import {PositionComponent} from "./tabs/position/position.component";
-import {ManualComponent} from "./tabs/manual/manual.component";
-import {NgClass} from "@angular/common";
+import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
+import { Tabs, UploadStates } from './create.type';
+import { CountryService } from '../../services/country.service';
+import { MarkerService } from '../shared/marker/marker.service';
+import { LocationService } from '../../services/location.service';
+import { PositionComponent } from "./tabs/position/position.component";
+import { ManualComponent } from "./tabs/manual/manual.component";
+import { NgClass } from "@angular/common";
 
 
 @Component({
