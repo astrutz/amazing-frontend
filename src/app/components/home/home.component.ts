@@ -6,9 +6,11 @@ import {
   MapOptions,
   Marker,
   marker,
-  tileLayer,
-  MarkerClusterGroup
+  tileLayer
 } from 'leaflet';
+// @ts-ignore
+import { MarkerClusterGroup } from 'leaflet.markercluster/src';
+
 import { Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { ActivatedRoute, RouterLink } from '@angular/router';
