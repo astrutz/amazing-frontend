@@ -1,9 +1,17 @@
 import * as L from 'leaflet';
-import { icon, LeafletMouseEvent, MapOptions, Marker, marker, tileLayer } from 'leaflet';
+import 'leaflet.markercluster';
+import {
+  icon,
+  LeafletMouseEvent,
+  MapOptions,
+  Marker,
+  marker,
+  tileLayer,
+  MarkerClusterGroup
+} from 'leaflet';
 import { Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import 'leaflet.markercluster';
 import { LeafletMarkerClusterModule } from '@bluehalo/ngx-leaflet-markercluster';
 
 import { LocationService } from '../../services/location.service';
@@ -75,7 +83,7 @@ export class HomeComponent {
 
   private _currentPostionMarker: Marker | null = null;
 
-  private _amazingClusterGroup$ = computed<L.MarkerClusterGroup>(() => {
+  private _amazingClusterGroup$ = computed<MarkerClusterGroup>(() => {
     const clusterGroup = L.markerClusterGroup();
     this._amazingLayers$().forEach((m) => clusterGroup.addLayer(m));
     return clusterGroup;
@@ -110,9 +118,9 @@ export class HomeComponent {
   /**
    * Returns all amazing layers and the current position marker layer
    */
-  protected allLayers$ = computed<(L.Layer | L.MarkerClusterGroup)[]>(() => {
+  protected allLayers$ = computed<(L.Layer | MarkerClusterGroup)[]>(() => {
     const currentPositionMarker = this.currentPositionMarker$();
-    const layers: (L.Layer | L.MarkerClusterGroup)[] = [this._amazingClusterGroup$()];
+    const layers: (L.Layer | MarkerClusterGroup)[] = [this._amazingClusterGroup$()];
     if (currentPositionMarker) {
       layers.push(currentPositionMarker);
     }
