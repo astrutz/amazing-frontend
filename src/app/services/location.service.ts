@@ -40,7 +40,7 @@ class LocationService {
     return this._lastPosition$.asReadonly();
   }
 
-  private set lastPosition$(coords: GeolocationCoordinates) {
+  public set lastPosition$(coords: GeolocationCoordinates) {
     this._lastPosition$.set({
       coords,
       timestamp: Date.now(),
