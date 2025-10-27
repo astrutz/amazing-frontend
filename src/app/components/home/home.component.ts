@@ -1,39 +1,16 @@
 import * as L from 'leaflet';
-import {
-  icon,
-  LeafletMouseEvent,
-  MapOptions,
-  Marker,
-  marker,
-  tileLayer
-} from 'leaflet';
-import {
-  Component,
-  computed,
-  inject, Signal,
-  signal,
-  WritableSignal
-} from '@angular/core';
+import { icon, LeafletMouseEvent, MapOptions, Marker, marker, tileLayer } from 'leaflet';
+import { Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import 'leaflet.markercluster';
-import {
-  LeafletMarkerClusterModule
-} from '@asymmetrik/ngx-leaflet-markercluster';
+import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
 
 import { LocationService } from '../../services/location.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import {
-  lucideLoader2,
-  lucideMapPin,
-  lucidePlus,
-  lucideSearch,
-  lucideX
-} from '@ng-icons/lucide';
+import { lucideLoader2, lucideMapPin, lucidePlus, lucideSearch, lucideX } from '@ng-icons/lucide';
 import { NgStyle } from '@angular/common';
-import {
-  ProgressSpinnerComponent
-} from '../shared/progress-spinner/progress-spinner.component';
+import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
 import { LoadingService } from '../../services/loading.service';
 import { MarkerService } from '../shared/marker/marker.service';
 
@@ -108,21 +85,17 @@ export class HomeComponent {
         title: markerElement.name,
         icon: icon({
           iconUrl: '/assets/icons/marker-icon.svg',
-          iconSize: [80, 64]
+          iconSize: [80, 64],
         }),
       });
-      mapMarker.bindPopup(`<h3 class="text-xl mb-2" id="${ markerElement._id }">${ markerElement.name }</h3>
-        <h4 class="text-m">${ markerElement.description }</h4>
+      mapMarker.bindPopup(`<h3 class="text-xl mb-2" id="${markerElement._id}">${markerElement.name}</h3>
+        <h4 class="text-m">${markerElement.description}</h4>
         ${
-        markerElement.uploader
-        ? `<h5 class="text-s">von ${ markerElement.uploader } eingetragen</h5>`
-        : ''
-      }
-        ${
-        markerElement.pictureUrl
-        ? `<img src="${ markerElement.pictureUrl ?? '' }" />`
-        : ''
-      }
+          markerElement.uploader
+            ? `<h5 class="text-s">von ${markerElement.uploader} eingetragen</h5>`
+            : ''
+        }
+        ${markerElement.pictureUrl ? `<img src="${markerElement.pictureUrl ?? ''}" />` : ''}
         `);
 
       return mapMarker;
@@ -132,25 +105,33 @@ export class HomeComponent {
   /**
    * Returns all amazing layers and the current position marker layer
    */
-  protected allLayers$ = computed<Marker[]>(() =>
-    [...this._amazingLayers$(), this.currentPositionMarker$()]
-  );
+  protected allLayers$ = computed<Marker[]>(() => {
+    const currentPositionMarker = this.currentPositionMarker$();
+    if (currentPositionMarker) {
+      return [...this._amazingLayers$(), currentPositionMarker];
+    }
+    return [...this._amazingLayers$()];
+  });
 
   /**
    * Either creates a new marker for the current position or updates the
    * latitude and longitude
    */
-  protected currentPositionMarker$ = computed<Marker>(() => {
+  protected currentPositionMarker$ = computed<Marker | null>(() => {
     const pos = this._locationService.lastPosition$();
     const { latitude, longitude } = pos.coords;
     const latLng = L.latLng(latitude, longitude);
+
+    if (!this._locationService.isGeolocation$()) {
+      return null;
+    }
 
     if (!this._currentPostionMarker) {
       this._currentPostionMarker = marker(latLng, {
         icon: icon({
           iconUrl: '/assets/icons/current-position-icon.svg',
           iconSize: [40, 40],
-        })
+        }),
       });
     } else {
       this._currentPostionMarker.setLatLng(latLng);
@@ -173,10 +154,7 @@ export class HomeComponent {
     this.isUpdatingPosition$.set(true);
     try {
       await this._locationService.update();
-      const {
-        latitude,
-        longitude
-      } = this._locationService.lastPosition$().coords;
+      const { latitude, longitude } = this._locationService.lastPosition$().coords;
       const latLng = L.latLng(latitude, longitude);
 
       this.viewportCenter$.set(latLng);
@@ -240,7 +218,7 @@ export class HomeComponent {
     const longitude = +params['lng'];
 
     if (latitude && longitude) {
-      this._locationService.setCurrentLocation({ latitude, longitude });
+      this._locationService.setCurrentLocation({ latitude, longitude }, false);
     }
   }
 }

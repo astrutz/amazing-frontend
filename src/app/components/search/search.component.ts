@@ -47,7 +47,7 @@ export class SearchComponent {
     this._currentLocation.setCurrentLocation({
       latitude: marker.lat,
       longitude: marker.lng,
-    });
+    }, false);
     this._router.navigate(['']);
   }
 }

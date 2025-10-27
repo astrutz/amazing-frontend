@@ -142,7 +142,7 @@ export class CreateComponent {
     const latitude = this.markerForm.get('lat')!.value;
     const longitude = this.markerForm.get('lng')!.value;
     this._markerService.markers$.set(markers);
-    this._locationService.setCurrentLocation({ latitude, longitude });
+    this._locationService.setCurrentLocation({ latitude, longitude }, false);
   }
 
   protected selectTab(index: number) {
