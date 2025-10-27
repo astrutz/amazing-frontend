@@ -8,7 +8,6 @@ _Let's build a site to worship our Amazing Artur by implementing a map based too
 
 ## Tools used
 
-- [PrimeNG](https://primeng.org/)
 - [Leaflet](https://github.com/bluehalo/ngx-leaflet)
 
 ## Create an .env file for

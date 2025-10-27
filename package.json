@@ -28,7 +28,6 @@
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
     "primeicons": "^6.0.1",
-    "primeng": "^17.3.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
