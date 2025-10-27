@@ -157,11 +157,14 @@ export class CreateComponent {
   /**
    * Changes the currently selected tab
    */
-  protected selectTab(newTab: Tabs) {
+  protected async selectTab(newTab: Tabs) {
     this.currentTab = newTab;
 
     if (newTab === 'position') {
-      // TODO Mona Check wenn keine currentLocation vorhanden
+      if (!this._locationService.isGeolocation$()) {
+        await this._locationService.updatePosition();
+      }
+
       this.markerForm.patchValue({
         lat: this.currentLocation$().coords.latitude,
         lng: this.currentLocation$().coords.latitude

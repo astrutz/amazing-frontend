@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, computed, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, effect, inject} from '@angular/core';
 import {LocationService} from "../../../../services/location.service";
 
 @Component({
@@ -8,10 +8,16 @@ import {LocationService} from "../../../../services/location.service";
   standalone: true
 })
 export class PositionComponent {
-  private readonly _locationService = inject(LocationService);
+  protected readonly locationService = inject(LocationService);
+
+  constructor() {
+    effect(() => {
+      console.log('currentLocation$().coords', this.currentLocation$().coords)
+    });
+  }
 
   /**
    * Current user positon
    */
-  protected currentLocation$ = computed(() => this._locationService.lastPosition$());
+  protected currentLocation$ = computed(() => this.locationService.lastPosition$());
 }

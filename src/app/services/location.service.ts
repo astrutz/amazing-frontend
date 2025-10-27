@@ -57,7 +57,8 @@ class LocationService {
   }
 
   /**
-   * Describes if the current position marker should be visible. This is only the case when using the users' geolocation.
+   * Describes if the current position marker should be visible. This is only the case
+   * when using the users' geolocation.
    */
   private readonly _isGeolocation$: WritableSignal<boolean> = signal(false);
 
