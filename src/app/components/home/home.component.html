@@ -7,7 +7,7 @@
         [leafletOptions]="options"
         [leafletCenter]="viewportCenter$()"
         (leafletCenterChange)="onViewportCenterChange($event)"
-        [leafletLayers]="allLayers$()"
+        [leafletMarkerCluster]="allLayers$()"
     >
         @if (isContextMenuOpen$()) {
             <div
