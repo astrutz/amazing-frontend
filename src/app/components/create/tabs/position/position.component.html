@@ -10,6 +10,10 @@
     </div>
   </div>
 } @placeholder {
-<!--  TODO Loading Circle -->
-  <p>Slay</p>
+  <div class="flex justify-center">
+    <progress-spinner
+      [show$]="locationService.isUpdatingPosition$()"
+      [loadingText$]="'Position wird gefunden ...'"
+    />
+  </div>
 }
