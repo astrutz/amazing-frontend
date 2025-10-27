@@ -1,10 +1,10 @@
 import * as L from 'leaflet';
 import { icon, LeafletMouseEvent, MapOptions, Marker, marker, tileLayer } from 'leaflet';
 import { Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import 'leaflet.markercluster';
-import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
+import { LeafletMarkerClusterModule } from '@bluehalo/ngx-leaflet-markercluster';
 
 import { LocationService } from '../../services/location.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
@@ -15,27 +15,26 @@ import { LoadingService } from '../../services/loading.service';
 import { MarkerService } from '../shared/marker/marker.service';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [
-    LeafletModule,
-    LeafletMarkerClusterModule,
-    NgIconComponent,
-    NgStyle,
-    RouterLink,
-    ProgressSpinnerComponent,
-  ],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
-  viewProviders: [
-    provideIcons({
-      lucidePlus,
-      lucideMapPin,
-      lucideLoader2,
-      lucideX,
-      lucideSearch,
-    }),
-  ],
+    selector: 'app-home',
+    imports: [
+        LeafletModule,
+        LeafletMarkerClusterModule,
+        NgIconComponent,
+        NgStyle,
+        RouterLink,
+        ProgressSpinnerComponent,
+    ],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.css',
+    viewProviders: [
+        provideIcons({
+            lucidePlus,
+            lucideMapPin,
+            lucideLoader2,
+            lucideX,
+            lucideSearch,
+        }),
+    ]
 })
 export class HomeComponent {
   private readonly _activatedRoute = inject(ActivatedRoute);

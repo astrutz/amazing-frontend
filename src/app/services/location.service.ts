@@ -25,6 +25,7 @@ class LocationService {
     altitudeAccuracy: null,
     heading: null,
     speed: null,
+    toJSON: () => null
   };
 
   /**
@@ -33,6 +34,7 @@ class LocationService {
   private readonly _lastPosition$ = signal<GeolocationPosition>({
     coords: this._homeBase,
     timestamp: Date.now(),
+    toJSON: () => null,
   });
 
   /** Returns the signal in a read-only way. */
@@ -44,6 +46,7 @@ class LocationService {
     this._lastPosition$.set({
       coords,
       timestamp: Date.now(),
+      toJSON: () => null
     });
   }
 
