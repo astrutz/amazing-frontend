@@ -88,10 +88,22 @@ class LocationService {
   }
 
   /**
+   * Called to update the position and handle the loading state
+   */
+  public async updatePosition() {
+    this.isUpdatingPosition$.set(true);
+    try {
+      await this._update();
+    } finally {
+      this.isUpdatingPosition$.set(false);
+    }
+  }
+
+  /**
    * Force updates the current position provided by this service
    * @returns {Promise<void>} Rejects on any error; it's up to the user whether to work with the - then - stale position or ignore this service’s position.
    */
-  public async update(): Promise<void> {
+  private async _update(): Promise<void> {
     return new Promise((resolve, reject) => {
       if (!this._geolocation) reject();
       else {
@@ -135,18 +147,6 @@ class LocationService {
         );
       }
     });
-  }
-
-  /**
-   * Called when clicking on the curren position button
-   */
-  public async updatePosition() {
-    this.isUpdatingPosition$.set(true);
-    try {
-      await this.update();
-    } finally {
-      this.isUpdatingPosition$.set(false);
-    }
   }
 
   public setCurrentLocation(coords: SetLocationValue, isGeolocation: boolean) {
