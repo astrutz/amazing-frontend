@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RequestService } from '../../services/request.service';
-import { CommonModule } from '@angular/common';
-import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
-import { UploadStates } from './create.type';
-import { CountryService } from '../../services/country.service';
+import {Component, computed, inject} from '@angular/core';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {ProgressSpinnerComponent} from '../shared/progress-spinner/progress-spinner.component';
+import {Tabs, UploadStates} from './create.type';
+import {LocationService} from "../../services/location.service";
+import {RequestService} from "../../services/request.service";
+import {CountryService} from "../../services/country.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {PositionComponent} from "./tabs/position/position.component";
 
 const LATITUDE_REGEXP = /^[-+]?(?:[0-8]?\d(?:[.,]\d+)?|90(?:[.,]0+)?)$/;
 const LONGITUDE_REGEXP = /^[-+]?(?:(?:[0-9]?\d|1[0-7]\d)(?:[.,]\d+)?|180(?:[.,]0+)?)$/;
@@ -13,10 +15,27 @@ const LONGITUDE_REGEXP = /^[-+]?(?:(?:[0-9]?\d|1[0-7]\d)(?:[.,]\d+)?|180(?:[.,]0
 @Component({
   selector: 'app-create',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, ProgressSpinnerComponent],
+  imports: [ReactiveFormsModule, CommonModule, ProgressSpinnerComponent, PositionComponent],
   templateUrl: './create.component.html',
 })
 export class CreateComponent {
+  private readonly _locationService = inject(LocationService);
+  private readonly _router: Router = inject(Router);
+  private readonly _activatedRoute = inject(ActivatedRoute);
+  private readonly _requestService = inject(RequestService);
+  private readonly _countryService = inject(CountryService);
+
+  constructor() {
+    this._activatedRoute.queryParams.subscribe((params) => {
+      if (params['lat']) {
+        this.markerForm.patchValue({lat: +params['lat']});
+      }
+      if (params['lng']) {
+        this.markerForm.patchValue({lng: +params['lng']});
+      }
+    });
+  }
+
   protected uploadState: UploadStates = 'waiting';
   protected imageUploadState: UploadStates = 'waiting';
 
@@ -42,51 +61,48 @@ export class CreateComponent {
     country: new FormControl(null, []),
   });
 
-  protected tabsList: { name: string; disabled?: boolean }[] = [
+  protected tabsList: { type: Tabs, name: string; disabled?: boolean }[] = [
     {
+      type: 'address',
       name: 'Adresse',
       disabled: true,
     },
     {
+      type: 'position',
       name: 'Standort',
-      disabled: true,
     },
     {
+      type: 'manual',
       name: ' Koordinaten (manuell)',
     },
   ];
 
-  protected currentTab: number | null = 3;
+  protected currentTab: Tabs = 'manual';
 
   protected fileName: string = '';
 
-  constructor(
-    private readonly _router: Router,
-    private readonly _activatedRoute: ActivatedRoute,
-    private readonly _requestService: RequestService,
-    private readonly _countryService: CountryService,
-  ) {
-    this._activatedRoute.queryParams.subscribe((params) => {
-      if (params['lat']) {
-        this.markerForm.patchValue({ lat: +params['lat'] });
-      }
-      if (params['lng']) {
-        this.markerForm.patchValue({ lng: +params['lng'] });
-      }
-    });
-  }
+  /**
+   * Current user positon
+   */
+  protected currentLocation$ = computed(() => this._locationService.lastPosition$());
 
+  /**
+   * Navigates to start page
+   */
   protected navigateBack() {
     this._router.navigate(['']);
   }
 
+  /**
+   * Sends a request to the backend to save the marker
+   */
   protected async onSubmit() {
     if (this.markerForm.valid && this.uploadState !== ('uploading' || 'failed')) {
       this.uploadState = 'uploading';
 
       try {
         const country = await this._countryService.getCountry(this.markerForm.getRawValue()!.lat, this.markerForm.getRawValue()!.lng);
-        this.markerForm.patchValue({ country });
+        this.markerForm.patchValue({country});
         await this._requestService.createMarker(this.markerForm.getRawValue());
         console.log('Marker was created');
         this.uploadState = 'succeeded';
@@ -110,6 +126,9 @@ export class CreateComponent {
     }
   }
 
+  /**
+   * Uploads the selected photo
+   */
   protected async handleFileInput(event: Event) {
     const file = (event.target as HTMLInputElement)?.files?.item(0);
     if (file) {
@@ -128,8 +147,24 @@ export class CreateComponent {
     }
   }
 
-  protected selectTab(index: number) {
-    return;
+  /**
+   * Changes the currently selected tab
+   */
+  protected selectTab(newTab: Tabs) {
+    this.currentTab = newTab;
+
+    if (newTab === 'position') {
+      // TODO Mona Check wenn keine currentLocation vorhanden
+      this.markerForm.patchValue({
+        lat: this.currentLocation$().coords.latitude,
+        lng: this.currentLocation$().coords.latitude
+      });
+    } else {
+      this.markerForm.patchValue({
+        lat: '',
+        lng: ''
+      });
+    }
   }
 
   /**
@@ -165,7 +200,7 @@ export class CreateComponent {
 
     if (LATITUDE_REGEXP.test(latitude.toString()) && LONGITUDE_REGEXP.test(longitude.toString())) {
       pasteEvent.preventDefault();
-      this.markerForm.patchValue({ lat: latitude, lng: longitude });
+      this.markerForm.patchValue({lat: latitude, lng: longitude});
     }
   }
 }
