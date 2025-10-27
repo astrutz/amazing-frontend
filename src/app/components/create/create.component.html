@@ -79,8 +79,8 @@
       </p>
       <div class="m-auto mt-2">
         <button
-          [disabled]="!(markerForm.valid && uploadState !== ('uploading' || 'failed'))"
           class="text-green-400 border-green-600"
+          [disabled]="!(markerForm.valid && this.uploadState !== 'uploading' && this.uploadState !== 'failed')"
           type="submit">
           Speichern
         </button>

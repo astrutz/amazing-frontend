@@ -1,4 +1,4 @@
-import { Injectable, Signal, signal } from '@angular/core';
+import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import type { SetLocationValue } from '../types/location.type';
 
 /**
@@ -25,6 +25,7 @@ class LocationService {
     altitudeAccuracy: null,
     heading: null,
     speed: null,
+    toJSON: () => null
   };
 
   /**
@@ -33,6 +34,7 @@ class LocationService {
   private readonly _lastPosition$ = signal<GeolocationPosition>({
     coords: this._homeBase,
     timestamp: Date.now(),
+    toJSON: () => null,
   });
 
   /** Returns the signal in a read-only way. */
@@ -40,11 +42,25 @@ class LocationService {
     return this._lastPosition$.asReadonly();
   }
 
-  private set lastPosition$(coords: GeolocationCoordinates) {
+  public set lastPosition$(coords: GeolocationCoordinates) {
     this._lastPosition$.set({
       coords,
       timestamp: Date.now(),
+      toJSON: () => null
     });
+  }
+
+  /**
+   * Describes if the current position marker should be visible. This is only the case when using the users' geolocation.
+   */
+  private readonly _isGeolocation$: WritableSignal<boolean> = signal(false);
+
+  public get isGeolocation$(): Signal<boolean> {
+    return this._isGeolocation$.asReadonly();
+  }
+
+  private set isGeolocation(newType: boolean) {
+    this._isGeolocation$.set(newType);
   }
 
   constructor() {
@@ -64,6 +80,7 @@ class LocationService {
         this._geolocation.getCurrentPosition(
           (position) => {
             this._lastPosition$.set(position);
+            this.isGeolocation = true;
             resolve();
           },
           reject,
@@ -72,8 +89,9 @@ class LocationService {
     });
   }
 
-  public setCurrentLocation(coords: SetLocationValue) {
+  public setCurrentLocation(coords: SetLocationValue, isGeolocation: boolean) {
     this.lastPosition$ = Object.assign(this._homeBase, coords);
+    this.isGeolocation = isGeolocation;
   }
 }
 

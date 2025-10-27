@@ -1,27 +1,29 @@
 import {Component, computed, inject} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {CommonModule} from '@angular/common';
+import {RequestService} from '../../services/request.service';
+
 import {ProgressSpinnerComponent} from '../shared/progress-spinner/progress-spinner.component';
 import {Tabs, UploadStates} from './create.type';
-import {LocationService} from "../../services/location.service";
-import {RequestService} from "../../services/request.service";
-import {CountryService} from "../../services/country.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {CountryService} from '../../services/country.service';
+import {MarkerService} from '../shared/marker/marker.service';
+import {LocationService} from '../../services/location.service';
 import {PositionComponent} from "./tabs/position/position.component";
 import {ManualComponent} from "./tabs/manual/manual.component";
 
+
 @Component({
   selector: 'app-create',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, ProgressSpinnerComponent, PositionComponent, ManualComponent],
-  templateUrl: './create.component.html',
+  imports: [ReactiveFormsModule, ProgressSpinnerComponent, PositionComponent, ManualComponent],
+  templateUrl: './create.component.html'
 })
 export class CreateComponent {
-  private readonly _locationService = inject(LocationService);
-  private readonly _router: Router = inject(Router);
+  private readonly _router = inject(Router);
   private readonly _activatedRoute = inject(ActivatedRoute);
-  private readonly _requestService = inject(RequestService);
   private readonly _countryService = inject(CountryService);
+  private readonly _requestService = inject(RequestService);
+  private readonly _markerService = inject(MarkerService);
+  private readonly _locationService = inject(LocationService);
 
   constructor() {
     this._activatedRoute.queryParams.subscribe((params) => {
@@ -95,7 +97,7 @@ export class CreateComponent {
    * Sends a request to the backend to save the marker
    */
   protected async onSubmit() {
-    if (this.markerForm.valid && this.uploadState !== ('uploading' || 'failed')) {
+    if (this.markerForm.valid && this.uploadState !== 'uploading' && this.uploadState !== 'failed') {
       this.uploadState = 'uploading';
 
       try {
@@ -103,6 +105,8 @@ export class CreateComponent {
         this.markerForm.patchValue({country});
         await this._requestService.createMarker(this.markerForm.getRawValue());
         console.log('Marker was created');
+        this._addCreatedMarkerToMap();
+        this.navigateBack();
         this.uploadState = 'succeeded';
       } catch (err) {
         console.error('An error occurred', err);
@@ -143,6 +147,15 @@ export class CreateComponent {
         this.imageUploadState = 'failed';
       }
     }
+  }
+
+  private _addCreatedMarkerToMap(): void {
+    const markers = this._markerService.markers$();
+    markers.push(this.markerForm.getRawValue());
+    const latitude = this.markerForm.get('lat')!.value;
+    const longitude = this.markerForm.get('lng')!.value;
+    this._markerService.markers$.set(markers);
+    this._locationService.setCurrentLocation({latitude, longitude}, false);
   }
 
   /**
