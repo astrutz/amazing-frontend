@@ -6,10 +6,9 @@ import { Marker } from '../../types/marker.type';
 import { LocationService } from '../../services/location.service';
 
 @Component({
-  selector: 'app-search',
-  standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
-  templateUrl: './search.component.html',
+    selector: 'app-search',
+    imports: [ReactiveFormsModule, RouterLink],
+    templateUrl: './search.component.html'
 })
 export class SearchComponent {
   protected foundMarkers: Marker[] = [];

@@ -13,10 +13,9 @@ const LATITUDE_REGEXP = /^[-+]?(?:[0-8]?\d(?:[.,]\d+)?|90(?:[.,]0+)?)$/;
 const LONGITUDE_REGEXP = /^[-+]?(?:(?:[0-9]?\d|1[0-7]\d)(?:[.,]\d+)?|180(?:[.,]0+)?)$/;
 
 @Component({
-  selector: 'app-create',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, ProgressSpinnerComponent],
-  templateUrl: './create.component.html',
+    selector: 'app-create',
+    imports: [ReactiveFormsModule, CommonModule, ProgressSpinnerComponent],
+    templateUrl: './create.component.html'
 })
 export class CreateComponent {
   private readonly _router = inject(Router);
