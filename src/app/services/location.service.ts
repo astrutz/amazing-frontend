@@ -1,14 +1,13 @@
-import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
-import type { SetLocationValue } from '../types/location.type';
+import {Injectable, Signal, signal, WritableSignal} from '@angular/core';
+import {GeolocationErrorCode, GeolocationErrorCodeMessage, SetLocationValue} from '../types/location.type';
 
 /**
  * This service is intended to provide the whole app with a somewhat useful and reliable current location.
  */
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 class LocationService {
   private readonly _geolocation: Geolocation | null = null;
   private readonly _positioningOpts: PositionOptions = {
-
     enableHighAccuracy: true,
     /** Allows to work with the cached location for one minute. One sticker at a time! */
     maximumAge: 60 * 1000,
@@ -39,6 +38,11 @@ class LocationService {
   });
 
   /**
+   * Contains the error code and a message to be displayed
+   */
+  private readonly _geolocationError$ = signal<GeolocationErrorCodeMessage | null>(null);
+
+  /**
    * Waits for the geolocation dialog and is updated after option was chosen
    */
   public isUpdatingPosition$ = signal<boolean>(false);
@@ -54,6 +58,13 @@ class LocationService {
       timestamp: Date.now(),
       toJSON: () => null
     });
+  }
+
+  /**
+   * Getter for the geolocation erro
+   */
+  public get geolocationError$(): Signal<GeolocationErrorCodeMessage | null> {
+    return this._geolocationError$.asReadonly();
   }
 
   /**
@@ -83,16 +94,45 @@ class LocationService {
   public async update(): Promise<void> {
     return new Promise((resolve, reject) => {
       if (!this._geolocation) reject();
-      else
+      else {
         this._geolocation.getCurrentPosition(
           (position) => {
             this._lastPosition$.set(position);
             this.isGeolocation = true;
             resolve();
           },
-          reject,
+          (error) => {
+            switch (error.code) {
+              case error.PERMISSION_DENIED:
+                this._geolocationError$.set({
+                  code: GeolocationErrorCode.PERMISSION_DENIED,
+                  message: 'Der Nutzer hat die Abrufung des Standorts abgelehnt.'
+                });
+                break;
+              case error.POSITION_UNAVAILABLE:
+                this._geolocationError$.set({
+                  code: GeolocationErrorCode.POSITION_UNAVAILABLE,
+                  message: 'Die aktuelle Position kann gerade nicht gefunden werden.'
+                });
+                break;
+              case error.TIMEOUT:
+                this._geolocationError$.set({
+                  code: GeolocationErrorCode.TIMEOUT,
+                  message: 'Oh Neini, Timeouti 😔'
+                });
+                break;
+              default:
+                this._geolocationError$.set({
+                  code: GeolocationErrorCode.PERMISSION_DENIED,
+                  message: 'Es iST EiN feHlEr AuFGetRetEn. Bitti späti versuchi 😉😉😉😉😉😉😉😉'
+                });
+                break;
+            }
+            this.isGeolocation = false;
+          },
           this._positioningOpts,
         );
+      }
     });
   }
 
@@ -114,4 +154,4 @@ class LocationService {
   }
 }
 
-export { LocationService };
+export {LocationService};
