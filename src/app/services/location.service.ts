@@ -142,7 +142,7 @@ class LocationService {
                 break;
               default:
                 this._geolocationError$.set({
-                  code: GeolocationErrorCode.PERMISSION_DENIED,
+                  code: GeolocationErrorCode.DEFAULT,
                   message: 'Es iST EiN feHlEr AuFGetRetEn. Bitti späti versuchi 😉😉😉😉😉😉😉😉'
                 });
                 break;
