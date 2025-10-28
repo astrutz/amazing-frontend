@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MarkerService } from '../../services/marker.service';
@@ -8,7 +8,8 @@ import { LocationService } from '../../services/location.service';
 @Component({
     selector: 'app-search',
     imports: [ReactiveFormsModule, RouterLink],
-    templateUrl: './search.component.html'
+    templateUrl: './search.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchComponent {
   protected foundMarkers: Marker[] = [];

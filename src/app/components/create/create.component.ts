@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RequestService } from '../../services/request.service';
@@ -15,7 +15,8 @@ const LONGITUDE_REGEXP = /^[-+]?(?:(?:[0-9]?\d|1[0-7]\d)(?:[.,]\d+)?|180(?:[.,]0
 @Component({
     selector: 'app-create',
     imports: [ReactiveFormsModule, ProgressSpinnerComponent],
-    templateUrl: './create.component.html'
+    templateUrl: './create.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateComponent {
   private readonly _router = inject(Router);

@@ -1,6 +1,6 @@
 import * as L from 'leaflet';
 import { icon, LeafletMouseEvent, MapOptions, Marker, marker, tileLayer } from 'leaflet';
-import { Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import 'leaflet.markercluster';
@@ -34,7 +34,8 @@ import { MarkerService } from '../../services/marker.service';
             lucideX,
             lucideSearch,
         }),
-    ]
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent {
   private readonly _activatedRoute = inject(ActivatedRoute);
