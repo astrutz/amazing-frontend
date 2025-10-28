@@ -84,7 +84,7 @@
         <div class="fixed flex justify-center z-[999] bottom-4 w-full ">
             <div class="inline-flex justify-center gap-8 p-4 bg-amazing-bordeaux rounded-md w-auto">
                 <p class="self-center">Marker werden geladen...</p>
-                <progress-spinner [show]="isLoading$()" />
+                <progress-spinner [show$]="isLoading$()" />
             </div>
         </div>
     }
