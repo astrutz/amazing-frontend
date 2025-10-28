@@ -13,10 +13,10 @@ const LATITUDE_REGEXP = /^[-+]?(?:[0-8]?\d(?:[.,]\d+)?|90(?:[.,]0+)?)$/;
 const LONGITUDE_REGEXP = /^[-+]?(?:(?:[0-9]?\d|1[0-7]\d)(?:[.,]\d+)?|180(?:[.,]0+)?)$/;
 
 @Component({
-    selector: 'app-create',
-    imports: [ReactiveFormsModule, ProgressSpinnerComponent],
-    templateUrl: './create.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-create',
+  imports: [ReactiveFormsModule, ProgressSpinnerComponent],
+  templateUrl: './create.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateComponent {
   private readonly _router = inject(Router);
@@ -141,7 +141,7 @@ export class CreateComponent {
     markers.push(this.markerForm.getRawValue());
     const latitude = this.markerForm.get('lat')!.value;
     const longitude = this.markerForm.get('lng')!.value;
-    this._markerService.markers$.set(markers);
+    this._markerService.markers$ = markers;
     this._locationService.setCurrentLocation({ latitude, longitude }, false);
   }
 
