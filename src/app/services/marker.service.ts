@@ -1,7 +1,7 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
-import { Marker } from '../../../types/marker.type';
-import { LoadingService } from '../../../services/loading.service';
-import { RequestService } from '../../../services/request.service';
+import { Marker } from '../types/marker.type';
+import { LoadingService } from './loading.service';
+import { RequestService } from './request.service';
 
 @Injectable({
   providedIn: 'root',

@@ -12,7 +12,7 @@ import { lucideLoader2, lucideMapPin, lucidePlus, lucideSearch, lucideX } from '
 import { NgStyle } from '@angular/common';
 import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
 import { LoadingService } from '../../services/loading.service';
-import { MarkerService } from '../shared/marker/marker.service';
+import { MarkerService } from '../../services/marker.service';
 
 @Component({
     selector: 'app-home',

@@ -6,7 +6,7 @@ import { RequestService } from '../../services/request.service';
 import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
 import { UploadStates } from './create.type';
 import { CountryService } from '../../services/country.service';
-import { MarkerService } from '../shared/marker/marker.service';
+import { MarkerService } from '../../services/marker.service';
 import { LocationService } from '../../services/location.service';
 
 const LATITUDE_REGEXP = /^[-+]?(?:[0-8]?\d(?:[.,]\d+)?|90(?:[.,]0+)?)$/;
