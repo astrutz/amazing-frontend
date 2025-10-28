@@ -41,7 +41,7 @@ export class HomeComponent {
   private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly _loadingService = inject(LoadingService);
   private readonly _locationService = inject(LocationService);
-  protected readonly markerService = inject(MarkerService);
+  private readonly _markerService = inject(MarkerService);
 
   constructor() {
     this._initLatLongByQueryParams();
@@ -79,8 +79,8 @@ export class HomeComponent {
   /**
    * Creates all amazing markers for the layer
    */
-  private _amazingLayers$ = computed<Marker[]>(() => {
-    return this.markerService.markers$().map((markerElement) => {
+  private _amazingLayers$ = computed<Marker[]>(() =>
+     this._markerService.markers$().map((markerElement) => {
       const mapMarker = marker([markerElement.lat, markerElement.lng], {
         title: markerElement.name,
         icon: icon({
@@ -88,6 +88,7 @@ export class HomeComponent {
           iconSize: [80, 64],
         }),
       });
+
       mapMarker.bindPopup(`<h3 class="text-xl mb-2" id="${markerElement._id}">${markerElement.name}</h3>
         <h4 class="text-m">${markerElement.description}</h4>
         ${
@@ -99,8 +100,8 @@ export class HomeComponent {
         `);
 
       return mapMarker;
-    });
-  });
+    })
+  );
 
   /**
    * Returns all amazing layers and the current position marker layer
@@ -112,6 +113,11 @@ export class HomeComponent {
     }
     return [...this._amazingLayers$()];
   });
+
+  /**
+   * Returns the total number of markers to display it on the welcome card. 
+   **/
+  protected markerCount$ = computed<number>(() => this._markerService.markers$().length)
 
   /**
    * Either creates a new marker for the current position or updates the
