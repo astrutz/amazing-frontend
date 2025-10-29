@@ -1,5 +1,5 @@
 export const environment = {
-  backendUrl: import.meta.env['VITE_APP_BACKEND_URL'] || '',
-  geonamesUser: import.meta.env['VITE_APP_GEONAMES_USER'] || '',
-  geonamesUrl: import.meta.env['VITE_APP_GEONAMES_URL'] || '',
+  backendUrl: import.meta.env.NG_APP_BACKEND_URL || '',
+  geonamesUrl: import.meta.env.NG_APP_GEONAMES_URL || '',
+  geonamesUser: import.meta.env.NG_APP_GEONAMES_USER || '',
 };
