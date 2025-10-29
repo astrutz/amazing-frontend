@@ -61,6 +61,7 @@
             >
                 <ng-icon
                     size="32"
+                    [ngClass]="{'animate-spin': isUpdatingPosition$()}"
                     [name]="isUpdatingPosition$() ? 'lucideLoader2' : 'lucideMapPin'"
                 />
             </button>
