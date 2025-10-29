@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { LeafletMarkerClusterModule } from '@bluehalo/ngx-leaflet-markercluster';
@@ -8,7 +7,8 @@ import { LeafletMarkerClusterModule } from '@bluehalo/ngx-leaflet-markercluster'
     selector: 'app-root',
     imports: [RouterOutlet, LeafletModule, LeafletMarkerClusterModule],
     templateUrl: './app.component.html',
-    styleUrl: './app.component.css'
+    styleUrl: './app.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
   title = 'amazing';

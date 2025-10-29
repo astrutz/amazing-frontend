@@ -47,7 +47,7 @@
 
                 <p class="opacity-60 pb-5 italic">Silence be the last you hear
                 </p>
-                <p>Finde einen von {{ markerService.markers$().length }} Amazing
+                <p>Finde einen von {{ markerCount$() }} Amazing
                    Artur Sticker!
                 </p>
             </div>
@@ -61,6 +61,7 @@
             >
                 <ng-icon
                     size="32"
+                    [ngClass]="{'animate-spin': isUpdatingPosition$()}"
                     [name]="isUpdatingPosition$() ? 'lucideLoader2' : 'lucideMapPin'"
                 />
             </button>
@@ -84,7 +85,7 @@
         <div class="fixed flex justify-center z-[999] bottom-4 w-full ">
             <div class="inline-flex justify-center gap-8 p-4 bg-amazing-bordeaux rounded-md w-auto">
                 <p class="self-center">Marker werden geladen...</p>
-                <progress-spinner [show]="isLoading$()" />
+                <progress-spinner [show$]="isLoading$()" />
             </div>
         </div>
     }

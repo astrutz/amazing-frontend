@@ -1,6 +1,6 @@
 import * as L from 'leaflet';
 import { icon, LeafletMouseEvent, MapOptions, Marker, marker, tileLayer } from 'leaflet';
-import { Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import 'leaflet.markercluster';
@@ -9,10 +9,10 @@ import { LeafletMarkerClusterModule } from '@bluehalo/ngx-leaflet-markercluster'
 import { LocationService } from '../../services/location.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { lucideLoader2, lucideMapPin, lucidePlus, lucideSearch, lucideX } from '@ng-icons/lucide';
-import { NgStyle } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
 import { LoadingService } from '../../services/loading.service';
-import { MarkerService } from '../shared/marker/marker.service';
+import { MarkerService } from '../../services/marker.service';
 
 @Component({
     selector: 'app-home',
@@ -23,6 +23,7 @@ import { MarkerService } from '../shared/marker/marker.service';
         NgStyle,
         RouterLink,
         ProgressSpinnerComponent,
+        NgClass
     ],
     templateUrl: './home.component.html',
     styleUrl: './home.component.css',
@@ -34,13 +35,14 @@ import { MarkerService } from '../shared/marker/marker.service';
             lucideX,
             lucideSearch,
         }),
-    ]
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent {
   private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly _loadingService = inject(LoadingService);
   private readonly _locationService = inject(LocationService);
-  protected readonly markerService = inject(MarkerService);
+  private readonly _markerService = inject(MarkerService);
 
   constructor() {
     this._initLatLongByQueryParams();
@@ -78,8 +80,8 @@ export class HomeComponent {
   /**
    * Creates all amazing markers for the layer
    */
-  private _amazingLayers$ = computed<Marker[]>(() => {
-    return this.markerService.markers$().map((markerElement) => {
+  private _amazingLayers$ = computed<Marker[]>(() =>
+     this._markerService.markers$().map((markerElement) => {
       const mapMarker = marker([markerElement.lat, markerElement.lng], {
         title: markerElement.name,
         icon: icon({
@@ -87,6 +89,7 @@ export class HomeComponent {
           iconSize: [80, 64],
         }),
       });
+
       mapMarker.bindPopup(`<h3 class="text-xl mb-2" id="${markerElement._id}">${markerElement.name}</h3>
         <h4 class="text-m">${markerElement.description}</h4>
         ${
@@ -98,8 +101,8 @@ export class HomeComponent {
         `);
 
       return mapMarker;
-    });
-  });
+    })
+  );
 
   /**
    * Returns all amazing layers and the current position marker layer
@@ -111,6 +114,11 @@ export class HomeComponent {
     }
     return [...this._amazingLayers$()];
   });
+
+  /**
+   * Returns the total number of markers to display it on the welcome card. 
+   **/
+  protected markerCount$ = computed<number>(() => this._markerService.markers$().length)
 
   /**
    * Either creates a new marker for the current position or updates the

@@ -1,7 +1,7 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
-import { Marker } from '../../../types/marker.type';
-import { LoadingService } from '../../../services/loading.service';
-import { RequestService } from '../../../services/request.service';
+import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { Marker } from '../types/marker.type';
+import { LoadingService } from './loading.service';
+import { RequestService } from './request.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +16,8 @@ export class MarkerService {
 
   private _markers$: WritableSignal<Marker[]> = signal([]);
 
-  get markers$(): WritableSignal<Marker[]> {
-    return this._markers$;
+  get markers$(): Signal<Marker[]> {
+    return this._markers$.asReadonly();
   }
 
   set markers$(value: Marker[]) {
