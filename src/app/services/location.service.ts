@@ -137,13 +137,13 @@ class LocationService {
               case error.TIMEOUT:
                 this._geolocationError$.set({
                   code: GeolocationErrorCode.TIMEOUT,
-                  message: 'Oh Neini, Timeouti 😔'
+                  message: 'Es ist zu einem Timeout gekommen.'
                 });
                 break;
               default:
                 this._geolocationError$.set({
                   code: GeolocationErrorCode.DEFAULT,
-                  message: 'Es iST EiN feHlEr AuFGetRetEn. Bitti späti versuchi 😉😉😉😉😉😉😉😉'
+                  message: error.message
                 });
                 break;
             }
