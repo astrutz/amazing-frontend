@@ -37,8 +37,8 @@ export class CreateComponent {
     });
   }
 
-  protected uploadState: UploadStates = 'waiting';
-  protected imageUploadState: UploadStates = 'waiting';
+  protected uploadState$ = signal<UploadStates>('waiting');
+  protected imageUploadState$ = signal<UploadStates>('waiting');
 
   protected markerForm: FormGroup = new FormGroup({
     name: new FormControl(null, [Validators.required]),
@@ -93,8 +93,8 @@ export class CreateComponent {
    * Sends a request to the backend to save the marker
    */
   protected async onSubmit() {
-    if (this.markerForm.valid && this.uploadState !== 'uploading' && this.uploadState !== 'failed') {
-      this.uploadState = 'uploading';
+    if (this.markerForm.valid && this.uploadState$() !== 'uploading' && this.uploadState$() !== 'failed') {
+      this.uploadState$.set('uploading');
 
       try {
         const country = await this._countryService.getCountry(this.markerForm.getRawValue()!.lat, this.markerForm.getRawValue()!.lng);
@@ -103,10 +103,10 @@ export class CreateComponent {
         console.log('Marker was created');
         this._addCreatedMarkerToMap();
         this.navigateBack();
-        this.uploadState = 'succeeded';
+        this.uploadState$.set('succeeded');
       } catch (err) {
         console.error('An error occurred', err);
-        this.uploadState = 'failed';
+        this.uploadState$.set('failed');
         // TODO Show error message
         // {
         //     "message": [
@@ -130,17 +130,17 @@ export class CreateComponent {
   protected async handleFileInput(event: Event) {
     const file = (event.target as HTMLInputElement)?.files?.item(0);
     if (file) {
-      this.imageUploadState = 'uploading';
+      this.imageUploadState$.set('uploading');
       try {
         const imageURL = await this._requestService.uploadPicture(file);
         this.markerForm.patchValue({
           pictureUrl: imageURL,
         });
         this.fileName = file.name;
-        this.imageUploadState = 'succeeded';
+        this.imageUploadState$.set('succeeded');
       } catch (err) {
         console.log(err);
-        this.imageUploadState = 'failed';
+        this.imageUploadState$.set('failed');
       }
     }
   }

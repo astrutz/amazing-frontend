@@ -35,18 +35,18 @@
         <small class="mb-4">Erlaubte Formate: .jpg, .png, .jpeg</small>
         <div class="m-auto">
           <p class="pb-3">
-            @if (imageUploadState === 'succeeded') {
+            @if (imageUploadState$() === 'succeeded') {
               Upload von "<span class="font-bold italic">{{ fileName }}</span
               >" erfolgreich
             }
-            @if (imageUploadState === 'uploading') {
+            @if (imageUploadState$() === 'uploading') {
               Upload läuft...
             }
-            @if (imageUploadState === 'failed') {
+            @if (imageUploadState$() === 'failed') {
               Upload fehlgeschlagen
             }
           </p>
-          <progress-spinner [show$]="imageUploadState === 'uploading'"/>
+          <progress-spinner [show$]="imageUploadState$() === 'uploading'"/>
         </div>
       </div>
       <div class="flex flex-wrap gap-x-6 gap-y-2 mb-8">
@@ -69,18 +69,18 @@
         <app-position />
       }
       <p class="text-center text-xl mt-8">
-        @if (uploadState === 'uploading') {
+        @if (uploadState$() === 'uploading') {
           Sticker wird hinzugefügt... ⏰
-        } @else if (uploadState === 'succeeded') {
+        } @else if (uploadState$() === 'succeeded') {
           Sticker wurde erfolgreich hochgeladen! Yay 🎉
-        } @else if (uploadState === 'failed') {
+        } @else if (uploadState$() === 'failed') {
           Es ist ein Fehler aufgetreten 😞
         }
       </p>
       <div class="m-auto mt-2">
         <button
           class="text-green-400 border-green-600"
-          [disabled]="!(markerForm.valid && this.uploadState !== 'uploading' && this.uploadState !== 'failed')"
+          [disabled]="!(markerForm.valid && uploadState$() !== 'uploading' && uploadState$() !== 'failed')"
           type="submit">
           Speichern
         </button>
