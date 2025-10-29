@@ -6,7 +6,7 @@ import { ionRefresh } from "@ng-icons/ionicons";
 
 @Component({
   selector: 'app-position',
-  templateUrl: './position.component.html',
+  templateUrl: './tab-create-position.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ProgressSpinnerComponent,
@@ -18,7 +18,7 @@ import { ionRefresh } from "@ng-icons/ionicons";
     }),
   ]
 })
-export class PositionComponent {
+export class TabCreatePositionComponent {
   protected readonly locationService = inject(LocationService);
 
   /**

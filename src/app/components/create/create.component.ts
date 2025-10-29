@@ -8,14 +8,14 @@ import { Tabs, UploadStates } from './create.type';
 import { CountryService } from '../../services/country.service';
 import { MarkerService } from '../shared/marker/marker.service';
 import { LocationService } from '../../services/location.service';
-import { PositionComponent } from "./tabs/position/position.component";
-import { ManualComponent } from "./tabs/manual/manual.component";
+import { TabCreatePositionComponent } from "./tabs/tab-create-position/tab-create-position.component";
+import { TabCreateManuallyComponent } from "./tabs/tab-create-manually/tab-create-manually.component";
 import { NgClass } from "@angular/common";
 
 
 @Component({
   selector: 'app-create',
-  imports: [ReactiveFormsModule, ProgressSpinnerComponent, PositionComponent, ManualComponent, NgClass],
+  imports: [ReactiveFormsModule, ProgressSpinnerComponent, TabCreatePositionComponent, TabCreateManuallyComponent, NgClass],
   templateUrl: './create.component.html'
 })
 export class CreateComponent {

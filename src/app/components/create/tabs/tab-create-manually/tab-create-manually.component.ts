@@ -6,14 +6,14 @@ const LONGITUDE_REGEXP = /^[-+]?(?:(?:[0-9]?\d|1[0-7]\d)(?:[.,]\d+)?|180(?:[.,]0
 
 @Component({
   selector: 'app-manual',
-  templateUrl: './manual.component.html',
+  templateUrl: './tab-create-manually.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule
   ],
   standalone: true
 })
-export class ManualComponent {
+export class TabCreateManuallyComponent {
   /**
    * FormGroup for the inputs
    */
