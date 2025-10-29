@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RequestService } from '../../services/request.service';
@@ -6,7 +6,7 @@ import { RequestService } from '../../services/request.service';
 import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
 import { Tabs, UploadStates } from './create.type';
 import { CountryService } from '../../services/country.service';
-import { MarkerService } from '../shared/marker/marker.service';
+import { MarkerService } from '../../services/marker.service';
 import { LocationService } from '../../services/location.service';
 import { TabCreatePositionComponent } from "./tabs/tab-create-position/tab-create-position.component";
 import { TabCreateManuallyComponent } from "./tabs/tab-create-manually/tab-create-manually.component";
@@ -16,7 +16,8 @@ import { NgClass } from "@angular/common";
 @Component({
   selector: 'app-create',
   imports: [ReactiveFormsModule, ProgressSpinnerComponent, TabCreatePositionComponent, TabCreateManuallyComponent, NgClass],
-  templateUrl: './create.component.html'
+  templateUrl: './create.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateComponent {
   private readonly _router = inject(Router);
@@ -150,7 +151,7 @@ export class CreateComponent {
     markers.push(this.markerForm.getRawValue());
     const latitude = this.markerForm.get('lat')!.value;
     const longitude = this.markerForm.get('lng')!.value;
-    this._markerService.markers$.set(markers);
+    this._markerService.markers$ = markers;
     this._locationService.setCurrentLocation({latitude, longitude}, false);
   }
 

@@ -17,9 +17,12 @@ _Let's build a site to worship our Amazing Artur by implementing a map based too
 `ng serve`
 
 ### Create an .env file for
-NG_APP_BACKEND_URL \
-NG_APP_GEONAMES_USER \
-NG_APP_GEONAMES_URL
+
+```
+NG_APP_BACKEND_URL=https://amazing-backend.vercel.app
+NG_APP_GEONAMES_URL=https://secure.geonames.org/countryCodeJSON
+NG_APP_GEONAMES_USER=<SecretUserName: Ask if needed>
+```
 
 ## Tools used
 - [Angular](https://angular.dev)
