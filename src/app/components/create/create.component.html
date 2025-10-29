@@ -56,16 +56,16 @@
             [disabled]="tab.disabled"
             type="button"
             [ngClass]="{
-              'shadow-inputs border-transparent font-bold': currentTab === tab.type
+              'shadow-inputs border-transparent font-bold': currentTab$() === tab.type
             }"
           >
             {{ tab.name }}
           </button>
         }
       </div>
-      @if (currentTab === 'manual') {
+      @if (currentTab$() === 'manual') {
         <app-manual [markerForm$]="markerForm" />
-      } @else if (currentTab === 'position') {
+      } @else if (currentTab$() === 'position') {
         <app-position />
       }
       <p class="text-center text-xl mt-8">

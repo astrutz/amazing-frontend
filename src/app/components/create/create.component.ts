@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RequestService } from '../../services/request.service';
@@ -73,7 +73,7 @@ export class CreateComponent {
     },
   ];
 
-  protected currentTab: Tabs = 'manual';
+  protected currentTab$ = signal<Tabs>('manual');
 
   protected fileName: string = '';
 
@@ -158,7 +158,7 @@ export class CreateComponent {
    * Changes the currently selected tab
    */
   protected async selectTab(newTab: Tabs) {
-    this.currentTab = newTab;
+    this.currentTab$.set(newTab);
 
     if (newTab === 'position') {
       this._locationService.resetGeolocationError();
