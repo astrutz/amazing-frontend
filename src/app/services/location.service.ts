@@ -92,11 +92,8 @@ class LocationService {
    */
   public async updatePosition() {
     this.isUpdatingPosition$.set(true);
-    try {
-      await this._update();
-    } finally {
-      this.isUpdatingPosition$.set(false);
-    }
+    await this._update();
+    this.isUpdatingPosition$.set(false);
   }
 
   /**
