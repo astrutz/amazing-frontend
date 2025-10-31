@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {ChangeDetectionStrategy, Component, input} from '@angular/core';
 
 @Component({
   standalone: true,
@@ -8,5 +8,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProgressSpinnerComponent {
-  show$ = input<boolean>(false)
+  public show$ = input.required<boolean>();
+
+  public loadingText$ = input<string | null>(null);
 }

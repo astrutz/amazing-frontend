@@ -1,7 +1,12 @@
 @if (show$()) {
-  <div class="progress-spinner" role="progressbar">
-    <svg focusable="false" preserveAspectRatio="xMidYMid meet" viewBox="0 0 100 100">
-      <circle cx="50%" cy="50%" r="45"></circle>
-    </svg>
+  <div class="flex flex-col justify-center">
+    <div class="progress-spinner m-auto" role="progressbar">
+      <svg focusable="false" preserveAspectRatio="xMidYMid meet" viewBox="0 0 100 100">
+        <circle cx="50%" cy="50%" r="45"></circle>
+      </svg>
+    </div>
+    @if (loadingText$()) {
+      <span class="mt-4">{{ loadingText$() }}</span>
+    }
   </div>
 }

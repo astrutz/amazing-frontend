@@ -1,0 +1,25 @@
+@defer (when !locationService.isUpdatingPosition$() && !locationService.geolocationError$()) {
+  <div>
+    <p>Für die Position des Stickers wird dein aktueller Standort verwendet.</p>
+    <div class="flex items-center gap-2 mt-4">
+      <span>📍</span>
+      <span class="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+        {{ currentLocation$().coords.latitude }}° Längengrad · {{ currentLocation$().coords.longitude }}° Breitengrad
+      </span>
+    </div>
+  </div>
+} @placeholder {
+  <div class="flex justify-center">
+    @if (locationService.geolocationError$()) {
+      <p>{{ locationService.geolocationError$()?.message }}</p>
+      <button class="p-0 border-none flex items-center pl-2" (click)="locationService.updatePosition()">
+        <ng-icon name="lucideRefreshCcw" class="hover:rotate-180 duration-500 transition-all"  />
+      </button>
+    } @else {
+      <progress-spinner
+        [show$]="locationService.isUpdatingPosition$()"
+        [loadingText$]="'Position wird gesucht ...'"
+      />
+    }
+  </div>
+}

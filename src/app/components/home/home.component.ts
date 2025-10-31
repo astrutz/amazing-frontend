@@ -15,33 +15,32 @@ import { LoadingService } from '../../services/loading.service';
 import { MarkerService } from '../../services/marker.service';
 
 @Component({
-    selector: 'app-home',
-    imports: [
-        LeafletModule,
-        LeafletMarkerClusterModule,
-        NgIconComponent,
-        NgStyle,
-        RouterLink,
-        ProgressSpinnerComponent,
-        NgClass
-    ],
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.css',
-    viewProviders: [
-        provideIcons({
-            lucidePlus,
-            lucideMapPin,
-            lucideLoader2,
-            lucideX,
-            lucideSearch,
-        }),
-    ],
+  selector: 'app-home',
+  imports: [
+    LeafletModule,
+    LeafletMarkerClusterModule,
+    NgIconComponent,
+    NgStyle,
+    RouterLink,
+    ProgressSpinnerComponent,
+  NgClass],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.css',
+  viewProviders: [
+    provideIcons({
+      lucidePlus,
+      lucideMapPin,
+      lucideLoader2,
+      lucideX,
+      lucideSearch,
+    }),
+  ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent {
   private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly _loadingService = inject(LoadingService);
-  private readonly _locationService = inject(LocationService);
+  protected readonly locationService = inject(LocationService);
   private readonly _markerService = inject(MarkerService);
 
   constructor() {
@@ -51,14 +50,13 @@ export class HomeComponent {
   /** Provides the currentPosition to be used as centre of the map. */
   protected mapCenter$ = computed<L.LatLng>(() => {
     return new L.LatLng(
-      this._locationService.lastPosition$().coords.latitude,
-      this._locationService.lastPosition$().coords.longitude,
+      this.locationService.lastPosition$().coords.latitude,
+      this.locationService.lastPosition$().coords.longitude,
     );
   });
 
   protected clickedLat$ = signal<number>(0);
   protected clickedLng$ = signal<number>(0);
-  protected isUpdatingPosition$ = signal<boolean>(false);
   protected isInfoboxClosed$ = signal<boolean>(false);
   protected isContextMenuOpen$ = signal<boolean>(false);
   protected contextMenuX$: WritableSignal<number> = signal(0);
@@ -93,10 +91,10 @@ export class HomeComponent {
       mapMarker.bindPopup(`<h3 class="text-xl mb-2" id="${markerElement._id}">${markerElement.name}</h3>
         <h4 class="text-m">${markerElement.description}</h4>
         ${
-          markerElement.uploader
-            ? `<h5 class="text-s">von ${markerElement.uploader} eingetragen</h5>`
-            : ''
-        }
+        markerElement.uploader
+          ? `<h5 class="text-s">von ${markerElement.uploader} eingetragen</h5>`
+          : ''
+      }
         ${markerElement.pictureUrl ? `<img src="${markerElement.pictureUrl ?? ''}" />` : ''}
         `);
 
@@ -116,7 +114,7 @@ export class HomeComponent {
   });
 
   /**
-   * Returns the total number of markers to display it on the welcome card. 
+   * Returns the total number of markers to display it on the welcome card.
    **/
   protected markerCount$ = computed<number>(() => this._markerService.markers$().length)
 
@@ -125,11 +123,11 @@ export class HomeComponent {
    * latitude and longitude
    */
   protected currentPositionMarker$ = computed<Marker | null>(() => {
-    const pos = this._locationService.lastPosition$();
-    const { latitude, longitude } = pos.coords;
+    const pos = this.locationService.lastPosition$();
+    const {latitude, longitude} = pos.coords;
     const latLng = L.latLng(latitude, longitude);
 
-    if (!this._locationService.isGeolocation$()) {
+    if (!this.locationService.isGeolocation$()) {
       return null;
     }
 
@@ -155,19 +153,15 @@ export class HomeComponent {
   }
 
   /**
-   * Called when clicking on the curren position button
+   * Updates postion and viewport center
    */
-  protected async updatePosition() {
-    this.isUpdatingPosition$.set(true);
-    try {
-      await this._locationService.update();
-      const { latitude, longitude } = this._locationService.lastPosition$().coords;
+  protected updatePostionAndViewportCenter() {
+    this.locationService.updatePosition().then(() => {
+      const {latitude, longitude} = this.locationService.lastPosition$().coords;
       const latLng = L.latLng(latitude, longitude);
 
       this.viewportCenter$.set(latLng);
-    } finally {
-      this.isUpdatingPosition$.set(false);
-    }
+    });
   }
 
   /**
@@ -213,7 +207,7 @@ export class HomeComponent {
    Returns the contextMenu position
    */
   protected get contextMenuPositioning(): any {
-    return { 'left.px': this.contextMenuX$(), 'top.px': this.contextMenuY$() };
+    return {'left.px': this.contextMenuX$(), 'top.px': this.contextMenuY$()};
   }
 
   /**
@@ -225,7 +219,7 @@ export class HomeComponent {
     const longitude = +params['lng'];
 
     if (latitude && longitude) {
-      this._locationService.setCurrentLocation({ latitude, longitude }, false);
+      this.locationService.setCurrentLocation({latitude, longitude}, false);
     }
   }
 }

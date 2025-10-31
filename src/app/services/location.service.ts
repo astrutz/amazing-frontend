@@ -1,10 +1,10 @@
 import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
-import type { SetLocationValue } from '../types/location.type';
+import { GeolocationErrorCode, GeolocationErrorCodeMessage, SetLocationValue } from '../types/location.type';
 
 /**
  * This service is intended to provide the whole app with a somewhat useful and reliable current location.
  */
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 class LocationService {
   private readonly _geolocation: Geolocation | null = null;
   private readonly _positioningOpts: PositionOptions = {
@@ -37,6 +37,16 @@ class LocationService {
     toJSON: () => null,
   });
 
+  /**
+   * Contains the error code and a message to be displayed
+   */
+  private readonly _geolocationError$ = signal<GeolocationErrorCodeMessage | null>(null);
+
+  /**
+   * Waits for the geolocation dialog and is updated after option was chosen
+   */
+  public isUpdatingPosition$ = signal<boolean>(false);
+
   /** Returns the signal in a read-only way. */
   public get lastPosition$(): Signal<GeolocationPosition> {
     return this._lastPosition$.asReadonly();
@@ -51,7 +61,15 @@ class LocationService {
   }
 
   /**
-   * Describes if the current position marker should be visible. This is only the case when using the users' geolocation.
+   * Getter for the geolocation erro
+   */
+  public get geolocationError$(): Signal<GeolocationErrorCodeMessage | null> {
+    return this._geolocationError$.asReadonly();
+  }
+
+  /**
+   * Describes if the current position marker should be visible. This is only the case
+   * when using the users' geolocation.
    */
   private readonly _isGeolocation$: WritableSignal<boolean> = signal(false);
 
@@ -70,22 +88,67 @@ class LocationService {
   }
 
   /**
+   * Called to update the position and handle the loading state
+   */
+  public async updatePosition() {
+    this.isUpdatingPosition$.set(true);
+    await this._update();
+    this.isUpdatingPosition$.set(false);
+  }
+
+  /**
+   * Resets the geolocation error
+   */
+  public resetGeolocationError() {
+    this._geolocationError$.set(null);
+  }
+
+  /**
    * Force updates the current position provided by this service
    * @returns {Promise<void>} Rejects on any error; it's up to the user whether to work with the - then - stale position or ignore this service’s position.
    */
-  public async update(): Promise<void> {
+  private async _update(): Promise<void> {
     return new Promise((resolve, reject) => {
       if (!this._geolocation) reject();
-      else
+      else {
         this._geolocation.getCurrentPosition(
           (position) => {
             this._lastPosition$.set(position);
             this.isGeolocation = true;
             resolve();
           },
-          reject,
+          (error) => {
+            switch (error.code) {
+              case error.PERMISSION_DENIED:
+                this._geolocationError$.set({
+                  code: GeolocationErrorCode.PERMISSION_DENIED,
+                  message: 'Die Standortfreigabe wurde verweigert.'
+                });
+                break;
+              case error.POSITION_UNAVAILABLE:
+                this._geolocationError$.set({
+                  code: GeolocationErrorCode.POSITION_UNAVAILABLE,
+                  message: 'Die aktuelle Position kann gerade nicht gefunden werden.'
+                });
+                break;
+              case error.TIMEOUT:
+                this._geolocationError$.set({
+                  code: GeolocationErrorCode.TIMEOUT,
+                  message: 'Es ist zu einem Timeout gekommen.'
+                });
+                break;
+              default:
+                this._geolocationError$.set({
+                  code: GeolocationErrorCode.DEFAULT,
+                  message: error.message
+                });
+                break;
+            }
+            this.isGeolocation = false;
+          },
           this._positioningOpts,
         );
+      }
     });
   }
 

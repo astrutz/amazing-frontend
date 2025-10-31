@@ -1,106 +1,87 @@
 <main class="min-h-screen relative bg-amazing-bordeaux-dark">
   <div class="text-end pt-4 px-6">
-    <button type="button" class="text-3xl cursor-pointer border-0" (click)="navigateBack()">
+    <button (click)="navigateBack()" class="text-3xl cursor-pointer border-0" type="button">
       X
     </button>
   </div>
   <div class="m-auto pb-6 px-28 max-sm:px-6 md:max-w-[80vw] lg:max-w-[40vw]">
     <h1 class="font-bold text-3xl mb-1">Neuer Sticker</h1>
     <p class="mb-8">Was ist ein Sticker wert, wenn er nicht auf der Karte auftaucht?</p>
-    <form [formGroup]="markerForm" (ngSubmit)="onSubmit()" class="flex flex-col">
+    <form (ngSubmit)="onSubmit()" [formGroup]="markerForm" class="flex flex-col">
       <div class="flex flex-col gap-2 mb-12">
         <label for="title">Titel</label>
-        <input id="title" aria-describedby="title-help" formControlName="name" />
+        <input aria-describedby="title-help" formControlName="name" id="title"/>
         <small id="title-help">Ort, an dem der Sticker klebt, z.B. "Düsseldorf Hauptbahnhof"</small>
       </div>
       <div class="flex flex-col gap-2 mb-12">
         <label for="description">Beschreibung</label>
-        <input id="description" aria-describedby="description-help" formControlName="description" />
+        <input aria-describedby="description-help" formControlName="description" id="description"/>
         <small id="description-help"
-          >Nähere Beschreibung des Ortes, z.B. "Auf der Rolltreppe zu Gleis 6"</small
+        >Nähere Beschreibung des Ortes, z.B. "Auf der Rolltreppe zu Gleis 6"</small
         >
       </div>
       <div class="flex flex-col gap-2 mb-12">
         <label for="uploader">Name (optional)</label>
-        <input id="uploader" aria-describedby="uploader-help" formControlName="uploader" />
+        <input aria-describedby="uploader-help" formControlName="uploader" id="uploader"/>
         <small id="uploader-help">Person, die den Sticker aufgehangen hat</small>
       </div>
-            <div class="flex flex-col gap-2 mb-12">
-<!--              We need to fake the label because we cannot change the text "Choose file from the input"-->
-              <label>Bild (optional)</label>
-              <label class="border rounded-lg py-1.5 px-2 text-base text-center" for="upload">
-                Datei hochladen
-              </label>
-              <input type="file" id="upload" class="hidden" (change)="handleFileInput($event)" />
-              <small class="mb-4">Erlaubte Formate: .jpg, .png, .jpeg</small>
-              <div class="m-auto">
-                <p class="pb-3">
-                  @if (imageUploadState === 'succeeded') {
-                    Upload von "<span class="font-bold italic">{{ fileName }}</span
-                    >" erfolgreich
-                  }
-                  @if (imageUploadState === 'uploading') {
-                    Upload läuft...
-                  }
-                  @if (imageUploadState === 'failed') {
-                    Upload fehlgeschlagen
-                  }
-                </p>
-                <progress-spinner [show$]="imageUploadState === 'uploading'" />
-              </div>
-            </div>
+      <div class="flex flex-col gap-2 mb-12">
+        <!--              We need to fake the label because we cannot change the text "Choose file from the input"-->
+        <label>Bild (optional)</label>
+        <label class="border rounded-lg py-1.5 px-2 text-base text-center" for="upload">
+          Datei hochladen
+        </label>
+        <input (change)="handleFileInput($event)" class="hidden" id="upload" type="file"/>
+        <small class="mb-4">Erlaubte Formate: .jpg, .png, .jpeg</small>
+        <div class="m-auto">
+          <p class="pb-3">
+            @if (imageUploadState$() === 'succeeded') {
+              Upload von "<span class="font-bold italic">{{ fileName }}</span
+              >" erfolgreich
+            }
+            @if (imageUploadState$() === 'uploading') {
+              Upload läuft...
+            }
+            @if (imageUploadState$() === 'failed') {
+              Upload fehlgeschlagen
+            }
+          </p>
+          <progress-spinner [show$]="imageUploadState$() === 'uploading'"/>
+        </div>
+      </div>
       <div class="flex flex-wrap gap-x-6 gap-y-2 mb-8">
         @for (tab of tabsList; track $index) {
-          <button type="button" [disabled]="tab.disabled" (click)="selectTab($index)">
+          <button
+            (click)="selectTab(tab.type)"
+            [disabled]="tab.disabled"
+            type="button"
+            [ngClass]="{
+              'shadow-inputs border-transparent font-bold': currentTab$() === tab.type
+            }"
+          >
             {{ tab.name }}
           </button>
         }
       </div>
-      @if (currentTab === 3) {
-        <div class="flex flex-col gap-6 w-1/2 m-auto">
-          <div class="flex flex-col gap-2">
-            <label for="latitude">Längengrad</label>
-            <input
-              id="latitude"
-              type="number"
-              aria-describedby="latitude"
-              formControlName="lat"
-              min="-90"
-              max="90"
-              required
-              (paste)="onPaste($event)"
-            />
-            <small>Dezimalwert zwischen 0-90</small>
-          </div>
-          <div class="flex flex-col gap-2">
-            <label for="longitude">Breitengrad</label>
-            <input
-              id="longitude"
-              type="number"
-              aria-describedby="longitude"
-              formControlName="lng"
-              min="-180"
-              max="180"
-              (paste)="onPaste($event)"
-              required />
-            <small>Dezimalwert zwischen 0-180</small>
-          </div>
-        </div>
+      @if (currentTab$() === 'manual') {
+        <app-manual [markerForm$]="markerForm" />
+      } @else if (currentTab$() === 'position') {
+        <app-position />
       }
       <p class="text-center text-xl mt-8">
-        @if (uploadState === 'uploading') {
+        @if (uploadState$() === 'uploading') {
           Sticker wird hinzugefügt... ⏰
-        } @else if (uploadState === 'succeeded') {
+        } @else if (uploadState$() === 'succeeded') {
           Sticker wurde erfolgreich hochgeladen! Yay 🎉
-        } @else if (uploadState === 'failed') {
+        } @else if (uploadState$() === 'failed') {
           Es ist ein Fehler aufgetreten 😞
         }
       </p>
       <div class="m-auto mt-2">
         <button
-          type="submit"
           class="text-green-400 border-green-600"
-          [disabled]="!(markerForm.valid && this.uploadState !== 'uploading' && this.uploadState !== 'failed')">
+          [disabled]="!(markerForm.valid && uploadState$() !== 'uploading' && uploadState$() !== 'failed')"
+          type="submit">
           Speichern
         </button>
       </div>
