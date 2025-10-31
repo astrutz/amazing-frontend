@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { LocationService } from "../../../../services/location.service";
 import { ProgressSpinnerComponent } from "../../../shared/progress-spinner/progress-spinner.component";
 import { NgIcon, provideIcons } from "@ng-icons/core";
-import { ionRefresh } from "@ng-icons/ionicons";
+import { lucideRefreshCcw } from "@ng-icons/lucide";
 
 @Component({
   selector: 'app-position',
@@ -14,7 +14,7 @@ import { ionRefresh } from "@ng-icons/ionicons";
   ],
   viewProviders: [
     provideIcons({
-      ionRefresh
+      lucideRefreshCcw
     }),
   ]
 })

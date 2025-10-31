@@ -13,7 +13,7 @@
     @if (locationService.geolocationError$()) {
       <p>{{ locationService.geolocationError$()?.message }}</p>
       <button class="p-0 border-none flex items-center pl-2" (click)="locationService.updatePosition()">
-        <ng-icon name="ionRefresh" class="hover:rotate-180 duration-500 transition-all"  />
+        <ng-icon name="lucideRefreshCcw" class="hover:rotate-180 duration-500 transition-all"  />
       </button>
     } @else {
       <progress-spinner
