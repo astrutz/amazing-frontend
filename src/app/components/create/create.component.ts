@@ -170,7 +170,7 @@ export class CreateComponent {
 
       this.markerForm.patchValue({
         lat: this.currentLocation$().coords.latitude,
-        lng: this.currentLocation$().coords.latitude
+        lng: this.currentLocation$().coords.longitude
       });
     } else {
       this.markerForm.patchValue({
