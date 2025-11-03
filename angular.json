@@ -27,7 +27,7 @@
                 "output": "/"
               }
             ],
-            "styles": ["src/styles.scss", "node_modules/leaflet/dist/leaflet.css"],
+            "styles": ["src/styles.css", "node_modules/leaflet/dist/leaflet.css"],
             "scripts": []
           },
           "configurations": {
@@ -81,7 +81,7 @@
             "polyfills": [],
             "tsConfig": "tsconfig.spec.json",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.scss", "node_modules/leaflet/dist/leaflet.css"],
+            "styles": ["src/styles.css", "node_modules/leaflet/dist/leaflet.css"],
             "scripts": []
           }
         }
