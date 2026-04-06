@@ -1,0 +1,17 @@
+<main class="min-h-screen relative bg-amazing-bordeaux-dark">
+  <div class="text-end pt-4 px-6">
+    <button routerLink="" class="text-3xl cursor-pointer border-0" type="button">
+      <ng-icon size="32" name="lucideX" />
+    </button>
+  </div>
+  <div class="m-auto pb-6 px-28 max-sm:px-6 md:max-w-[80vw] lg:max-w-[40vw]">
+    @if (title$()) {
+      <h1 class="font-bold text-3xl mb-1">{{ title$() }}</h1>
+
+      @if (subTitle$()) {
+        <p class="mb-8 italic opacity-60">{{ subTitle$() }}</p>
+      }
+    }
+    <ng-content />
+  </div>
+</main>

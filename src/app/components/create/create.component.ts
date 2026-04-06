@@ -11,13 +11,21 @@ import { LocationService } from '../../services/location.service';
 import { TabCreatePositionComponent } from "./tabs/tab-create-position/tab-create-position.component";
 import { TabCreateManuallyComponent } from "./tabs/tab-create-manually/tab-create-manually.component";
 import { NgClass } from "@angular/common";
+import { PageComponent } from '../shared/page/page.component';
 
 
 @Component({
   selector: 'app-create',
-  imports: [ReactiveFormsModule, ProgressSpinnerComponent, TabCreatePositionComponent, TabCreateManuallyComponent, NgClass],
+  imports: [
+    ReactiveFormsModule,
+    ProgressSpinnerComponent,
+    TabCreatePositionComponent,
+    TabCreateManuallyComponent,
+    NgClass,
+    PageComponent,
+  ],
   templateUrl: './create.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateComponent {
   private readonly _router = inject(Router);
@@ -30,10 +38,10 @@ export class CreateComponent {
   constructor() {
     this._activatedRoute.queryParams.subscribe((params) => {
       if (params['lat']) {
-        this.markerForm.patchValue({lat: +params['lat']});
+        this.markerForm.patchValue({ lat: +params['lat'] });
       }
       if (params['lng']) {
-        this.markerForm.patchValue({lng: +params['lng']});
+        this.markerForm.patchValue({ lng: +params['lng'] });
       }
     });
   }
@@ -63,7 +71,7 @@ export class CreateComponent {
     country: new FormControl(null, []),
   });
 
-  protected tabsList: { type: Tabs, name: string; disabled?: boolean }[] = [
+  protected tabsList: { type: Tabs; name: string; disabled?: boolean }[] = [
     {
       type: 'position',
       name: 'Standort',
@@ -94,12 +102,19 @@ export class CreateComponent {
    * Sends a request to the backend to save the marker
    */
   protected async onSubmit() {
-    if (this.markerForm.valid && this.uploadState$() !== 'uploading' && this.uploadState$() !== 'failed') {
+    if (
+      this.markerForm.valid &&
+      this.uploadState$() !== 'uploading' &&
+      this.uploadState$() !== 'failed'
+    ) {
       this.uploadState$.set('uploading');
 
       try {
-        const country = await this._countryService.getCountry(this.markerForm.getRawValue()!.lat, this.markerForm.getRawValue()!.lng);
-        this.markerForm.patchValue({country});
+        const country = await this._countryService.getCountry(
+          this.markerForm.getRawValue()!.lat,
+          this.markerForm.getRawValue()!.lng,
+        );
+        this.markerForm.patchValue({ country });
         await this._requestService.createMarker(this.markerForm.getRawValue());
         console.log('Marker was created');
         this._addCreatedMarkerToMap();
@@ -152,7 +167,7 @@ export class CreateComponent {
     const latitude = this.markerForm.get('lat')!.value;
     const longitude = this.markerForm.get('lng')!.value;
     this._markerService.markers$ = markers;
-    this._locationService.setCurrentLocation({latitude, longitude}, false);
+    this._locationService.setCurrentLocation({ latitude, longitude }, false);
   }
 
   /**
@@ -170,12 +185,12 @@ export class CreateComponent {
 
       this.markerForm.patchValue({
         lat: this.currentLocation$().coords.latitude,
-        lng: this.currentLocation$().coords.longitude
+        lng: this.currentLocation$().coords.longitude,
       });
     } else {
       this.markerForm.patchValue({
         lat: '',
-        lng: ''
+        lng: '',
       });
     }
   }
