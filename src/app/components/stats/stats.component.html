@@ -4,35 +4,35 @@
   @if (stats) {
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div class="bg-white/5 backdrop-blur-md p-6 rounded-3xl border border-white/10 shadow-2xl">
-        <h3 class="text-amazing-bordeaux-light text-xs font-bold uppercase tracking-widest mb-6">Amazing Stats</h3>
+        <h3 class="text-amazing-light text-xs font-bold uppercase tracking-widest mb-6">Amazing Stats</h3>
         <div class="space-y-6">
           <div class="flex flex-col">
-            <span class="text-amazing-bordeaux-text-secondary text-sm">Verklebte Sticker</span>
-            <span class="text-4xl font-black text-amazing-bordeaux-text-primary tracking-tight">{{ stats.markerCount }}</span>
+            <span class="text-amazing-text-secondary text-sm">Verklebte Sticker</span>
+            <span class="text-4xl font-black text-amazing-text-primary tracking-tight">{{ stats.markerCount }}</span>
           </div>
           <div class="grid grid-cols-2 gap-4">
-            <div class="flex flex-col border-l-2 border-amazing-bordeaux-accent pl-3">
-              <span class="text-amazing-bordeaux-text-secondary text-xs uppercase">Mit Foto</span>
-              <span class="text-xl font-bold text-amazing-bordeaux-accent">{{ stats.markerWithPictureCount }}</span>
+            <div class="flex flex-col border-l-2 border-amazing-accent pl-3">
+              <span class="text-amazing-text-secondary text-xs uppercase">Mit Foto</span>
+              <span class="text-xl font-bold text-amazing-accent">{{ stats.markerWithPictureCount }}</span>
             </div>
-            <div class="flex flex-col border-l-2 border-amazing-bordeaux-accent pl-3">
-              <span class="text-amazing-bordeaux-text-secondary text-xs uppercase">Uploader</span>
-              <span class="text-xl font-bold text-amazing-bordeaux-accent">{{ stats.uploaderCount }}</span>
+            <div class="flex flex-col border-l-2 border-amazing-accent pl-3">
+              <span class="text-amazing-text-secondary text-xs uppercase">Uploader</span>
+              <span class="text-xl font-bold text-amazing-accent">{{ stats.uploaderCount }}</span>
             </div>
           </div>
         </div>
       </div>
 
       <div class="bg-white/5 backdrop-blur-md p-6 rounded-3xl border border-white/10 shadow-2xl">
-        <h3 class="text-amazing-bordeaux-light text-xs font-bold uppercase tracking-widest mb-4">Top Uploader</h3>
+        <h3 class="text-amazing-light text-xs font-bold uppercase tracking-widest mb-4">Top Uploader</h3>
         <div class="space-y-3">
           @for (uploader of stats.mostMarkersUploader; track uploader.name; let i = $index) {
             <div class="flex items-center justify-between bg-white/5 p-3 rounded-2xl border border-white/5">
               <div class="flex items-center gap-3">
-                <span class="text-lg font-black text-amazing-bordeaux-accent/50">#{{ i + 1 }}</span>
-                <span class="text-amazing-bordeaux-text-primary font-medium">{{ uploader.name }}</span>
+                <span class="text-lg font-black text-amazing-accent/50">#{{ i + 1 }}</span>
+                <span class="text-amazing-text-primary font-medium">{{ uploader.name }}</span>
               </div>
-              <span class="px-3 py-1 bg-amazing-bordeaux-accent/20 text-amazing-bordeaux-accent rounded-full text-xs font-bold">
+              <span class="px-3 py-1 bg-amazing-accent/20 text-amazing-accent rounded-full text-xs font-bold">
                 {{ uploader.markerCount }} Sticker
               </span>
             </div>
@@ -41,16 +41,16 @@
       </div>
 
       <div class="bg-white/5 backdrop-blur-md p-6 rounded-3xl border border-white/10 shadow-2xl">
-        <h3 class="text-amazing-bordeaux-light text-xs font-bold uppercase tracking-widest mb-4">Top Länder</h3>
+        <h3 class="text-amazing-light text-xs font-bold uppercase tracking-widest mb-4">Top Länder</h3>
         <div class="space-y-4">
           @for (country of stats.topCountries; track country.country) {
             <div class="flex flex-col">
               <div class="flex justify-between text-sm mb-1">
                 <img [title]="country.country" [src]="getFlagUrl(country.country)" class="w-6 h-6 rounded-lg" />
-                <span class="text-amazing-bordeaux-light">{{ country.count }}</span>
+                <span class="text-amazing-light">{{ country.count }}</span>
               </div>
               <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
-                <div class="bg-amazing-bordeaux-accent h-full" [style.width.%]="(country.count / stats.markerCount) * 100"></div>
+                <div class="bg-amazing-accent h-full" [style.width.%]="(country.count / stats.markerCount) * 100"></div>
               </div>
             </div>
           }
@@ -59,19 +59,19 @@
 
       <div
         class="bg-white/5 backdrop-blur-md p-6 rounded-3xl border border-white/10 shadow-2xl md:col-span-2 lg:col-span-3">
-        <h3 class="text-amazing-bordeaux-light text-xs font-bold uppercase tracking-widest mb-6">Am weitesten gereiste Sticker (vom
+        <h3 class="text-amazing-light text-xs font-bold uppercase tracking-widest mb-6">Am weitesten gereiste Sticker (vom
           Büro aus)</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           @for (distance of stats.biggestDistance; track distance.name; let i = $index) {
             <div class="bg-black/20 p-4 rounded-2xl border border-white/5">
-              <p class="text-amazing-bordeaux-accent text-[10px] font-bold uppercase mb-1">Platz {{ i + 1 }}</p>
-              <p class="text-amazing-bordeaux-text-primary font-bold truncate flex gap-2">
+              <p class="text-amazing-accent text-[10px] font-bold uppercase mb-1">Platz {{ i + 1 }}</p>
+              <p class="text-amazing-text-primary font-bold truncate flex gap-2">
                 <img [title]="distance.country" [src]="getFlagUrl(distance.country)" class="w-6 h-6 rounded-lg" />
                 <span>{{ distance.name }}</span>
               </p>
               <div class="flex justify-between items-end mt-4">
-                <span class="text-amazing-bordeaux-text-secondary text-xs">Entfernung</span>
-                <span class="text-2xl font-mono font-light text-amazing-bordeaux-accent">{{ distance.distanceInKm }} <span
+                <span class="text-amazing-text-secondary text-xs">Entfernung</span>
+                <span class="text-2xl font-mono font-light text-amazing-accent">{{ distance.distanceInKm }} <span
                   class="text-xs">km</span></span>
               </div>
             </div>

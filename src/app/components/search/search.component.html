@@ -14,7 +14,7 @@
     @for (marker of foundMarkers; track marker.id) {
       <a
         (click)="navigate(marker)"
-        class="bg-amazing-bordeaux hover:bg-amazing-bordeaux-light p-6 cursor-pointer rounded-lg">
+        class="bg-amazing hover:bg-amazing-light p-6 cursor-pointer rounded-lg">
         <div class="flex gap-4 items-center">
           @if (marker.country && marker.country.length === 2) {
             <img [src]="getFlagUrl(marker.country)" class="w-6 h-6 rounded-lg" />

@@ -10,7 +10,7 @@
     [leafletLayers]="allLayers$()">
     @if (isContextMenuOpen$()) {
       <div class="absolute w-20 h-20 z-[999]" [ngStyle]="contextMenuPositioning">
-        <div class="fixed rounded-lg p-2 bg-amazing-bordeaux">
+        <div class="fixed rounded-lg p-2 bg-amazing">
           <a
             class="!text-white text-base"
             routerLink="create"
@@ -25,7 +25,7 @@
   @defer (when !isLoading$()) {
     @if (!isInfoboxClosed$()) {
       <div
-        class="fixed z-[999] bg-amazing-bordeaux rounded-lg py-6 px-8 mr-16 top-4 left-16 max-md:bottom-4 max-md:top-auto">
+        class="fixed z-[999] bg-amazing rounded-lg py-6 px-8 mr-16 top-4 left-16 max-md:bottom-4 max-md:top-auto">
         <div class="flex justify-between gap-x-6 max-md:gap-x-1">
           <h2 class="text-3xl font-bold pb-1">Wo ist mein Amazing Artur?</h2>
           <button
@@ -44,19 +44,19 @@
     <div class="flex gap-x-3 fixed z-[999] px-3 py-2 border-0 max-sm:max-10 top-4 end-4">
       <button
         type="button"
-        class="bg-amazing-bordeaux border-transparent flex items-center"
+        class="bg-amazing border-transparent flex items-center"
         routerLink="create">
         <ng-icon size="32" name="lucidePlus" />
       </button>
       <button
         type="button"
-        class="bg-amazing-bordeaux border-transparent flex items-center"
+        class="bg-amazing border-transparent flex items-center"
         routerLink="search">
         <ng-icon size="32" name="lucideSearch" />
       </button>
       <button
         type="button"
-        class="bg-amazing-bordeaux border-transparent flex items-center"
+        class="bg-amazing border-transparent flex items-center"
         (click)="updatePostionAndViewportCenter()">
         <ng-icon
           size="32"
@@ -65,20 +65,20 @@
       </button>
       <button
         type="button"
-        class="bg-amazing-bordeaux border-transparent flex items-center"
+        class="bg-amazing border-transparent flex items-center"
         routerLink="stats">
         <ng-icon size="32" name="lucideChartColumn" />
       </button>
       <button
         type="button"
-        class="bg-amazing-bordeaux border-transparent flex items-center"
+        class="bg-amazing border-transparent flex items-center"
         routerLink="settings">
         <ng-icon size="32" name="lucideSettings" />
       </button>
     </div>
   } @placeholder {
     <div class="fixed flex justify-center z-[999] bottom-4 w-full">
-      <div class="inline-flex justify-center gap-8 p-4 bg-amazing-bordeaux rounded-md w-auto">
+      <div class="inline-flex justify-center gap-8 p-4 bg-amazing rounded-md w-auto">
         <p class="self-center">Marker werden geladen...</p>
         <app-progress-spinner [show$]="isLoading$()" />
       </div>
