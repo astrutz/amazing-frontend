@@ -1,0 +1,15 @@
+<app-page title$="Einstellungen">
+  <div class="mt-8 flex flex-col gap-2">
+    <h2 class="text-lg">Theme</h2>
+    <div class="flex flex-wrap gap-4 bg-amazing-dark">
+      @for (theme of themes; track theme.key) {
+        <button
+          (click)="themeService.setTheme(theme.key)"
+          class="px-4 py-2 rounded-lg border border-amazing-light text-amazing-text-primary"
+          [class.bg-amazing]="themeService.currentTheme$() === theme.key">
+          {{theme.name}}
+        </button>
+      }
+    </div>
+  </div>
+</app-page>

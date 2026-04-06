@@ -11,7 +11,7 @@
     @if (foundMarkers.length) {
       <h3>{{ foundMarkers.length }} Marker gefunden</h3>
     }
-    @for (marker of foundMarkers; track marker.id) {
+    @for (marker of foundMarkers; track marker._id) {
       <a
         (click)="navigate(marker)"
         class="bg-amazing hover:bg-amazing-light p-6 cursor-pointer rounded-lg">
