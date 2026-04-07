@@ -5,8 +5,69 @@
 @tailwind components;
 @tailwind utilities;
 
+/* styles.scss */
+:root {
+  --color-amazing: #5F2234;
+  --color-amazing-dark: #210d11;
+  --color-amazing-light: #aa6b7e;
+  --color-amazing-accent: #f43f5e;
+  --color-amazing-text-primary: #ffe4e6;
+  --color-amazing-text-secondary: rgba(255, 228, 230, 0.5);
+  --shadow-color: #aa6b7e;
+}
+
+[data-theme='green'] {
+  --color-amazing: #1a4731;
+  --color-amazing-dark: #0a1a12;
+  --color-amazing-light: #4a8a6a;
+  --color-amazing-accent: #10b981;
+  --color-amazing-text-primary: #ecfdf5;
+  --color-amazing-text-secondary: rgba(236, 253, 245, 0.5);
+  --shadow-color: #4a8a6a;
+}
+
+[data-theme='blue'] {
+  --color-amazing: #1e293b;        /* Slate Blue */
+  --color-amazing-dark: #0f172a;   /* Midnight Navy */
+  --color-amazing-light: #334155;  /* Muted Blue */
+  --color-amazing-accent: #38bdf8; /* Sky Blue Neon */
+  --color-amazing-text-primary: #f0f9ff;
+  --color-amazing-text-secondary: rgba(240, 249, 255, 0.5);
+  --shadow-color: #38bdf8;
+}
+
+[data-theme='purple'] {
+  --color-amazing: #2e1065;
+  --color-amazing-dark: #0c041d;
+  --color-amazing-light: #5b21b6;
+  --color-amazing-accent: #d946ef;
+  --color-amazing-text-primary: #fae8ff;
+  --color-amazing-text-secondary: rgba(250, 232, 255, 0.5);
+  --shadow-color: #d946ef;
+}
+
+[data-theme='amber'] {
+  --color-amazing: #451a03;
+  --color-amazing-dark: #1a0a02;
+  --color-amazing-light: #92400e;
+  --color-amazing-accent: #f59e0b;
+  --color-amazing-text-primary: #fffbeb;
+  --color-amazing-text-secondary: rgba(255, 251, 235, 0.5);
+  --shadow-color: #f59e0b;
+}
+
+[data-theme='dark'] {
+  --color-amazing: #1f1f1f;
+  --color-amazing-dark: #121212;
+  --color-amazing-light: #333333;
+  --color-amazing-accent: #3b82f6;
+  --color-amazing-text-primary: #e5e5e5;
+  --color-amazing-text-secondary: #a3a3a3;
+  --shadow-color: rgba(0, 0, 0, 0.4);
+}
+
 body {
-  @apply text-white;
+  @apply text-amazing-text-primary;
 }
 
 input {

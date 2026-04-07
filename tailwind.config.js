@@ -7,12 +7,15 @@ module.exports = {
     },
     extend: {
       colors: {
-        'amazing-bordeaux': '#5F2234',
-        'amazing-bordeaux-dark': '#210d11',
-        'amazing-bordeaux-light': '#aa6b7e',
+        'amazing': 'var(--color-amazing)',
+        'amazing-dark': 'var(--color-amazing-dark)',
+        'amazing-light': 'var(--color-amazing-light)',
+        'amazing-accent': 'var(--color-amazing-accent)',
+        'amazing-text-primary': 'var(--color-amazing-text-primary)',
+        'amazing-text-secondary': 'var(--color-amazing-text-secondary)',
       },
       boxShadow: {
-        inputs: '0 0 0 .2rem #aa6b7e',
+        inputs: '0 0 0 .2rem var(--shadow-color)',
       },
     },
   },

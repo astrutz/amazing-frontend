@@ -1,15 +1,16 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MarkerService } from '../../services/marker.service';
 import { Marker } from '../../types/marker.type';
 import { LocationService } from '../../services/location.service';
+import { PageComponent } from '../shared/page/page.component';
 
 @Component({
-    selector: 'app-search',
-    imports: [ReactiveFormsModule, RouterLink],
-    templateUrl: './search.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-search',
+  imports: [ReactiveFormsModule, PageComponent],
+  templateUrl: './search.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent {
   protected foundMarkers: Marker[] = [];
@@ -44,10 +45,13 @@ export class SearchComponent {
   }
 
   protected navigate(marker: Marker) {
-    this._currentLocation.setCurrentLocation({
-      latitude: marker.lat,
-      longitude: marker.lng,
-    }, false);
+    this._currentLocation.setCurrentLocation(
+      {
+        latitude: marker.lat,
+        longitude: marker.lng,
+      },
+      false,
+    );
     this._router.navigate(['']);
   }
 }

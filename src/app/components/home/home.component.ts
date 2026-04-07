@@ -8,7 +8,7 @@ import { LeafletMarkerClusterModule } from '@bluehalo/ngx-leaflet-markercluster'
 
 import { LocationService } from '../../services/location.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { lucideLoader2, lucideMapPin, lucidePlus, lucideSearch, lucideX } from '@ng-icons/lucide';
+import { lucideLoader2, lucideMapPin, lucidePlus, lucideSearch, lucideX, lucideSettings, lucideChartColumn } from '@ng-icons/lucide';
 import { NgClass, NgStyle } from '@angular/common';
 import { ProgressSpinnerComponent } from '../shared/progress-spinner/progress-spinner.component';
 import { LoadingService } from '../../services/loading.service';
@@ -33,6 +33,8 @@ import { MarkerService } from '../../services/marker.service';
       lucideLoader2,
       lucideX,
       lucideSearch,
+      lucideSettings,
+      lucideChartColumn
     }),
   ],
     changeDetection: ChangeDetectionStrategy.OnPush
