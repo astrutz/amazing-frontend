@@ -21,15 +21,15 @@ export class PageComponent {
   /**
    * H1 to be displayed if wanted
    */
-  public title$ = input<string | null>(null);
+  public title$ = input<string | null>(null, { alias: 'title' });
 
   /**
    * Subtitle, only gets shown when a title is present
    */
-  public subTitle$ = input<string | null>(null);
+  public subTitle$ = input<string | null>(null, { alias: 'subTitle' });
 
   /**
    * Subtitle, only gets shown when a title is present
    */
-  public width$ = input<'small' | 'large'>('small');
+  public width$ = input<'small' | 'large'>('small', { alias: 'width' });
 }
