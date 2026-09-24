@@ -1,6 +1,6 @@
 @let stats = stats$();
 
-<app-page title$="Statistiken" subTitle$="Mensch, was hat STATSAT aus uns nur für Nerds gemacht?" width$="large">
+<app-page [title$]="'Statistiken'" [subTitle$]="'Mensch, was hat STATSAT aus uns nur für Nerds gemacht?'" [width$]="'large'">
   @if (stats) {
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div class="bg-white/5 backdrop-blur-md p-6 rounded-3xl border border-white/10 shadow-2xl">

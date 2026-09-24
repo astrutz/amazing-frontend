@@ -1,4 +1,6 @@
-<app-page title$="Neuer Sticker" subTitle$="Was ist ein Sticker wert, wenn er nicht auf der Karte auftaucht?">
+<app-page
+  [title$]="'Neuer Sticker'"
+  [subTitle$]="'Was ist ein Sticker wert, wenn er nicht auf der Karte auftaucht?'">
   <form (ngSubmit)="onSubmit()" [formGroup]="markerForm" class="flex flex-col">
     <div class="flex flex-col gap-2 mb-12">
       <label for="title">Titel</label>
